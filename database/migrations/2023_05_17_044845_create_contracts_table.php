@@ -1,0 +1,47 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    /**
+     * Run the migrations.
+     */
+    public function up(): void
+    {
+        Schema::create('contracts', function (Blueprint $table) {
+            $table->id();
+            $table->string('code')->comment('số hợp đồng');
+            $table->date('signing_date')->comment('ngày kí');
+            $table->foreignId('project_id')->constrained()->comment('id dự án');
+            $table->foreignId('user_contractor_id')->constrained('users')->comment('id người kí bên công ty');
+            $table->foreignId('user_charge_id')->constrained('users')->comment('id phụ trách bên công ty');
+            $table->string('customer_contractor')->comment('người kí bên khách hàng');
+            $table->foreignId('customer_id')->constrained()->comment('id khách hàng');
+            $table->foreignId('contract_type_id')->constrained()->comment('loại hợp đồng');
+            $table->bigInteger('contract_value')->comment('giá trị hợp đồng');
+            $table->date('start_date')->comment('ngày bắt đầu thực hiện');
+            $table->date('expiration_date')->comment('ngày hết hạn hợp đồng');
+            $table->date('hand_over_date')->comment('ngày nghiệm thu hợp đồng');
+            $table->integer('number_payment')->comment('số lần thanh toán');
+            $table->integer('warranty_time')->comment('thời gian bảo hành 3 - 36 tháng');
+            $table->foreignId('status_id')->constrained('system_statuses')->comment('trạng thái dự án');
+            $table->string('note_contract')->nullable()->comment('lưu ý quan trọng');
+            $table->unsignedBigInteger('created_by')->nullable();
+            $table->unsignedBigInteger('updated_by')->nullable();
+            $table->unsignedBigInteger('deleted_by')->nullable();
+            $table->softDeletes();
+            $table->timestamps();
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
+    {
+        Schema::dropIfExists('contracts');
+    }
+};

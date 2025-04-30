@@ -1,0 +1,13 @@
+.status-badge-active-color {
+    color: #0051c2;
+    &:hover {
+        color: #0051c2!important;
+    }
+}
+
+.status-badge-danger-color {
+    color: red;
+    &:hover {
+        color: red!important;
+    }
+}

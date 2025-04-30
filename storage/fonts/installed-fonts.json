@@ -1,0 +1,59 @@
+{
+    "keenicons-duotone": {
+        "normal": "keenicons_duotone_normal_7d8b180d8acbc9f032f786bc5aca7e06"
+    },
+    "keenicons-outline": {
+        "normal": "keenicons_outline_normal_27ba20385b3a762b9e60b7c7798c8503"
+    },
+    "keenicons-solid": {
+        "normal": "keenicons_solid_normal_aa2497b363188e3899c5e2856bc497b9"
+    },
+    "line awesome brands": {
+        "normal": "line_awesome_brands_normal_5fd33072d32b5d59b4da6de361bed544"
+    },
+    "line awesome free": {
+        "normal": "C:\\laragon\\www\\projects-management\\storage\\fonts\/line_awesome_free_normal_77a0c3d0d6a01a73f66a41a13d578d6e",
+        "900": "line_awesome_free_900_e4f3c780192e92dd90fbaf0c1c9d9976"
+    },
+    "font awesome 6 brands": {
+        "normal": "font_awesome_6_brands_normal_0872f4454050c0ac7af3985cdc89f79f"
+    },
+    "font awesome 6 free": {
+        "normal": "C:\\laragon\\www\\projects-management\\storage\\fonts\/font_awesome_6_free_normal_33ebb573822903125157a9ce1d6c7e64",
+        "900": "font_awesome_6_free_900_37f7fb1e714513a8484bd1ffe27d07eb"
+    },
+    "font awesome 5 brands": {
+        "normal": "font_awesome_5_brands_normal_0872f4454050c0ac7af3985cdc89f79f"
+    },
+    "font awesome 5 free": {
+        "900": "C:\\laragon\\www\\projects-management\\storage\\fonts\/font_awesome_5_free_900_37f7fb1e714513a8484bd1ffe27d07eb",
+        "normal": "font_awesome_5_free_normal_33ebb573822903125157a9ce1d6c7e64"
+    },
+    "fontawesome": {
+        "normal": "fontawesome_normal_b1331ac1252609d13306d522befcd42b"
+    },
+    "material symbols outlined": {
+        "normal": "material_symbols_outlined_normal_4caeaf1b0be443a46ff9a44ae85fe335"
+    },
+    "montserrat": {
+        "300": "C:\\laragon\\www\\projects-management\\storage\\fonts\/montserrat_300_39b1972e72c43f1f0e368a33cc82c0ce",
+        "normal": "C:\\laragon\\www\\projects-management\\storage\\fonts\/montserrat_normal_b74b751c20b429298921949795391ef1",
+        "500": "C:\\laragon\\www\\projects-management\\storage\\fonts\/montserrat_500_a34ab50d0b60a015b62e11133b0bf05b",
+        "600": "C:\\laragon\\www\\projects-management\\storage\\fonts\/montserrat_600_54346339d706ca965bcbed499d2795db",
+        "bold": "montserrat_bold_4b7576218464d90344a2d2769cab2f75"
+    },
+    "roboto": {
+        "100_italic": "\/Users\/kimthong\/Documents\/Project\/projects-management\/storage\/fonts\/roboto_100_italic_71d4fad1ca0f22d70d8be7cc40bb76ab",
+        "300_italic": "\/Users\/kimthong\/Documents\/Project\/projects-management\/storage\/fonts\/roboto_300_italic_3d719d848a0b6b3f4f0918985ffd2db7",
+        "italic": "\/Users\/kimthong\/Documents\/Project\/projects-management\/storage\/fonts\/roboto_italic_e3ef71c7d9eeac822fc7d92d4fc7ff6e",
+        "500_italic": "\/Users\/kimthong\/Documents\/Project\/projects-management\/storage\/fonts\/roboto_500_italic_e69cd621b57d68ed0b47f09bd22a3d7e",
+        "bold_italic": "\/Users\/kimthong\/Documents\/Project\/projects-management\/storage\/fonts\/roboto_bold_italic_76e4a6bfadf19fea9990a367967a3f96",
+        "900_italic": "\/Users\/kimthong\/Documents\/Project\/projects-management\/storage\/fonts\/roboto_900_italic_7ad2e464d2e86e53eea8619bf6734bbe",
+        "100": "\/Users\/kimthong\/Documents\/Project\/projects-management\/storage\/fonts\/roboto_100_1c4e32da7e6c8539dd3a51af38f413be",
+        "300": "\/Users\/kimthong\/Documents\/Project\/projects-management\/storage\/fonts\/roboto_300_32acfcb296f555e063ebba2be7db9e2f",
+        "normal": "\/Users\/kimthong\/Documents\/Project\/projects-management\/storage\/fonts\/roboto_normal_7bc701b343c10631f60048716b96e4f7",
+        "500": "\/Users\/kimthong\/Documents\/Project\/projects-management\/storage\/fonts\/roboto_500_5774d6fb05eba3d096525f821dbe4137",
+        "bold": "roboto_bold_8db5cb5d0586c1e891426d13097b1d04",
+        "900": "\/Users\/kimthong\/Documents\/Project\/projects-management\/storage\/fonts\/roboto_900_7bf41cacaff90e7097ddd49fb9296601"
+    }
+}

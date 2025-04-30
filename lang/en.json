@@ -1,0 +1,28 @@
+{
+    "Mã phải là duy nhất.": "Code is unique",
+    "Mã không được để trống.": "Code is required",
+    "Trường dữ liệu không được để trống.": "The field is required",
+    "Loại trạng thái không được để trống.": "Type is required",
+    "Trạng thái không được để trống.": "Status is required",
+    "Tên không được để trống.": "Name is required",
+    "Mô tả/diễn giải không được để trống.": "Description is required",
+    "Không thể xóa đo đã phát sinh dữ liệu liên quan.": "The record could not be deleted because related data was created.",
+    "Trường dữ liệu tối đa :size kí tự.": "Field is up to :size characters.",
+    "Giá sản phẩm tối đa :size chữ số.": "Product price is up to :size digits.",
+    "Email không đúng định dạng.": "Email invalidate.",
+    "Giá trị không hợp lệ.": "Giá trị không hợp lệ.",
+    "Trường dữ liệu phải là định dạng số.": "Field must be is number.",
+    "Tên người đại diện không được để trống.": "Representative name is required",
+    "Số điện thoại người đại diện không được để trống": "Representative phone is required",
+    "Email người đại diện không được để trống.": "Representative email is required",
+    "Số tài khoản ngân hàng không được để trống.": "Bank number is required",
+    "Tên tài khoản ngân hàng không được để trống.": "Bank account name is reuired",
+    "Trường dữ liệu phải từ :min đến :max": "Field must be from :min to :max ",
+    "Ngày bắt đầu thực hiện phải lớn hơn ngày kí hợp đồng.": "The start date must be greater than the contract signing date.",
+    "Ngày hết hạn hợp đồng phải lớn hơn ngày bắt đầu thực hiện.": "The expiration date must be greater than the start date.",
+    "Thời gian nghiệm thu hợp đồng phải lớn hơn ngày hết hạn hợp đồng.": "The hand over date must be greater than the contract expiration date.",
+    "Trường dữ liệu phải lớn hơn 0.": "The data field must be greater than 0.",
+    "Mã số thuế đã tồn tại.": "Tax code already exists.",
+    "Số lượng sản phẩm tối đa 999.": "Maximum number of products 999."
+
+}
