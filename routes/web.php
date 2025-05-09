@@ -377,7 +377,7 @@ Route::name('admin.')->prefix('/')->middleware(['auth', 'permission'])->group(fu
     Route::prefix('hrm-contracts')->group(function () {
         Route::get('/', [HrmContractController::class, 'index'])->name('hrm-contracts.index');
         Route::post('/store', [HrmContractController::class, 'store'])->name('hrm-contracts.store');
-        Route::post('/update/{id}', [HrmContractController::class, 'update'])->name('hrm-contracts.update');
+        Route::put('/update/{id}', [HrmContractController::class, 'update'])->name('hrm-contracts.update');
         Route::delete('/destroy/{id}', [HrmContractController::class, 'destroy'])->name('hrm-contracts.destroy');
         Route::get('/get-all', [HrmContractController::class, 'getAllHrmContracts'])->name('hrm-contracts.getAllHrmContracts');
     });

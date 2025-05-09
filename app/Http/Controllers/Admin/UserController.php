@@ -74,6 +74,7 @@ class UserController extends Controller
             return $this->responseCollection(collect([]), 200, [], ['paginate' => false]);
         }
         $users = $this->userRepository->getDataFilter($request);
+
         $this->setTransformer(new UserTransformer(false, true));
         if($request->getAll) {
             return $this->responseCollection($users->orderBy('name')->get(), 200, [], ['paginate' => false]);

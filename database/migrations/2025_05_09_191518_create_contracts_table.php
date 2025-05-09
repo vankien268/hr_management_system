@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('contract_name')->nullable();
             $table->string('contract_code')->nullable();
             $table->string('contract_number')->nullable();
-            $table->unsignedBigInteger('contact_type_id')->nullable();
+            $table->unsignedBigInteger('contract_type_id')->nullable();
             $table->unsignedBigInteger('department_id')->nullable()->comment('Phòng ban người lao động');
             $table->unsignedBigInteger('contact_id')->nullable()->comment('Id nhân sự');
 
@@ -31,9 +31,10 @@ return new class extends Migration
             $table->dateTime('effective_date')->nullable()->comment('Ngày bắt đầu hiệu lực');
             $table->dateTime('expiration_date')->nullable()->comment('Ngày kết thúc hiệu lực');
             $table->string('allowances')->nullable();
+            $table->tinyInteger('valid')->default(1)->nullable();
 
             $table->text('note')->nullable();
-
+            $table->softDeletes();
             $table->unsignedBigInteger('created_by')->nullable();
             $table->unsignedBigInteger('updated_by')->nullable();
             $table->unsignedBigInteger('deleted_by')->nullable();

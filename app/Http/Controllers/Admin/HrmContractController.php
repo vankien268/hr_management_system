@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\HrmContactUpdateRequest;
+use App\Http\Requests\HrmContractStoreRequest;
+use App\Http\Requests\HrmContractUpdateRequest;
 use App\Repositories\Interfaces\IHrmContactRepository;
 use App\Repositories\Interfaces\IHrmContractRepository;
 use App\Transformers\HrmContactTransformer;
@@ -41,54 +43,37 @@ class HrmContractController extends Controller
 
     public function getAllHrmContracts(Request $request)
     {
-        $code = $request->code;
-        $fullname = $request->fullname;
-        $birthday_from = $request->birthday_from;
-        $birthday_to = $request->birthday_to;
-        $contact_phone = $request->contact_phone;
-        $contact_email = $request->contact_email;
-        $contact_identify = $request->contact_identify;
+        $fullName = $request->full_name;
+        $contract_type_id = $request->contract_type_id;
+        $contract_name = $request->contract_name;
+        $contract_code = $request->contract_code;
 
-        $contacts = $this->contractRepository->model()
+        $contacts = $this->contractRepository->model(['department', 'contact', 'contractType'])
             ->where(function ($query) use (
-                $fullname,
-                $code,
-                $birthday_from,
-                $birthday_to,
-                $contact_phone,
-                $contact_email,
-                $contact_identify
+                $contract_code,
+                $contract_name,
+                $contract_type_id,
+                $fullName
             ) {
-//                if ($fullname) {
-//                    $query->where('full_name', 'like', '%' . $fullname . '%');
-//                }
-//
-//                if ($code) {
-//                    $query->Where('contact_code','like',  '%' . $code . '%');
-//                }
-//
-//                if ($contact_phone) {
-//                    $query->Where('contact_mobile', 'like',  '%' . $contact_phone . '%')
-//                        ->orWhere('contact_mobile_2',  'like',  '%' . $contact_phone . '%')
-//                        ->orWhere('relative_phone_number',  'like',  '%' . $contact_phone . '%');
-//                }
-//
-//                if ($contact_email) {
-//                    $query->Where('contact_email', $contact_email);
-//                }
-//
-//                if ($contact_identify) {
-//                    $query->Where('contact_identify', 'like', '%' . $contact_identify . '%');
-//                }
-//
-//                if ($birthday_from) {
-//                    $query->where('contact_birthday', '>=', $birthday_from);
-//                }
-//
-//                if ($birthday_to) {
-//                    $query->where('contact_birthday', '<=', $birthday_to);
-//                }
-            })
+
+                if ($contract_code) {
+                    $query->where('contract_code', 'like', '%' . $contract_code . '%');
+                }
+
+                if ($contract_name) {
+                    $query->where('contract_name', 'like', '%' . $contract_name . '%');
+                }
+
+                if ($contract_type_id) {
+                    $query->where('contract_type_id', $contract_type_id);
+                }
+
+                if ($fullName) {
+                    $query->whereHas('contact', function ($q) use ($fullName) {
+                        $q->where('full_name', 'like', '%' . $fullName . '%');
+                    });
+                }
+            })->where('valid', 1)
             ->orderByDesc('id')->get();
 
         $this->setTransformer(new HrmContractTransformer());
@@ -99,28 +84,27 @@ class HrmContractController extends Controller
         );
     }
 
-    public function store(AllowanceStoreRequest $request)
+    public function store(HrmContractStoreRequest $request)
     {
         $data = $request->all();
         DB::beginTransaction();
         try {
-            unset($data['allowed_number_days']);
             $this->contractRepository->create($data);
             DB::commit();
-            return $this->successResponse(['message' => trans('Thêm phụ cấp thành công!')]);
+            return $this->successResponse(['message' => trans('Thêm hợp đồng thành công!')]);
         } catch (\Throwable $th) {
             DB::rollBack();
             return $this->errorResponse($th->getMessage());
         }
     }
 
-    public function update($id, HrmContactUpdateRequest $request)
+    public function update($id, HrmContractUpdateRequest $request)
     {
 
-        $contact = $this->contractRepository->find($id);
+        $contract = $this->contractRepository->find($id);
 
-        if (! $contact) {
-            return $this->errorsResponse(['message' => trans('Nhân sự không tồn tại.')], 422);
+        if (! $contract) {
+            return $this->errorsResponse(['message' => trans('Hợp đồng không tồn tại.')], 422);
         }
 
         $data = $request->all();
@@ -128,9 +112,9 @@ class HrmContractController extends Controller
         DB::beginTransaction();
         try {
 
-            $contact->update($data);
+            $contract->update($data);
             DB::commit();
-            return $this->successResponse(['allowance' => $contact->refresh(), 'message' => trans('Sửa nhân sự thành công !')]);
+            return $this->successResponse(['contract' => $contract->refresh(), 'message' => trans('Sửa hợp đồng thành công!')]);
         } catch (\Throwable $th) {
             DB::rollBack();
             return $this->errorResponse($th->getMessage());
@@ -139,17 +123,17 @@ class HrmContractController extends Controller
 
     public function destroy($id)
     {
-        $allowance = $this->contractRepository->find($id);
+        $contract = $this->contractRepository->find($id);
 
-        if (! $allowance) {
-            return $this->errorsResponse(['message' => trans('Phụ cấp không tồn tại.')], 422);
+        if (! $contract) {
+            return $this->errorsResponse(['message' => trans('Hợp đồng không tồn tại.')], 422);
         }
 
         DB::beginTransaction();
         try {
-            $allowance->update(['valid' => 0]);
+            $contract->update(['valid' => 0]);
             DB::commit();
-            return $this->successResponse(['message' => trans('Xóa phụ cấp thành công !')]);
+            return $this->successResponse(['message' => trans('Xóa hợp đồng thành công !')]);
         } catch (\Throwable $throwable) {
             DB::rollBack();
             return $this->errorResponse($throwable->getMessage());

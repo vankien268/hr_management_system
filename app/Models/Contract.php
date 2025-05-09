@@ -12,7 +12,7 @@ use Spatie\Activitylog\LogOptions;
 class Contract extends BaseModel
 {
     use ProjectPermission, LogsActivity;
-    protected $table = 'contracts';
+    protected $table = 'contractsss';
     protected $fillable = [
         'code',
         'signing_date',

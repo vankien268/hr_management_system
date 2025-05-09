@@ -18,7 +18,7 @@ class ContractTypeRepository extends BaseRepository implements Interfaces\IContr
         if(isset($requestData['getAll']) && $requestData['getAll'] == 'true'){
             $results = $this->model->query();
         }else{
-            $results = $this->model->with(['contracts', 'deploymentSchedules']);
+            $results = $this->model;
         }
         if (isset($requestData['using']) && in_array($requestData['using'], [true, 1])) {
             $results->where('status', StatusEnum::USING);
