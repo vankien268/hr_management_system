@@ -65,10 +65,11 @@ export const useContractStore = defineStore("contracts", {
         errors: [],
         showModal: false,
     }),
-
+// /hrm-contacts/get-all
+// /contracts/api
     actions: {
         getContractData(page = 1, per_page = 30, search) {
-          return  getData("/contracts/api", {
+          return  getData("/hrm-contacts/get-all", {
                 page: page,
                 per_page: per_page,
                 ...search,

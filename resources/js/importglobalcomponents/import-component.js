@@ -34,6 +34,15 @@ import UserProfile from '../components/users/UserProfile.vue';
 import Notifications from '../components/notifications/NotificationIndex.vue';
 import NotificationAsideBar from '../components/notifications/NotificationAsideBar.vue';
 
+import AllowanceList from '../components/allowances/AllowanceList.vue';
+import InternalFundList from '../components/internal-fund/InternalFundList.vue';
+import TaxList from '../components/taxes/TaxList.vue';
+import UserLeaveDays from '../components/user-leave-days/UserLeaveDays.vue';
+import RequestTicketList from '../components/request-tickets/RequestTicketList.vue';
+import WorkflowList from '../components/workflow/WorkflowList.vue';
+import HrmContactList from '../components/hrm-contacts/HrmContactList.vue';
+import HrmContractList from '../components/hrm-contracts/HrmContractList.vue';
+
 // import Select2 from 'vue3-select2-component';
 
 const globalComponent = {
@@ -71,6 +80,14 @@ const globalComponent = {
     PaymentDetailContractReport,
     UserProfile,
     Notifications,
-    NotificationAsideBar
+    NotificationAsideBar,
+    AllowanceList,
+    InternalFundList,
+    TaxList,
+    UserLeaveDays,
+    RequestTicketList,
+    WorkflowList,
+    HrmContactList,
+    HrmContractList,
 }
 export default globalComponent

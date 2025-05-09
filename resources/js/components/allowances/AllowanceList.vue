@@ -12,7 +12,7 @@
                     <a
                         href="#"
                         class="btn btn-function me-2"
-                        @click="clickCreateBank"
+                        @click="clickCreateAllowance"
                         data-bs-target="#formCreateAllowance"
                         data-bs-toggle="modal"
                         v-if="props.btnAdd"
@@ -54,7 +54,7 @@
                     <!--end::Table head-->
                     <!--begin::Table body-->
                     <tbody>
-                    <tr v-for="(item, index) in banks" :key="index"
+                    <tr v-for="(item, index) in allowances" :key="index"
                         :class="{active : item.id == currentIndex}" @click="currentIndex = item.id"
                     >
                         <td style="text-align: center">
@@ -71,23 +71,27 @@
                         <td>
                                 <span
                                     class="text-dark text-hover-primary text-content"
-                                >{{ item.def_name }}</span
+                                >{{ item.allowance_name }}</span
                                 >
                         </td>
                         <td>
                                 <span
                                     class="text-dark text-hover-primary d-block mb-1 text-content"
-                                >{{ item.name }}</span
+                                >{{ getAllowanceTypeName(item.allowance_type) }}</span
                                 >
                         </td>
 
                         <td>
                                 <span
-                                    class="text-dark text-hover-primary d-block mb-1 fs-6"
-                                    :title="item.note"
-                                >{{
-                                        helperFunc.shortString(item.note)
-                                    }}</span
+                                    class="text-dark text-hover-primary d-block mb-1 text-content"
+                                >{{ item.allowance_amount }}</span
+                                >
+                        </td>
+
+                        <td>
+                                <span
+                                    class="text-dark text-hover-primary d-block mb-1 text-content"
+                                >{{ item.description }}</span
                                 >
                         </td>
 
@@ -97,7 +101,7 @@
                                 :class="item.status == 0 ? 'status-badge-danger-color' : 'status-badge-active-color'"
                             >
                                 {{
-                                item.status === 1
+                                item.status == 1
                                 ? "Đang sử dụng"
                                 : "Ngừng sử dụng"
                                 }}
@@ -105,13 +109,12 @@
                         </td>
 
                         <td class="w-50px text-center">
-                            <a v-if="item.isEdit"
+                            <a
                                href="#"
                                @click="handleUpdate(item)"
-                               data-bs-target="#formCreateBank"
+                               data-bs-target="#formCreateAllowance"
                                data-bs-toggle="modal"
                                class="btn btn-icon btn-edit btn-sm"
-                               :class="{ 'disable': !item.isEdit }"
                             >
                                 <i
                                     class="ki-duotone ki-pencil fs-2"
@@ -121,13 +124,12 @@
                                 </i>
                             </a>
                         </td>
-                        <td class="w-50px">
+                        <td class="w-50px"  :title="item.is_deleted == true ? 'Không thể xóa phụ cấp mặc định của hệ thống.' : ''">
                             <a
                                 href="#"
                                 @click.prevent="handleDelete(item.id)"
                                 class="btn btn-icon btn-delete btn-sm me-1"
-                                :class="{ 'disable': !item.isDelete }"
-                                v-if="item.isDelete"
+                                :class="{ 'disable': item.is_deleted }"
                             >
                                 <i class="fa-solid fa-trash fs-5"></i>
                             </a>
@@ -150,7 +152,7 @@
     </div>
     <div
         class="modal fade"
-        id="formCreateBank"
+        id="formCreateAllowance"
         style="position: fixed"
         data-bs-keyboard="false"
         data-bs-backdrop="static"
@@ -164,9 +166,9 @@
                     <!--begin::Close-->
                     <h4 class="modal-title">
                         {{
-                        isClickBankUpdate
-                        ? "Sửa ngân hàng"
-                        : "Thêm mới ngân hàng"
+                        isClickAllowanceUpdate
+                        ? "Sửa phụ cấp"
+                        : "Thêm mới phụ cấp"
                         }}
                     </h4>
                     <div class="btn btn-icon btn-sm btn-active-light-primary btn-color-white ms-2" data-bs-dismiss="modal" @click="closeModalUser" id="close"
@@ -188,30 +190,25 @@
                             <label
                                 class="d-flex align-items-center fs-6 fw-semibold mb-2"
                             >
-                                <span class="required">Tên viết tắt</span>
+                                <span class="required">Tên phụ cấp</span>
                             </label>
                             <!--end::Label-->
-                            <input
+                            <input :disabled="isClickAllowanceUpdate && formAllowance.default != 0"
                                 type="text"
-                                :disabled="canDisabledCode"
                                 class="form-control text-input"
                                 :class="{
-                                    'input-custom-valid': errors.def_name,
-                                    'input-disabled': canDisabledCode,
+                                    'input-custom-valid': errors.allowance_name,
+                                    'input-disabled': isClickAllowanceUpdate && formAllowance.default != 0,
                                 }"
-                                v-model="formBank.def_name"
-                                @input="
-                                    formBank.def_name =
-                                        $event.target.value.toUpperCase()
-                                "
-                                placeholder="Nhập tên viết tắt"
+                                v-model="formAllowance.allowance_name"
+                                placeholder="Nhập tên phụ cấp"
                                 name="target_title"
                             />
                             <div class="w-100"></div>
                             <span
-                                v-if="errors.def_name"
+                                v-if="errors.allowance_name"
                                 class="text-danger mt-3"
-                            >{{ errors.def_name[0] }}</span
+                            >{{ errors.allowance_name[0] }}</span
                             >
                         </div>
                         <div class="d-flex flex-column mb-8 fv-row">
@@ -219,44 +216,96 @@
                             <label
                                 class="d-flex align-items-center fs-6 fw-semibold mb-2"
                             >
-                                <span class="required">Tên ngân hàng</span>
+                                <span >Loại phụ cấp</span>
+                            </label>
+                            <!--end::Label-->
+                            <select :disabled="isClickAllowanceUpdate && formAllowance.default != 0"
+                                    style="height:29px;" class="form-select"
+                                    v-model="formAllowance.allowance_type" :class="{ 'select-custom-valid' :  errors.allowance_type }" data-hide-search="true" data-placeholder="Chọn loại dự án" name="target_assign">
+                                <option v-for="(item, index) in allowanceTypes"
+                                        :key="index" :value="item.id">
+                                    {{  `${item.name}` }}
+                                </option>
+                            </select>
+                            <div class="w-100"></div>
+                            <span v-if="errors.allowance_type" class="text-danger mt-3">{{
+                                errors.allowance_type[0]
+                            }}</span>
+                        </div>
+
+                        <div v-if="isClickAllowanceUpdate && formAllowance.default == 4" class="d-flex flex-column mb-8 fv-row">
+                            <!--begin::Label-->
+                            <label
+                                class="d-flex align-items-center fs-6 fw-semibold mb-2"
+                            >
+                                <span class="">Số ngày vi phạm được phép</span>
+                            </label>
+                            <!--end::Label-->
+                            <input
+                                   type="text"
+                                   class="form-control text-input"
+                                   :class="{
+                                    'input-custom-valid': errors.allowed_number_days,
+                                }"
+                                   v-model="formAllowance.allowed_number_days"
+                                   placeholder="Nhập số ngày vi phạm được phép"
+                                   name="target_title"
+                            />
+                            <div class="w-100"></div>
+                            <span
+                                v-if="errors.allowed_number_days"
+                                class="text-danger mt-3"
+                            >{{ errors.allowed_number_days[0] }}</span
+                            >
+                        </div>
+
+                        <div class="d-flex flex-column mb-8 fv-row">
+                            <!--begin::Label-->
+                            <label
+                                class="d-flex align-items-center fs-6 fw-semibold mb-2"
+                            >
+                                <span >Số tiền phụ cấp</span>
                             </label>
                             <!--end::Label-->
                             <input
                                 type="text"
-                                class=" text-input form-control"
-                                :class="{ 'input-custom-valid': errors.name }"
-                                v-model="formBank.name"
-                                placeholder="Nhập tên ngân hàng"
+                                class="form-control text-input"
+                                :class="{
+                                    'input-custom-valid': errors.allowance_amount
+                                }"
+                                v-model="formAllowance.allowance_amount"
+                                placeholder="Nhập số tiền phụ cấp"
                                 name="target_title"
                             />
                             <div class="w-100"></div>
-                            <span v-if="errors.name" class="text-danger mt-3">{{
-                                errors.name[0]
-                            }}</span>
+                            <span
+                                v-if="errors.allowance_amount"
+                                class="text-danger mt-3"
+                            >{{ errors.allowance_amount[0] }}</span
+                            >
                         </div>
 
                         <div class="d-flex flex-column mb-8">
-                            <label class="fs-6 fw-semibold mb-2">Ghi chú</label>
+                            <label class="fs-6 fw-semibold mb-2">Mô tả</label>
                             <textarea
                                 style="resize:none"
                                 class="form-control text-input"
-                                v-model="formBank.note"
+                                v-model="formAllowance.description"
                                 rows="3"
                                 name="target_details"
-                                placeholder="Nhập nội dung ghi chú"
+                                placeholder="Nhập mô tả"
                             ></textarea>
                             <div class="w-100"></div>
-                            <span v-if="errors.note" class="text-danger mt-3">{{
+                            <span v-if="errors.description" class="text-danger mt-3">{{
                                 errors.note[0]
                             }}</span>
                         </div>
                         <!--end::Input group-->
                         <div
                             class="d-flex flex-column mb-8 fv-row"
-                            v-if="isClickBankUpdate === true"
+                            v-if="isClickAllowanceUpdate === true"
                         >
-                            <label class="required fs-6 fw-semibold mb-2"
+                            <label class="fs-6 fw-semibold mb-2"
                             >Trạng thái</label
                             >
 
@@ -266,11 +315,11 @@
                                     'select-custom-valid': errors.status,
                                 }"
                                 data-placeholder="Chọn trạng thái"
-                                v-model="formBank.status"
+                                v-model="formAllowance.status"
                                 aria-label="Default select example"
                             >
-                                <option value="1">Sử dụng</option>
-                                <option value="0">Ngừng sử dụng</option>
+                                <option :value="1">Sử dụng</option>
+                                <option :value="0">Ngừng sử dụng</option>
                             </select>
                             <div class="w-100"></div>
                             <span v-if="errors.status" class="text-danger">{{
@@ -280,9 +329,9 @@
 
                         <div class="modal-footer" style="border-top:none">
                             <button type="button" class="btn btn-function me-4" @click.prevent="
-                                    isClickBankUpdate
-                                        ? updateBank()
-                                        : storeBank()
+                                    isClickAllowanceUpdate
+                                        ? updateAllowance()
+                                        : storeAllowance()
                                 ">
                                 <i class="fa-solid fa-floppy-disk"></i> Lưu
                             </button>
@@ -319,10 +368,11 @@
     const formAllowance = reactive({
         allowance_name: "",
         allowance_type: 1,
-        allowed_number_days: null,
+        allowed_number_days: 0,
         allowance_amount: null,
         description: null,
         status: 1,
+        default: 0,
     });
     // handle chọn số bản ghi / 1 trang
     const currentIndex = ref(-1);
@@ -392,7 +442,6 @@
     };
 
     let allowance_id = ref(0);
-    let canDisabledCode = ref(false);
     let isClickAllowanceUpdate = ref(false);
 
     const handleUpdate = (item) => {
@@ -404,21 +453,25 @@
         formAllowance.allowance_amount = item.allowance_amount;
         formAllowance.description = item.description;
         formAllowance.status = item.status;
+        formAllowance.default = item.default;
         errors.value = [];
-        canDisabledCode.value = true;
     };
-    const clickCreateBank = () => {
-        isClickBankUpdate.value = false;
-        formBank.def_name = "";
-        formBank.name = "";
-        formBank.note = "";
+
+    const clickCreateAllowance = () => {
+        isClickAllowanceUpdate.value = false;
+        formAllowance.allowance_name = "";
+        formAllowance.allowance_type = 1;
+        formAllowance.allowed_number_days = 0;
+        formAllowance.allowance_amount = null;
+        formAllowance.description = null;
+        formAllowance.status = 1;
+        formAllowance.default = 0;
         errors.value = [];
-        canDisabledCode.value = false;
     };
-    const updateBank = () => {
+    const updateAllowance = () => {
         KTApp.showPageLoading();
         axios
-            .post("/banks/update/" + `${bank_id.value}`, formBank)
+            .post("/allowances/update/" + `${allowance_id.value}`, formAllowance)
             .then((res) => {
                 useToast.successToast(res.data.message);
                 const btn = document.getElementById('close');
@@ -440,7 +493,7 @@
                 if (result.value) {
                     KTApp.showPageLoading();
                     axios
-                        .delete("/banks/destroy/" + id)
+                        .delete("/allowances/destroy/" + id)
                         .then((res) => {
                             useToast.successToast(res.data.message);
                             const totalRecordOnPage =
@@ -449,7 +502,7 @@
                                 getMetaPaginate.value.pagination.current_page -= 1;
                             }
                             if (getMetaPaginate.value.pagination.total - 1 === 0) {
-                                getBanks();
+                                getAllowances();
                             }
                             changePage(getMetaPaginate.value.pagination);
                         })
@@ -467,11 +520,30 @@
         // $(".modal-backdrop").remove();
         currentIndex.value = -1;
     };
+
+    const allowanceTypes = ref([
+        { id: 1, name: 'Loại cố định' },
+        { id: 2, name: 'Loại tỉ lệ theo ngày công' },
+        { id: 3, name: 'Loại nhập tay' }
+    ])
+
+    const getAllowanceTypeName = (typeId) => {
+        switch (typeId) {
+            case 1:
+                return 'Loại cố định';
+            case 2:
+                return 'Loại tỉ lệ theo ngày công';
+            case 3:
+                return 'Loại nhập tay';
+            default:
+                return '';
+        }
+    }
 </script>
 
 <style scoped>
     .input-custom-valid {
-        border: 1px solid red;
+        border: 1px solid red !important;
     }
     .select-custom-valid {
         border: 1px solid red;
@@ -486,4 +558,11 @@
     .text-input {
         font-size: 13px;
     }
+
+    /*.is-invalid {*/
+    /*    border: 1px !important;*/
+    /*    border-bottom: 1px solid !important;*/
+    /*    border-color: #ff0000ea !important;*/
+    /*    border-radius: 2px !important;*/
+    /*}*/
 </style>

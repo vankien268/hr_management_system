@@ -68,9 +68,9 @@ class UserStoreRequest extends FormRequest
             'birthday' => ['required', 'date_format:Y-m-d', function($attribute, $value, $fail) {
                 $getYear = Carbon::createFromFormat('Y-m-d', $value)->format('Y');
                 $getCurrentYear = Carbon::now()->year;
-                if( $getCurrentYear - $getYear < 0 || $getCurrentYear - $getYear < 18) {
-                    return $fail(trans('Ngày sinh phải từ 18 tuổi !'));
-                }
+//                if( $getCurrentYear - $getYear < 0 || $getCurrentYear - $getYear < 18) {
+//                    return $fail(trans('Ngày sinh phải từ 18 tuổi !'));
+//                }
             }],
             'department_id' => ['required', function($attribute, $value, $fail){
                 $departments = Department::select('id')->where('status', 1)->get()->toArray();

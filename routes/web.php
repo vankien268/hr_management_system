@@ -1,6 +1,15 @@
 <?php
 
 use App\Http\Controllers\Admin\AllowanceController;
+use App\Http\Controllers\Admin\HrmContactController;
+use App\Http\Controllers\Admin\HrmContractController;
+use App\Http\Controllers\Admin\InternalFundController;
+use App\Http\Controllers\Admin\RequestTicketController;
+use App\Http\Controllers\Admin\TaxesController;
+use App\Http\Controllers\Admin\UserLeaveDayController;
+use App\Http\Controllers\Admin\WorkflowController;
+use App\Http\Controllers\InitValueController;
+use App\Http\Controllers\SettingController;
 use App\Models\Notification;
 use Illuminate\Support\Facades\Route;
 use League\CommonMark\Node\Block\Document;
@@ -52,6 +61,7 @@ use App\Http\Controllers\Admin\Report\PaymentDetailContractReportController;
 |
 */
 
+//['auth', 'permission']
 Route::name('admin.')->prefix('/')->middleware(['auth', 'permission'])->group(function () {
     Route::get('/dashboard', function () {
         // ['pageName' => 'Dashboard']
@@ -313,6 +323,73 @@ Route::name('admin.')->prefix('/')->middleware(['auth', 'permission'])->group(fu
         Route::delete('/destroy/{id}', [AllowanceController::class, 'destroy'])->name('allowances.destroy');
         Route::get('/get-all', [AllowanceController::class, 'getAllAllowances'])->name('allowances.getAllAllowances');
     });
+
+    // # Khai báo phiếu yêu cầu
+    Route::prefix('request-tickets')->group(function () {
+        Route::get('/', [RequestTicketController::class, 'index'])->name('request-tickets.index');
+        Route::post('/store', [RequestTicketController::class, 'store'])->name('request-tickets.store');
+        Route::post('/update/{id}', [RequestTicketController::class, 'update'])->name('request-tickets.update');
+        Route::put('/approve/{id}', [RequestTicketController::class, 'handleApprove'])->name('request-tickets.approve');
+        Route::delete('/destroy/{id}', [RequestTicketController::class, 'destroy'])->name('request-tickets.destroy');
+        Route::get('/get-all', [RequestTicketController::class, 'getAllAllRequestTickets'])->name('request-tickets.getAllAllRequestTickets');
+    });
+
+    // # Khai báo quy trình duyệt
+    Route::prefix('workflow')->group(function () {
+        Route::get('/', [WorkflowController::class, 'index'])->name('workflow.index');
+        Route::post('/store', [WorkflowController::class, 'store'])->name('workflow.store');
+        Route::post('/update/{id}', [WorkflowController::class, 'update'])->name('workflow.update');
+        Route::delete('/destroy/{id}', [WorkflowController::class, 'destroy'])->name('workflow.destroy');
+        Route::get('/get-all', [WorkflowController::class, 'getAllWorkflow'])->name('workflow.getAllWorkflow');
+    });
+
+    // # Khai báo phụ cấp
+    Route::prefix('internal-fund')->group(function () {
+        Route::get('/', [InternalFundController::class, 'index'])->name('internal-fund.index');
+        Route::put('/update', [InternalFundController::class, 'update'])->name('internal-fund.update');
+        Route::get('/info', [InternalFundController::class, 'getInfoInternalFund'])->name('internal-fund.getInfoInternalFund');
+    });
+
+    // # Khai báo nhân sự
+    Route::prefix('hrm-contacts')->group(function () {
+        Route::get('/', [HrmContactController::class, 'index'])->name('hrm-contacts.index');
+        Route::put('/update/{id}', [HrmContactController::class, 'update'])->name('hrm-contacts.update');
+        Route::get('/get-all', [HrmContactController::class, 'getAllHrmContact'])->name('hrm-contacts.getAllHrmContact');
+    });
+
+    // # Cấu hình nghỉ phép
+    Route::prefix('user-leave-days')->group(function () {
+        Route::get('/', [UserLeaveDayController::class, 'index'])->name('user-leave-days.index');
+        Route::put('/update', [UserLeaveDayController::class, 'update'])->name('user-leave-days.update');
+        Route::get('/info', [UserLeaveDayController::class, 'getInfoNumberOfMonthlyLeaveDays'])->name('user-leave-days.getInfoNumberOfMonthlyLeaveDays');
+    });
+
+    // # Khai báo thuế phí
+    Route::prefix('taxes')->group(function () {
+        Route::get('/', [TaxesController::class, 'index'])->name('taxes.index');
+        Route::post('/store', [TaxesController::class, 'store'])->name('taxes.store');
+        Route::post('/update/{id}', [TaxesController::class, 'update'])->name('taxes.update');
+        Route::delete('/destroy/{id}', [TaxesController::class, 'destroy'])->name('taxes.destroy');
+        Route::get('/get-all', [TaxesController::class, 'getAllTaxes'])->name('taxes.getAllTaxes');
+    });
+
+    // # Khai báo hợp đồng
+    Route::prefix('hrm-contracts')->group(function () {
+        Route::get('/', [HrmContractController::class, 'index'])->name('hrm-contracts.index');
+        Route::post('/store', [HrmContractController::class, 'store'])->name('hrm-contracts.store');
+        Route::post('/update/{id}', [HrmContractController::class, 'update'])->name('hrm-contracts.update');
+        Route::delete('/destroy/{id}', [HrmContractController::class, 'destroy'])->name('hrm-contracts.destroy');
+        Route::get('/get-all', [HrmContractController::class, 'getAllHrmContracts'])->name('hrm-contracts.getAllHrmContracts');
+    });
+
+//    // # Khai báo bảo hiểm
+//    Route::prefix('insurances')->group(function () {
+//        Route::get('/', [SettingController::class, 'index'])->name('insurances.index');
+//        Route::post('/store', [SettingController::class, 'store'])->name('insurances.store');
+//        Route::post('/update/{id}', [SettingController::class, 'update'])->name('insurances.update');
+//        Route::delete('/destroy/{id}', [SettingController::class, 'destroy'])->name('insurances.destroy');
+//        Route::get('/get-all', [SettingController::class, 'getAllTaxes'])->name('insurances.getAllTaxes');
+//    });
 });
 
 Route::name('admin.')->prefix('/')->middleware('guest')->group(function () {

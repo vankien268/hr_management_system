@@ -365,6 +365,7 @@
                 <div class="col-lg-8">
                     <span v-if="projectTypeChange < 0"></span>
                     <SelectSearch
+                        muiltiple
                         :class="{
                             'select-custom-valid':
                                 errors['project.data.0.project_type_id'],

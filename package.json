@@ -23,6 +23,7 @@
         "v-click-outside": "^3.2.0",
         "vue": "^3.3.2",
         "vue-flatpickr-component": "^11.0.3",
+        "vue-multiselect": "^3.2.0",
         "vue3-print-nb": "^0.1.4",
         "vue3-select2-component": "^0.1.7"
     }

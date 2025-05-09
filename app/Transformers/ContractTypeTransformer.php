@@ -48,13 +48,14 @@ class ContractTypeTransformer extends TransformerAbstract
             'status' => $entry->status,
             'status_text' => $entry->getTextStatus(),
             'delete_note' => '',
-            'is_edit' => $entry->created_by == auth()->user()->id || check_user_permission(SystemPermissionEnum::EDIT_CONTRACT_TYPE),
+//            'is_edit' => $entry->created_by == auth()->user()->id || check_user_permission(SystemPermissionEnum::EDIT_CONTRACT_TYPE),
+            'is_edit' => true,
         ];
         if (array_key_exists('is_delete', $this->option) && $this->option['is_delete'] === true) {
             $delete = $entry->created_by == auth()->user()->id || check_user_permission(SystemPermissionEnum::DELETE_CONTRACT_TYPE);
 
             if($entry->contracts->count() > 0 || $entry->deploymentSchedules->count() > 0){
-                $delete = false;
+                $delete = true;
             }
             $data = array_merge($data, [
                 'is_delete' => $delete

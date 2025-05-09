@@ -90,12 +90,37 @@ class UserController extends Controller
             return $this->errorsResponse($roleErrors, 422);
         }
         $data['birthday'] = Carbon::createFromFormat('Y-m-d', $data['birthday'])->format('Y-m-d');
+
         DB::beginTransaction();
         try {
             $data['password'] = bcrypt($data['password']);
             $user = $this->userRepository->create($data);
+
             $userRoles = array_column($roles, 'role_id');
             $user->roles()->sync($userRoles);
+
+            if($user) {
+                $currentYear = date('Y');
+                $countContact = DB::table('contacts')->count();
+
+                $hrmContactId = str_pad($countContact + 1, 5, 0, STR_PAD_LEFT);
+
+                $codeHrmContact = "EPL/{$currentYear}/{$hrmContactId}";
+
+                $contacts = [
+                  'contact_code' => $codeHrmContact,
+                    'full_name' => $data['name'] ?? null,
+                    'contact_birthday' =>  $data['birthday'],
+                    'contact_gender' => $data['gender'],
+                    'contact_email' => $data['email'],
+                    'contact_mobile' => $data['phone'],
+                    'department_id' => $data['department_id'],
+                    'user_id' => $user->id,
+                ];
+
+                DB::table('contacts')->insert($contacts);
+            }
+
             DB::commit();
             return $this->successResponse(['message' => trans('Thêm người dùng thành công !'), 'data' =>$user ]);
         }catch (\Throwable $th) {
@@ -163,6 +188,31 @@ class UserController extends Controller
             $user->update($data);
             $userRoles = array_column($roles, 'role_id');
             $user->roles()->sync($userRoles);
+
+            $currentYear = date('Y');
+            $countContact = DB::table('contacts')->count();
+
+            $hrmContactId = str_pad($countContact + 1, 5, 0, STR_PAD_LEFT);
+
+            $codeHrmContact = "EPL/{$currentYear}/{$hrmContactId}";
+
+            $contacts = [
+                'contact_code' => $codeHrmContact,
+                'full_name' => $data['name'] ?? null,
+                'contact_birthday' =>  $data['birthday'],
+                'contact_gender' => $data['gender'],
+                'contact_email' => $data['email'],
+                'contact_mobile' => $data['phone'],
+                'department_id' => $data['department_id'],
+                'user_id' => $user->id,
+            ];
+
+            if(!  DB::table('contacts')->where('user_id', $user->id)->first()) {
+                DB::table('contacts')->where('user_id', $user->id)->insert($contacts);
+            }else {
+                DB::table('contacts')->where('user_id', $user->id)->update($contacts);
+            }
+
             DB::commit();
             return $this->successResponse(['message' => trans('Sửa người dùng thành công !')], 200);
         }catch (\Throwable $th) {
