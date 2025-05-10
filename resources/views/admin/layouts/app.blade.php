@@ -7,15 +7,15 @@
     <title>{{ @$pageName }}</title>
     <meta charset="utf-8" />
     <meta name="description"
-        content="Phần mềm quản lý dự án Newway" />
+        content="Phầm mềm quản lý dự án" />
     <meta name="keywords"
         content="newway, quản lý dự án, phần mềm" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta property="og:locale" content="vi_VN" />
     <meta property="og:type" content="website" />
     <meta property="og:title"
-        content="Phần mềm quản lý dự án Newway" />
-    <meta property="og:site_name" content="Phần mềm quản lý dự án Newway" />
+        content="Phầm mềm quản lý dự án" />
+    <meta property="og:site_name" content="Phầm mềm quản lý dự án" />
     {{-- <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" /> --}}
 
 
@@ -159,12 +159,11 @@
 							</ul> --}}
 							<!--end::Menu-->
                             <div class="text-center d-flex align-items-center me-3 text-muted text-footed">
-                                Bản quyền thuộc về <span class="fs-6 mx-2 fw-semibold">Công ty Cổ phần giải pháp công nghệ Newway</span>
+                                <b>Tác giả: Lê Văn Kiên - MSSV: 2018601171 – Sinh viên thực hiện</b>
                             </div>
                             <div class="text-center d-flex align-items-center text-muted text-footed">
-                                Website: <a href="https://newwaypms.com/" target="_blank" class="text-muted text-hover-primary fw-semibold ms-1 fs-7">https://newwaypms.com/</a>
                             </div>
-                            <div class="text-center d-flex align-items-center text-muted text-footed">Tel: 1900.636116</div>
+                            <div class="text-center d-flex align-items-center text-muted text-footed"></div>
 						</div>
 						<!--end::Container-->
 					</div>

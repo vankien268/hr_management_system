@@ -45,9 +45,9 @@
                         </th>
                         <th class="min-w-150px">Tiêu đề phiếu yêu cầu</th>
                         <th class="min-w-140px">Thời gian</th>
-                        <th class="min-w-200px">Người yêu cầu</th>
+                        <th class="min-w-100px">Người yêu cầu</th>
                         <th class="min-w-100px">Trạng thái</th>
-                        <th class="min-w-100px">Người duyệt	</th>
+                        <th class="min-w-180px">Người duyệt	</th>
                         <th class="min-w-100px">Ngày tạo</th>
                         <th class="min-w-100px text-center" colspan="2">Hành động</th>
                     </tr>
@@ -102,10 +102,7 @@
                         </td>
 
                         <td style="white-space: normal; word-break: break-word;">
-                                <span
-                                    class="text-dark text-hover-primary d-block mb-1 text-content"
-                                ><b>{{ item.user_approvers }}</b></span
-                                >
+                            <b style="padding: 2px;padding-top:100px;">{{ item.user_approvers }}</b>
                         </td>
 
                         <td>

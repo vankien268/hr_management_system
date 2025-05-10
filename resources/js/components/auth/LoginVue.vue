@@ -1,10 +1,10 @@
 <template>
     <div class="wrapper-custom bg-white">
         <div style="margin: auto" class="h4 text-muted text-center pt-2 text-title">
-            PHẦN MỀM QUẢN LÝ DỰ ÁN
+            PHẦN MỀM QUẢN LÝ NHÂN SỰ
         </div>
         <div style="margin: auto" class="h4 text-muted text-center pt-2 text-title">
-            NEWWAY PROJECTS MANAGEMENT
+            HUMAN RESOURCE MANAGEMENT
         </div>
         <form class="pt-3" @submit.prevent="loginAuth()">
             <div class="form-group py-1">
@@ -67,12 +67,10 @@
                 </div>
             </button>
             <div class="text-center pt-3 text-muted text-footed">
-                Bản quyền thuộc về Công ty Cổ phần giải pháp công nghệ Newway
+                <b>Tác giả: Lê Văn Kiên - MSSV: 2018601171 – Sinh viên thực hiện</b>
             </div>
             <div class="text-center pt-3 text-muted text-footed">
-                Website: https://newwaypms.com/
             </div>
-            <div class="text-center pt-3 text-muted text-footed">Tel: 1900.636116</div>
         </form>
     </div>
 </template>

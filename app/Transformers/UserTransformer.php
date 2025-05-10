@@ -60,7 +60,7 @@ class UserTransformer extends TransformerAbstract
             'name' => $entry->name,
             'username' => $entry->username,
             'department_id' => $entry->department_id,
-            'department_name' =>  @$entry->department->name,
+            'department_name' =>  $entry->department ? $entry->department->name : "Chưa có phòng ban",
             'status' => $entry->status,
             'statusName' => $this->transformStatus($entry->status),
             'genderName' => $this->transformGender($entry->gender),

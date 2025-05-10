@@ -27,10 +27,11 @@
                                             height: 180px;
                                         "
                                     />
+<!--                                    formProfile.avatarPathString? '../storage/'+formProfile.avatarPathString :-->
                                     <img
                                         alt=""
                                         class="file-upload-image"
-                                        :src="formProfile.avatarPathString? '../storage/'+formProfile.avatarPathString : imageDefaultForm"
+                                        :src="imageDefaultForm"
                                         :style="errors.avatar ? 'border:1px solid red' :''"
                                         style="
                                             width: 100%;
@@ -169,22 +170,22 @@
                                 }}</div>
                                 </div>
                             </div>
-                            <div class="row mb-3">
-                                <div class="col-sm-3">
-                                    <h6 class="mb-0 ">Skype</h6>
-                                </div>
-                                <div class="col-sm-9 text-secondary">
-                                    <input
-                                        type="text"
-                                        class="form-control"
-                                        v-model="formProfile.skype"
-                                          :class="{'input-custom-valid': errors.skype}"
-                                    />
-                                      <div v-if="errors.skype" class="text-danger pt-2">{{
-                                    errors.skype[0]
-                                }}</div>
-                                </div>
-                            </div>
+<!--                            <div class="row mb-3">-->
+<!--                                <div class="col-sm-3">-->
+<!--                                    <h6 class="mb-0 ">Skype</h6>-->
+<!--                                </div>-->
+<!--                                <div class="col-sm-9 text-secondary">-->
+<!--                                    <input-->
+<!--                                        type="text"-->
+<!--                                        class="form-control"-->
+<!--                                        v-model="formProfile.skype"-->
+<!--                                          :class="{'input-custom-valid': errors.skype}"-->
+<!--                                    />-->
+<!--                                      <div v-if="errors.skype" class="text-danger pt-2">{{-->
+<!--                                    errors.skype[0]-->
+<!--                                }}</div>-->
+<!--                                </div>-->
+<!--                            </div>-->
                             <div class="row justify-content-end">
                                 <div class="w-auto text-secondary">
                                     <input

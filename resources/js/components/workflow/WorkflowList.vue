@@ -512,9 +512,9 @@
 
     const errors = ref([]);
     const createWorkflow = () => {
-        formWorkflow.approver_ids = [];
 
         if(formWorkflow.users.length > 0 && formWorkflow.approver_type === "user") {
+            formWorkflow.approver_ids = [];
             formWorkflow.users.forEach(function (item) {
                 formWorkflow.approver_ids.push(item.id);
             });
@@ -566,8 +566,9 @@
         errors.value = [];
     };
     const updateWorkflow = () => {
-        formWorkflow.approver_ids = [];
+
         if(formWorkflow.users.length > 0 && formWorkflow.approver_type === "user") {
+            formWorkflow.approver_ids = [];
             formWorkflow.users.forEach(function (item) {
                 formWorkflow.approver_ids.push(item.id);
             });

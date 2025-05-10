@@ -3,7 +3,7 @@
 
 <head>
     <title>Chi tiết thông tin báo giá</title>
-    <meta property="og:site_name" content="Phần mềm quản lý dự án Newway" />
+    <meta property="og:site_name" content="Phầm mềm quản lý dự án" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link

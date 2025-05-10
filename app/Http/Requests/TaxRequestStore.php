@@ -24,7 +24,7 @@ class TaxRequestStore extends FormRequest
         return [
             'tax_name' => 'required|string',
             'tax_income_from' => 'numeric',
-            'tax_income_to' => 'numeric',
+            'tax_income_to' => 'numeric|gt:tax_income_from',
             'tax_rate' => 'numeric',
             'tax_reduction' => 'numeric',
         ];
@@ -38,6 +38,7 @@ class TaxRequestStore extends FormRequest
             'tax_income_to.numeric' => 'Số tiền đến phải là số.',
             'tax_rate.numeric' => 'Thuế suất phải là số.',
             'tax_reduction.numeric' => 'Giá trị tính phải là số.',
+            'tax_income_to.gt' => 'Số tiền đến phải lớn hơn số tiền từ.',
         ];
     }
 }

@@ -8,7 +8,7 @@
     <!--begin::Logo-->
     <div class="aside-logo d-none d-lg-flex flex-column align-items-center flex-column-auto py-10" id="kt_aside_logo">
         <a href="/dashboard">
-            <img alt="Logo" src="{{ asset('assets/media/logos/newway.png') }}" class="h-35px" />
+            <img alt="Logo" src="{{ asset('assets/media/logos/hrm2.avif') }}" class="h-60px" />
         </a>
     </div>
 
@@ -182,7 +182,7 @@
                 data-kt-menu-overflow="true" data-kt-menu-placement="top-start" data-bs-toggle="tooltip"
                 data-bs-placement="right" data-bs-dismiss="click"
                 title="{{ Auth::user()->name ?? '' }} ({{ Auth::user()->username ?? '' }})">
-                <img src="{{ auth()->user()->avatar ? '../storage/' . auth()->user()->avatar : asset('/assets/media/avatars/avatar-default.jpg') }}"
+                <img src="{{ asset('/assets/media/avatars/avatar-default.jpg') }}"
                     class="rounded-circle" alt="image" />
             </div>
             <!--begin::User account menu-->
@@ -195,8 +195,9 @@
                         <!--begin::Avatar-->
                         {{-- asset('storage/user_images/avatar-default.png') --}}
                         <div class="symbol symbol-50px me-5">
+{{--                            {{ auth()->user()->avatar ? '../storage/' . auth()->user()->avatar : asset('/assets/media/avatars/avatar-default.jpg') }}--}}
                             <img alt="Logo"
-                                src="{{ auth()->user()->avatar ? '../storage/' . auth()->user()->avatar : asset('/assets/media/avatars/avatar-default.jpg') }}" />
+                                src="{{ asset('/assets/media/avatars/avatar-default.jpg') }}" />
                         </div>
                         <!--end::Avatar-->
                         <!--begin::Username-->
