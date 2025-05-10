@@ -19,7 +19,7 @@ final class SystemPermissionEnum extends Enum
 
     const DECLARE_ROLE = 3; /* Khai báo nhóm quyền */
 
-    const VIEW_LIST_DECLARE_ROLE = 4; /* Xem danh sách nhóm quyền */
+    const VIEW_DECLARE_ROLE = 116; /* Xem danh sách nhóm quyền */
 
     const ADD_DECLARE_ROLE = 5; /* Thêm nhóm quyền */
 
@@ -39,25 +39,25 @@ final class SystemPermissionEnum extends Enum
 
     const CHANGE_PASSWORD_USER = 13; /* Đổi mật khẩu */
 
-    const PROJECT_TYPE = 14; /* Khai báo phân loại dự án */
+    const REQUEST_TICKETS = 14; /*Quản lý phiếu yêu cầu */
 
-    const VIEW_PROJECT_TYPE = 15; /* Xem phân loại dự án */
+    const VIEW_REQUEST_TICKET = 15; /* Xem phiếu yêu cầu*/
 
-    const ADD_PROJECT_TYPE = 16; /* Thêm mới phân loại dự án */
+    const ADD_REQUEST_TICKET = 16; /* Thêm mới phiếu yêu cầu */
 
-    const EDIT_PROJECT_TYPE = 17; /* Sửa phân loại dự án */
+    const EDIT_REQUEST_TICKET = 17; /* Sửa phiếu yêu cầu*/
 
-    const DELETE_PROJECT_TYPE = 18; /* Xóa phân loại dự án */
+    const DELETE_REQUEST_TICKET = 18; /* Xóa phiếu yêu cầu */
 
-    const SYSTEM_STATUS = 19; /* Khai báo trạng thái */
+    const WORKFLOWS = 19; /* 'Khai báo quy trình duyệt' */
 
-    const VIEW_SYSTEM_STATUS = 20; /* Xem danh sách trạng thái */
+    const VIEW_WORKFLOW = 20; /* Xem danh sách quy trình duyệt */
 
-    const ADD_SYSTEM_STATUS = 21; /* Thêm mới trạng thái */
+    const ADD_WORKFLOW = 21; /* Thêm mới  quy trình duyệt */
 
-    const EDIT_SYSTEM_STATUS = 22; /* Sửa trạng thái */
+    const EDIT_WORKFLOW = 22; /* Sửa  quy trình duyệt*/
 
-    const DELETE_SYSTEM_STATUS = 23; /* Xóa trạng thái */
+    const DELETE_WORKFLOW = 23; /* Xóa  quy trình duyệt */
 
     const PROJECTS = 24; /* Thông tin dự án */
 
@@ -123,43 +123,43 @@ final class SystemPermissionEnum extends Enum
 
     const DELETE_BANK = 55; /* Xóa ngân hàng */
 
-    const PRODUCT_GROUP = 56; /* Khai báo nhóm sản phẩm, dịch vụ */
+    const ALLOWANCES = 56; /* Khai báo nhóm sản phẩm, dịch vụ */
 
-    const ADD_PRODUCT_GROUP = 57; /* Thêm mới nhóm sản phẩm, dịch vụ */
+    const ADD_ALLOWANCE = 57; /* Thêm mới nhóm sản phẩm, dịch vụ */
 
-    const EDIT_PRODUCT_GROUP = 58; /* Sửa nhóm sản phẩm, dịch vụ */
+    const EDIT_ALLOWANCE = 58; /* Sửa nhóm sản phẩm, dịch vụ */
 
-    const DELETE_PRODUCT_GROUP = 59; /* Xóa nhóm sản phẩm, dịch vụ */
+    const DELETE_ALLOWANCE = 59; /* Xóa nhóm sản phẩm, dịch vụ */
 
-    const PRODUCT = 60; /* Khai báo sản phẩm, dịch vụ */
+    const TAXES = 60; /* Khai báo sản phẩm, dịch vụ */
 
-    const ADD_PRODUCT = 61; /* Thêm mới sản phẩm, dịch vụ */
+    const ADD_TAXES = 61; /* Thêm mới sản phẩm, dịch vụ */
 
-    const EDIT_PRODUCT = 62; /* Sửa sản phẩm, dịch vụ */
+    const EDIT_TAXES = 62; /* Sửa sản phẩm, dịch vụ */
 
-    const DELETE_PRODUCT = 63; /* Xóa sản phẩm, dịch vụ */
+    const DELETE_TAXES = 63; /* Xóa sản phẩm, dịch vụ */
 
-    const UNIT = 64; /* Khai báo đơn vị tính */
+    const INTERNAL_FUND = 64; /* Khai báo đơn vị tính */
 
     const ADD_UNIT = 65; /* Thêm mới đơn vị tính */
 
-    const EDIT_UNIT = 66; /* Sửa đơn vị tính */
+    const EDIT_INTERNAL_FUND = 66; /* Sửa đơn vị tính */
 
     const DELETE_UNIT = 67; /* Xóa đơn vị tính */
 
-    const TAX_FEE_RATE = 68; /* Khai báo tỉ lệ thuế phí */
+    const USER_LEAVE_DAYS = 68; /* Khai báo tỉ lệ thuế phí */
 
     const ADD_TAX_FEE_RATE = 69; /* Thêm mới tỉ lệ thuế phí */
 
-    const EDIT_TAX_FEE_RATE = 70; /* Sửa tỉ lệ thuế phí */
+    const EDIT_USER_LEAVE_DAYS = 70; /* Sửa tỉ lệ thuế phí */
 
     const DELETE_TAX_FEE_RATE = 71; /* Xóa tỉ lệ thuế phí */
 
-    const PROJECT = 72; /* Dự án */
+    const HRM_CONTACTS = 72; /* QUẢN LÝ NHÂN SỰ */
 
-    const VIEW_LIST_PROJECT = 73; /* Xem danh sách dự án */
+    const VIEW_HRM_CONTACT = 73; /*Xem danh sách nhân sự*/
 
-    const ADD_PROJECT = 74; /* Thêm dự án */
+    const ADD_HRM_CONTACT = 74; /* Thêm danh sách nhân sự */
 
     const DEPLOYMENT_SCHEDULE = 75; /* Quản lý lịch triển khai */
 
@@ -217,7 +217,7 @@ final class SystemPermissionEnum extends Enum
 
     const CONTRACT = 102; /* Hợp đồng */
 
-    const VIEW_LIST_CONTRACT = 103; /* Xem danh sách hợp đồng */
+    const VIEW_HRM_CONTRACT = 103; /* Xem danh sách hợp đồng */
 
     const SYSTEM_ADMIN = 104; /* Admin */
 
@@ -235,15 +235,15 @@ final class SystemPermissionEnum extends Enum
 
     const VIEW_BANK = 111; /* Xem ngân hàng */
 
-    const VIEW_PRODUCT_GROUP = 112; /* Xem nhóm sản phẩm, dịch vụ */
+    const VIEW_ALLOWANCE = 112; /* Xem nhóm sản phẩm, dịch vụ */
 
-    const VIEW_PRODUCT = 113; /* Xem sản phẩm, dịch vụ */
+    const VIEW_TAXES = 113; /* Xem sản phẩm, dịch vụ */
 
-    const VIEW_UNIT = 114; /* Xem đơn vị tính */
+    const VIEW_INTERNAL_FUND = 114; /* Xem đơn vị tính */
 
-    const VIEW_TAX_FEE_RATE = 115; /* Xem tỉ lệ thuế phí */
+    const VIEW_USER_LEAVE_DAYS = 115; /* Xem tỉ lệ thuế phí */
 
-    const VIEW_DECLARE_ROLE = 116; /* Xem nhóm quyền */
+    const VIEW_LIST_DECLARE_ROLE = 116; /* Xem nhóm quyền */
 
     const VIEW_USER = 117; /* Xem người dùng */
 
@@ -265,15 +265,15 @@ final class SystemPermissionEnum extends Enum
 
     const VIEW_DEPLOYMENT_REPORT = 126; /* Xem báo cáo tiến độ triển khai */
 
-    const SYSTEM_EDIT_PROJECT = 127; /* Sửa dự án */
+    const EDIT_HRM_CONTACT = 127; /* Sửa nhân sự */
 
-    const SYSTEM_DELETE_PROJECT = 128; /* Xóa dự án */
+    const DELETE_HRM_CONTACT = 128; /* Xóa nhân sự */
 
-    const SYSTEM_ADD_CONTRACT = 129; /* Thêm mới hợp đồng */
+    const ADD_HRM_CONTRACT = 129; /* Thêm mới hợp đồng */
 
-    const SYSTEM_EDIT_CONTRACT = 130; /* Sửa hợp đồng */
+    const EDIT_HRM_CONTRACT = 130; /* Sửa hợp đồng */
 
-    const SYSTEM_DELETE_CONTRACT = 131; /* Xóa hợp đồng */
+    const DELETE_HRM_CONTRACT = 131; /* Xóa hợp đồng */
 
     const SYSTEM_DECENTRALIZATION_PROJECT = 132; /* Phân quyền dự án */
 

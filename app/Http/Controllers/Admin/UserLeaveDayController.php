@@ -4,6 +4,7 @@
 namespace App\Http\Controllers\Admin;
 
 
+use App\Enums\SystemPermissionEnum;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\InternalFundUpdateRequest;
 use App\Http\Requests\UserLeaveDayStoreRequest;
@@ -11,6 +12,7 @@ use App\Models\InitValue;
 use App\Repositories\Interfaces\IInitValueRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use function App\Helper\check_user_permission;
 
 class UserLeaveDayController extends Controller
 {
@@ -50,6 +52,11 @@ class UserLeaveDayController extends Controller
 
     public function update(UserLeaveDayStoreRequest $request)
     {
+
+        if(! check_user_permission(SystemPermissionEnum::EDIT_USER_LEAVE_DAYS)) {
+            return $this->errorsResponse(['message' => trans('Bạn không có quyền sửa cấu hình nghỉ phép.')], 403);
+        }
+
         $data = $request->all();
         DB::beginTransaction();
         try {

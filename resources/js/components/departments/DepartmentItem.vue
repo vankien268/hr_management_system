@@ -32,7 +32,7 @@
             </a>
         </td>
         <td class="w-50px">
-            <a href="#" v-if="departmentItem.is_delete_permission" :class="{ 'disable': !departmentItem.isDelete }"  @click.prevent="handleDelete(departmentItem.id)" class="btn btn-icon btn-delete btn-sm me-1">
+            <a href="#" v-if="departmentItem.is_delete_permission"  @click.prevent="handleDelete(departmentItem.id)" class="btn btn-icon btn-delete btn-sm me-1">
                 <i class="fa-solid fa-trash fs-5">
                     <span class="path1"></span>
                     <span class="path2"></span>
@@ -80,8 +80,8 @@ const handleDelete = (id) => {
                     emit('deleteDepartment')
             }).catch((error) => {
                 const message = error.response.data.errors.message
-                if(message) {
-                    sweetAlertMessage.errorAlert(message);
+                if(error.response?.data?.code == 403) {
+                    useToast.errorToast(error.response.data?.errors?.message);
                 }
             }).finally(()=> {
                 KTApp.hidePageLoading();

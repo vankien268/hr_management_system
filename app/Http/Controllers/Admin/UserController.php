@@ -84,6 +84,10 @@ class UserController extends Controller
 
     public function store(UserStoreRequest $request)
     {
+        if(! check_user_permission(SystemPermissionEnum::ADD_USER)) {
+            return $this->errorsResponse(['message' => trans('Bạn không có quyền thêm người dùng.')], 403);
+        }
+
         $data = $request->all();
         $roles = $data['roles'];
         $roleErrors = $this->getErrorsRoleDuplicate($roles);
@@ -148,6 +152,10 @@ class UserController extends Controller
 
     public function update(UserUpdateRequest $request, $id)
     {
+        if(! check_user_permission(SystemPermissionEnum::EDIT_USER)) {
+            return $this->errorsResponse(['message' => trans('Bạn không có quyền sửa người dùng.')], 403);
+        }
+
         $data = $request->only(['name', 'password', 'gender', 'email', 'phone',
             'status', 'birthday', 'department_id', 'skype', 'roles']);
         $data['id'] = $id;
@@ -224,6 +232,9 @@ class UserController extends Controller
 
     public function changePassword($id,Request $request)
     {
+        if(! check_user_permission(SystemPermissionEnum::CHANGE_PASSWORD_USER)) {
+            return $this->errorsResponse(['message' => trans('Bạn không có quyền đổi mật khẩu người dùng.')], 403);
+        }
         $data = $request->all();
         $data['id'] = $id;
         $data['password'] = trim($request->get('password'));
@@ -257,6 +268,10 @@ class UserController extends Controller
 
     public function destroy($id)
     {
+        if(! check_user_permission(SystemPermissionEnum::DELETE_USER)) {
+            return $this->errorsResponse(['message' => trans('Bạn không có quyền xóa người dùng.')], 403);
+        }
+
         $data['id'] = $id;
         $validate = Validator::make($data,
             [
@@ -276,13 +291,11 @@ class UserController extends Controller
         try {
 
             $user = $this->userRepository->findWithRelationships($data['id'], ['roles','userHasProjectPermisison']);
-            if((new User())->resultUserHasRelated($user)) {
                 $user->projectFunctionUsers()->detach();
                 $user->roles()->detach();
                $user->delete();
                 DB::commit();
                 return $this->successResponse(['message' => trans('Xóa người dùng thành công !')]);
-            }
                 return $this->errorsResponse(["message" => trans("Không thể xóa người dùng vì đã phát sinh dữ liệu liên quan.")], 422);
         }catch (\Throwable $throwable) {
             DB::rollBack();

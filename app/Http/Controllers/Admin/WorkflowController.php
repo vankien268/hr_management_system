@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Enums\SystemPermissionEnum;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\RequestTicketStoreRequest;
 use App\Http\Requests\RequestTicketUpdateRequest;
@@ -14,6 +15,7 @@ use App\Transformers\RequestTicketTransformer;
 use App\Transformers\workflowTransformer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use function App\Helper\check_user_permission;
 
 class WorkflowController extends Controller
 {
@@ -31,13 +33,13 @@ class WorkflowController extends Controller
     public function index()
     {
         $breadcrums = [
-            'text' => trans('Khai báo quy trình duyệt phiếu')
+            'text' => trans('Quản lý quy trình duyệt phiếu')
         ];
-//        $btnAdd = check_user_permission(SystemPermissionEnum::ADD_PRODUCT);
+        $btnAdd = check_user_permission(SystemPermissionEnum::ADD_WORKFLOW);
         $data = [
             'breadcrums' => $breadcrums,
-            'pageName' => trans('Khai báo quy trình duyệt phiếu'),
-            'btnAdd' => true,
+            'pageName' => trans('Quản lý quy trình duyệt phiếu'),
+            'btnAdd' => $btnAdd,
         ];
         return view('admin.workflow.index')->with($data);
     }

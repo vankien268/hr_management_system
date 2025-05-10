@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Enums\SystemPermissionEnum;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ApproveRequestTicketRequest;
 use App\Http\Requests\RequestTicketStoreRequest;
@@ -10,6 +11,7 @@ use App\Repositories\Interfaces\IRequestTicketRepository;
 use App\Transformers\RequestTicketTransformer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use function App\Helper\check_user_permission;
 
 class RequestTicketController extends Controller
 {
@@ -29,11 +31,11 @@ class RequestTicketController extends Controller
         $breadcrums = [
             'text' => trans('Quản lý phiếu yêu cầu')
         ];
-//        $btnAdd = check_user_permission(SystemPermissionEnum::ADD_PRODUCT);
+        $btnAdd = check_user_permission(SystemPermissionEnum::ADD_REQUEST_TICKET);
         $data = [
             'breadcrums' => $breadcrums,
             'pageName' => trans('Quản lý phiếu yêu cầu'),
-            'btnAdd' => true,
+            'btnAdd' => $btnAdd,
         ];
         return view('admin.request-tickets.index')->with($data);
     }

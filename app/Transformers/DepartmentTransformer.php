@@ -40,7 +40,8 @@ class DepartmentTransformer extends TransformerAbstract
             'code' => $entry->code,
             'status' => $entry->status ? "Sử dụng" : "Ngừng sử dụng",
             'note' => $entry->note,
-            'is_edit' => $entry->created_by == auth()->user()->id || check_user_permission(SystemPermissionEnum::EDIT_DEPARTMENT),
+            'is_edit' => check_user_permission(SystemPermissionEnum::EDIT_DEPARTMENT),
+            'is_delete' => check_user_permission(SystemPermissionEnum::DELETE_DEPARTMENT),
         ];
         return $data;
     }

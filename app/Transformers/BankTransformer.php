@@ -44,16 +44,16 @@ class BankTransformer extends TransformerAbstract
             'name' => $entry->name,
             'status' => $entry->status,
             'note' => $entry->note,
-            'isEdit' => $entry->created_by == auth()->user()->id || check_user_permission(SystemPermissionEnum::EDIT_BANK),
-            'isDelete' => $entry->created_by == auth()->user()->id || check_user_permission(SystemPermissionEnum::DELETE_BANK)
+            'isEdit' => check_user_permission(SystemPermissionEnum::EDIT_BANK),
+            'isDelete' => check_user_permission(SystemPermissionEnum::DELETE_BANK)
         ];
-        $data['isDelete'] = true;
-        if ($this->isDelete) {
-            $data['isDelete'] = $entry->created_by == auth()->user()->id || check_user_permission(SystemPermissionEnum::DELETE_BANK);
-            if ($entry->customer) {
-                $data['isDelete'] = false;
-            }
-        }
+//        $data['isDelete'] = true;
+//        if ($this->isDelete) {
+//            $data['isDelete'] = $entry->created_by == auth()->user()->id || check_user_permission(SystemPermissionEnum::DELETE_BANK);
+//            if ($entry->customer) {
+//                $data['isDelete'] = false;
+//            }
+//        }
         return $data;
     }
 }

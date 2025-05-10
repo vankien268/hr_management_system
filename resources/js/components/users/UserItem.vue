@@ -51,7 +51,7 @@
                 </i>
             </a>
         </td>
-        <td class="w-50px" :title="userItemNew.is_delete_permission && userItemNew.isDelete == false?'Người dùng này đã phát sinh dữ liệu không thể xóa.':''">
+        <td class="w-50px" >
             <a href="#" @click="handleDeleteUser(userItemNew.id)" class="btn btn-icon btn-delete btn-sm me-1" v-if="userItemNew.is_delete_permission"
             :class="{'disable' : userItemNew.isDelete == false}">
                 <i class="fa-solid fa-trash fs-5">
@@ -115,8 +115,8 @@ const handleDeleteUser =(userId) => {
                 emit('handleDeleteUser');
             }).catch((error) => {
                 errors.value = error.response.data.errors;
-                if(error.response?.data?.errors?.message) {
-                    useToast.errorToast(error.response?.data?.errors?.message)
+                if(error.response?.data?.code == 403) {
+                    useToast.errorToast(error.response.data?.errors?.message);
                 }
             }).finally(() => {
                 KTApp.hidePageLoading();

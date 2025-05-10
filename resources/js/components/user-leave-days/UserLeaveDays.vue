@@ -18,7 +18,8 @@
                             type="text"
                             class="form-control"
                             id="value"
-                            v-model="formUserLeaveDays.number_of_monthly_leave_days"
+                            :value="formatNumber(formUserLeaveDays.number_of_monthly_leave_days)"
+                            @input="onInputMoney($event, 'number_of_monthly_leave_days')"
                             :class="{
                                     'input-custom-valid': errors.number_of_monthly_leave_days,
                                 }"
@@ -90,6 +91,9 @@
             })
             .catch((error) => {
                 errors.value = error.response?.data?.errors;
+                if(error.response?.data?.code == 403) {
+                    useToast.errorToast(error.response.data?.errors?.message);
+                }
             }).finally(()=>{
             KTApp.hidePageLoading();
         });
@@ -98,6 +102,32 @@
     function changeInternalFundType() {
         formUserLeaveDays.number_of_monthly_leave_days = 0;
     }
+
+    const formatNumber = (number = 0) => {
+        return Number(number).toLocaleString('vi-VN');
+    };
+
+    const onInputMoney = (e, fieldName) => {
+        const raw = e.target.value;
+
+        // Loại bỏ mọi ký tự không phải số
+        const cleaned = raw.replace(/[^\d]/g, '');
+
+        // Nếu không có số nào, set về 0 (hoặc '', tuỳ bạn)
+        let unformatted = cleaned ? parseInt(cleaned) : 0;
+
+        // Nếu là percent thì không cho vượt quá 100
+        if (unformatted > 30) {
+            unformatted = 30;
+        }
+
+        formUserLeaveDays[fieldName] = unformatted;
+
+        // Hiển thị lại với format dấu chấm
+        e.target.value = formatNumber(unformatted);
+    };
+
+
 </script>
 
 <style scoped>

@@ -54,6 +54,10 @@ class BankController extends Controller
 
     public function store(BankStoreRequest $request)
     {
+        if(! check_user_permission(SystemPermissionEnum::ADD_BANK)) {
+            return $this->errorsResponse(['message' => trans('Bạn không có quyền thêm ngân hàng.')], 403);
+        }
+
         $data = $request->all();
         try {
             $bank = $this->bankRepository->create($data);
@@ -65,6 +69,10 @@ class BankController extends Controller
 
     public function update(BankUpdateRequest $request, $id)
     {
+        if(! check_user_permission(SystemPermissionEnum::EDIT_BANK)) {
+            return $this->errorsResponse(['message' => trans('Bạn không có quyền sửa ngân hàng.')], 403);
+        }
+
         $data = $request->except('code');
         $entry = $this->bankRepository->find($id);
         if (!$entry) {
@@ -80,6 +88,10 @@ class BankController extends Controller
 
     public function destroy(Request $request, $id)
     {
+        if(! check_user_permission(SystemPermissionEnum::DELETE_BANK)) {
+            return $this->errorsResponse(['message' => trans('Bạn không có quyền xóa ngân hàng.')], 403);
+        }
+
         $entry = $this->bankRepository->find($id);
         if(!$entry){
             return $this->errorsResponse(["id" => trans("Không tồn tại ngân hàng !")], 404);

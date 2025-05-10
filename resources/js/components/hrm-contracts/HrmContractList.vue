@@ -507,8 +507,12 @@
                                 </div>
                                 <div class="col-lg-9">
                                     <input   placeholder="Lương cơ bản"
+
+                                             :value="formatNumber(dataUpdate.basic_salary)"
+                                             @input="onInputMoney($event, 'basic_salary')"
+
                                         :class="{'input-custom-valid': errors.basic_salary}"
-                                        :disabled="detailView" type="text" v-model="dataUpdate.basic_salary"
+                                        :disabled="detailView" type="text"
                                             class="form-control mb-lg-0 p-2"
                                     />
                                     <base-validation :message="errors?.basic_salary" />
@@ -519,14 +523,23 @@
                                 <div class="col-lg-3">
                                     <label for="taxCode" class=" col-form-label">Phụ cấp
                                     </label>
-                                    <base-validation />
                                 </div>
-                                <div class="col-lg-9">
-                                    <input  :disabled="detailView" type="text" v-model="dataUpdate.allowances"
-                                            class="form-control mb-lg-0 p-2"
-                                    />
+                                <div class="col-lg-9 flex-wrap" style="display: flex; padding:3px;">
+                                    <div  class="form-check  " v-for="(allowance, index2) in allowancesList" :key="index2">
+                                       <input :disabled="detailView"
+                                               type="checkbox"
+                                               class="form-check-input"
+                                               :id="'allowance-' + allowance.id"
+                                               :value="allowance.id"
+                                               v-model="dataUpdate.allowances"
+                                        />
+                                        <label class="form-check-label" :for="'allowance-' + allowance.id">
+                                          {{ allowance.allowance_name }}
+                                        </label> &ensp;  &ensp;
+                                    </div>
                                     <base-validation :message="errors?.allowances" />
                                 </div>
+
                             </div>
 
                             <div class="row g-3 align-items-center col-lg-12"  style="margin-top: 1px;">
@@ -686,7 +699,7 @@
         basic_salary: null,
         effective_date: null,
         expiration_date: null,
-        allowances: null,
+        allowances: [],
         note: null,
     });
 
@@ -931,13 +944,6 @@
         dataUpdate.value = {};
     };
 
-    onBeforeMount(() => {
-        getData();
-        getBanks();
-        getContractTypes();
-        getUsers();
-    });
-
     const filteredUsers = ref([]);
 
     const clickSignerUserDepartment = ref(false);
@@ -977,6 +983,48 @@
         filteredContacts.value = users.value.filter(user => user.department_id === departmentId);
     };
 
+    const formatNumber = (number = 0) => {
+        return Number(number).toLocaleString('vi-VN');
+    };
+
+    const onInputMoney = (e, fieldName) => {
+        const raw = e.target.value;
+
+        // Loại bỏ mọi ký tự không phải số
+        const cleaned = raw.replace(/[^\d]/g, '');
+
+        // Nếu không có số nào, set về 0 (hoặc '', tuỳ bạn)
+        let unformatted = cleaned ? parseInt(cleaned) : 0;
+
+        dataUpdate.value[fieldName] = unformatted;
+
+        // Hiển thị lại với format dấu chấm
+        e.target.value = formatNumber(unformatted);
+    };
+
+    const allowancesList = ref([]);
+    const selectedAllowances = ref([]);
+
+    const getAllowances = () => {
+        axios.get('/allowances/get-all')
+            .then((res) => {
+                const { data, meta } = res.data;
+                allowancesList.value = data;
+            })
+            .catch((error) => {
+                console.log(error);
+            }).finally(()=>{
+            KTApp.hidePageLoading();
+        });
+    };
+
+    onBeforeMount(() => {
+        getData();
+        getBanks();
+        getContractTypes();
+        getUsers();
+        getAllowances();
+    });
 
 </script>
 <style lang="scss" scoped>

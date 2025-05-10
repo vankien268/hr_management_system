@@ -2,9 +2,12 @@
 
 namespace App\Transformers;
 
+use App\Enums\SystemPermissionEnum;
 use App\Models\RequestTicket;
 use Illuminate\Support\Facades\DB;
 use League\Fractal\TransformerAbstract;
+use function App\Helper\check_user_permission;
+use function App\Helper\check_sub_menu_permission;
 
 class RequestTicketTransformer extends TransformerAbstract
 {
@@ -87,7 +90,8 @@ class RequestTicketTransformer extends TransformerAbstract
             'approve_name' => null,
             'user_approvers' => implode(", ", ($userApprovers)),
             'created_at' => $entry->created_at->format('d/m/Y'),
-//            'is_edit' => $entry->created_by == auth()->user()->id || check_user_permission(SystemPermissionEnum::EDIT_DEPARTMENT),
+            'is_edit' => check_user_permission(SystemPermissionEnum::EDIT_REQUEST_TICKET),
+            'is_deleted' => check_user_permission(SystemPermissionEnum::DELETE_REQUEST_TICKET),
         ];
         return $data;
     }

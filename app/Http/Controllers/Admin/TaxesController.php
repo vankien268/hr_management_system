@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Enums\SystemPermissionEnum;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\AllowanceStoreRequest;
 use App\Http\Requests\AllowanceUpdateRequest;
@@ -14,6 +15,7 @@ use App\Transformers\AllowanceTransformer;
 use App\Transformers\SettingTransformer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use function App\Helper\check_user_permission;
 
 class TaxesController extends Controller
 {
@@ -28,13 +30,13 @@ class TaxesController extends Controller
     public function index()
     {
         $breadcrums = [
-            'text' => trans('Khai báo thuế')
+            'text' => trans('Khai báo thuế thu nhập cá nhân')
         ];
-//        $btnAdd = check_user_permission(SystemPermissionEnum::ADD_PRODUCT);
+        $btnAdd = check_user_permission(SystemPermissionEnum::ADD_TAXES);
         $data = [
             'breadcrums' => $breadcrums,
-            'pageName' => trans('Khai báo thuế'),
-            'btnAdd' => true,
+            'pageName' => trans('Khai báo thuế thu nhập cá nhân'),
+            'btnAdd' => $btnAdd,
         ];
         return view('admin.taxes.index')->with($data);
     }
@@ -56,6 +58,11 @@ class TaxesController extends Controller
 
     public function store(TaxRequestStore $request)
     {
+
+        if(! check_user_permission(SystemPermissionEnum::ADD_TAXES)) {
+            return $this->errorsResponse(['message' => trans('Bạn không có quyền thêm thuế thu nhập cá nhân.')], 403);
+        }
+
         $data = $request->only(['tax_name', 'tax_income_from', 'tax_income_to', 'tax_rate', 'tax_reduction']);
 
         DB::beginTransaction();
@@ -75,6 +82,10 @@ class TaxesController extends Controller
 
     public function update($id, TaxRequestUpdate $request)
     {
+        if(! check_user_permission(SystemPermissionEnum::EDIT_TAXES)) {
+            return $this->errorsResponse(['message' => trans('Bạn không có quyền sửa thuế thu nhập cá nhân.')], 403);
+        }
+
         $tax = $this->settingRepository->find($id);
 
         if (! $tax) {
@@ -96,6 +107,10 @@ class TaxesController extends Controller
 
     public function destroy($id)
     {
+        if(! check_user_permission(SystemPermissionEnum::DELETE_TAXES)) {
+            return $this->errorsResponse(['message' => trans('Bạn không có quyền xóa thuế thu nhập cá nhân.')], 403);
+        }
+
         $tax = $this->settingRepository->find($id);
 
         if (! $tax) {

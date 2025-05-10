@@ -15,18 +15,19 @@ if (!function_exists('check_user_permission')) {
             return false;
         }
         $permissions = request('list_permissions') ?? [];
+
         // dd($permissions);
         if (in_array(SystemPermissionEnum::SYSTEM_ADMIN, $permissions)) {
             return true;
         }
-        if ($projectId) {
-            $projectFunctionUser = request('project_functions') ?? collect();
-            $checkUser = $projectFunctionUser->where('user_id', $user->id)->where('project_id', $projectId)->where('system_function_id', $permissionId)->first();
-            if ($checkUser) {
-                return true;
-            }
-            return false;
-        }
+//        if ($projectId) {
+//            $projectFunctionUser = request('project_functions') ?? collect();
+//            $checkUser = $projectFunctionUser->where('user_id', $user->id)->where('project_id', $projectId)->where('system_function_id', $permissionId)->first();
+//            if ($checkUser) {
+//                return true;
+//            }
+//            return false;
+//        }
 
         return in_array(SystemPermissionEnum::SYSTEM_ADMIN, $permissions) || in_array($permissionId, $permissions);
     }
@@ -54,48 +55,56 @@ if (!function_exists('check_sub_menu_permission')) {
     {
 
         $permission = collect(MenuPermissionEnum::MenuPer);
+
         $checkHasPermission = $permission->where('route_name', 'like', $routeName)->first();
-        if (!$checkHasPermission) {
-            return true;
-        }
+
+//        if (!$checkHasPermission) {
+//            return true;
+//        }
         $user = auth()->user();
         if (!$user) {
             return false;
         }
         // dd($checkHasPermission);
-        if (in_array($checkHasPermission['id'], [SystemPermissionEnum::VIEW_MENU_PROJECT, SystemPermissionEnum::VIEW_MENU_CONTRACT, SystemPermissionEnum::VIEW_PRICE_QUOTE])) {
-            $projectFunctionUser = request('project_functions') ?? collect();
-
-            if ($checkHasPermission['id'] == SystemPermissionEnum::VIEW_MENU_PROJECT) {
-                $projectRole = SystemPermissionEnum::VIEW_PROJECT;
-                $checkUser = $projectFunctionUser->where('user_id', $user->id)->where('system_function_id', $projectRole)->first();
-                // dd($projectRole);
-                if ($checkUser) {
-                    return true;
-                }
-            }
-            if ($checkHasPermission['id'] == SystemPermissionEnum::VIEW_MENU_CONTRACT) {
-                $projectRole = SystemPermissionEnum::VIEW_CONTRACT;
-                $checkUser = $projectFunctionUser->where('user_id', $user->id)->where('system_function_id', $projectRole)->first();
-                // dd($projectRole);
-                if ($checkUser) {
-                    return true;
-                }
-            }
-            if ($checkHasPermission['id'] == SystemPermissionEnum::VIEW_PRICE_QUOTE) {
-                $projectRole = SystemPermissionEnum::VIEW_PRICE_QUOTES;
-                // dd()
-                $checkUser = $projectFunctionUser->where('user_id', $user->id)->where('system_function_id', $projectRole)->first();
-                // dd($checkUser);
-                if ($checkUser) {
-                    return true;
-                }
-            }
-        }
-        $check = check_user_permission($checkHasPermission['id']);
-        if ($check) {
+//        if (in_array($checkHasPermission['id'], [SystemPermissionEnum::VIEW_MENU_PROJECT, SystemPermissionEnum::VIEW_MENU_CONTRACT, SystemPermissionEnum::VIEW_PRICE_QUOTE])) {
+//            $projectFunctionUser = request('project_functions') ?? collect();
+//
+//            if ($checkHasPermission['id'] == SystemPermissionEnum::VIEW_MENU_PROJECT) {
+//                $projectRole = SystemPermissionEnum::VIEW_PROJECT;
+//                $checkUser = $projectFunctionUser->where('user_id', $user->id)->where('system_function_id', $projectRole)->first();
+//                // dd($projectRole);
+//                if ($checkUser) {
+//                    return true;
+//                }
+//            }
+//            if ($checkHasPermission['id'] == SystemPermissionEnum::VIEW_MENU_CONTRACT) {
+//                $projectRole = SystemPermissionEnum::VIEW_CONTRACT;
+//                $checkUser = $projectFunctionUser->where('user_id', $user->id)->where('system_function_id', $projectRole)->first();
+//                // dd($projectRole);
+//                if ($checkUser) {
+//                    return true;
+//                }
+//            }
+//            if ($checkHasPermission['id'] == SystemPermissionEnum::VIEW_PRICE_QUOTE) {
+//                $projectRole = SystemPermissionEnum::VIEW_PRICE_QUOTES;
+//                // dd()
+//                $checkUser = $projectFunctionUser->where('user_id', $user->id)->where('system_function_id', $projectRole)->first();
+//                // dd($checkUser);
+//                if ($checkUser) {
+//                    return true;
+//                }
+//            }
+//        }
+        if(isset($checkHasPermission['id'])) {
+            $check = check_user_permission($checkHasPermission['id']);
+        }else {
             return true;
         }
+
+        if (isset($check) && $check) {
+            return true;
+        }
+
         return false;
     }
 }

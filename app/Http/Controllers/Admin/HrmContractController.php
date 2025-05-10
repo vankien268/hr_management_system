@@ -87,6 +87,8 @@ class HrmContractController extends Controller
     public function store(HrmContractStoreRequest $request)
     {
         $data = $request->all();
+        $data['allowances'] = isset($data['allowances']) && is_array($data['allowances']) ? implode(',', $data['allowances']) : null;
+
         DB::beginTransaction();
         try {
             $this->contractRepository->create($data);
@@ -108,6 +110,9 @@ class HrmContractController extends Controller
         }
 
         $data = $request->all();
+
+        $data['allowances'] = isset($data['allowances']) && is_array($data['allowances']) ? implode(',', $data['allowances']) : null;
+
         unset($data['id']);
         DB::beginTransaction();
         try {

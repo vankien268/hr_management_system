@@ -25,7 +25,8 @@
                             type="text"
                             class="form-control"
                             id="value"
-                            v-model="formInternalFund.internal_fund"
+                            :value="formatNumber(formInternalFund.internal_fund)"
+                            @input="onInputMoney($event, 'internal_fund')"
                         />
                         <span class="input-group-text" v-if="formInternalFund.internal_fund_type === 'percent'">%</span>
                         <span class="input-group-text" v-else>VNĐ</span>
@@ -98,6 +99,9 @@
             })
             .catch((error) => {
                 errors.value = error.response?.data?.errors;
+                if(error.response?.data?.code == 403) {
+                    useToast.errorToast(error.response.data?.errors?.message);
+                }
             }).finally(()=>{
             KTApp.hidePageLoading();
         });
@@ -106,6 +110,31 @@
     function changeInternalFundType() {
         formInternalFund.internal_fund = 0;
     }
+
+    const formatNumber = (number = 0) => {
+        return Number(number).toLocaleString('vi-VN');
+    };
+
+    const onInputMoney = (e, fieldName) => {
+        const raw = e.target.value;
+
+        // Loại bỏ mọi ký tự không phải số
+        const cleaned = raw.replace(/[^\d]/g, '');
+
+        // Nếu không có số nào, set về 0 (hoặc '', tuỳ bạn)
+        let unformatted = cleaned ? parseInt(cleaned) : 0;
+
+        // Nếu là percent thì không cho vượt quá 100
+        if (formInternalFund.internal_fund_type === 'percent' && unformatted > 100) {
+            unformatted = 100;
+        }
+
+        formInternalFund[fieldName] = unformatted;
+
+        // Hiển thị lại với format dấu chấm
+        e.target.value = formatNumber(unformatted);
+    };
+
 </script>
 
 <style scoped>

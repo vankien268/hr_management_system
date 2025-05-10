@@ -135,6 +135,9 @@ const updateDepartment =() => {
             emit('updateDepartment')
         }).catch((error) => {
          errors.value = error.response.data.errors;
+        if(error.response?.data?.code == 403) {
+            useToast.errorToast(error.response.data?.errors?.message);
+        }
     }).finally(()=> {
           KTApp.hidePageLoading();
     });

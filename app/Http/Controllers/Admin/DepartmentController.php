@@ -41,8 +41,8 @@ class DepartmentController extends Controller
    {
        $getAllDepartment = $this->departmentRepository->model()->with(['childrenDepartment', 'user'])->orderByDesc('id')->get()->map(function($item) {
            $item->convertStatus =  $item->status? trans('Sử dụng') : trans('Ngừng sử dụng');
-           $item->is_delete_permission = $item->created_by == auth()->user()->id || check_user_permission(SystemPermissionEnum::DELETE_DEPARTMENT);
-           $item->isEdit = $item->created_by == auth()->user()->id || check_user_permission(SystemPermissionEnum::EDIT_DEPARTMENT);
+           $item->is_delete_permission = check_user_permission(SystemPermissionEnum::DELETE_DEPARTMENT);
+           $item->isEdit = check_user_permission(SystemPermissionEnum::EDIT_DEPARTMENT);
            $item->isDelete = true;
            if($item->childrenDepartment->count()
              || $item->user
@@ -66,6 +66,11 @@ class DepartmentController extends Controller
      */
     public function store(DepartmentStoreRequest $request)
     {
+
+        if(! check_user_permission(SystemPermissionEnum::ADD_DEPARTMENT)) {
+            return $this->errorsResponse(['message' => trans('Bạn không có quyền thêm bộ phận.')], 403);
+        }
+
         $data = $request->all();
         try {
             $department = $this->departmentRepository->create($data);
@@ -96,6 +101,10 @@ class DepartmentController extends Controller
      */
     public function update(DepartmentUpdateRequest $request, $id)
     {
+        if(! check_user_permission(SystemPermissionEnum::EDIT_DEPARTMENT)) {
+            return $this->errorsResponse(['message' => trans('Bạn không có quyền sửa bộ phận.')], 403);
+        }
+
         $data = $request->except('code');
         $entry = $this->departmentRepository->find($id);
         if(!$entry) {
@@ -114,6 +123,11 @@ class DepartmentController extends Controller
      */
     public function destroy(Request $request, $id)
     {
+
+        if(! check_user_permission(SystemPermissionEnum::DELETE_DEPARTMENT)) {
+            return $this->errorsResponse(['message' => trans('Bạn không có quyền xóa bộ phận.')], 403);
+        }
+
         $entry = $this->departmentRepository->find($id);
         if(!$entry){
             return $this->errorsResponse(["id" => trans("Không tồn tại bộ phận !")], 404);

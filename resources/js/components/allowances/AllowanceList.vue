@@ -45,7 +45,7 @@
                         </th>
                         <th class="min-w-150px">Tên phụ cấp</th>
                         <th class="min-w-140px">Loại phụ cấp</th>
-                        <th class="min-w-200px">Số tiền phụ cấp</th>
+                        <th class="min-w-200px">Số tiền phụ cấp (VNĐ)</th>
                         <th class="min-w-100px">Mô tả</th>
                         <th class="min-w-100px">Trạng thái</th>
                         <th class="min-w-100px text-center" colspan="2">Hành động</th>
@@ -84,7 +84,7 @@
                         <td>
                                 <span
                                     class="text-dark text-hover-primary d-block mb-1 text-content"
-                                >{{ item.allowance_amount }}</span
+                                >{{ formatNumber(item.allowance_amount) }}</span
                                 >
                         </td>
 
@@ -109,7 +109,7 @@
                         </td>
 
                         <td class="w-50px text-center">
-                            <a
+                            <a v-if="item.is_edit"
                                href="#"
                                @click="handleUpdate(item)"
                                data-bs-target="#formCreateAllowance"
@@ -124,12 +124,12 @@
                                 </i>
                             </a>
                         </td>
-                        <td class="w-50px"  :title="item.is_deleted == true ? 'Không thể xóa phụ cấp mặc định của hệ thống.' : ''">
-                            <a
+<!--                        :title="item.is_deleted == true ? 'Không thể xóa phụ cấp mặc định của hệ thống.' : ''-->
+                        <td class="w-50px">
+                            <a v-if="item.is_deleted"
                                 href="#"
                                 @click.prevent="handleDelete(item.id)"
                                 class="btn btn-icon btn-delete btn-sm me-1"
-                                :class="{ 'disable': item.is_deleted }"
                             >
                                 <i class="fa-solid fa-trash fs-5"></i>
                             </a>
@@ -247,7 +247,8 @@
                                    :class="{
                                     'input-custom-valid': errors.allowed_number_days,
                                 }"
-                                   v-model="formAllowance.allowed_number_days"
+                                   :value="formatNumber(formAllowance.allowed_number_days)"
+                                   @input="onInputMoney($event, 'allowed_number_days')"
                                    placeholder="Nhập số ngày vi phạm được phép"
                                    name="target_title"
                             />
@@ -264,7 +265,7 @@
                             <label
                                 class="d-flex align-items-center fs-6 fw-semibold mb-2"
                             >
-                                <span >Số tiền phụ cấp</span>
+                                <span >Số tiền phụ cấp (VNĐ)</span>
                             </label>
                             <!--end::Label-->
                             <input
@@ -273,7 +274,8 @@
                                 :class="{
                                     'input-custom-valid': errors.allowance_amount
                                 }"
-                                v-model="formAllowance.allowance_amount"
+                                :value="formatNumber(formAllowance.allowance_amount)"
+                                @input="onInputMoney($event, 'allowance_amount')"
                                 placeholder="Nhập số tiền phụ cấp"
                                 name="target_title"
                             />
@@ -539,6 +541,26 @@
                 return '';
         }
     }
+
+    const formatNumber = (number = 0) => {
+        return Number(number).toLocaleString('vi-VN');
+    };
+
+    const onInputMoney = (e, fieldName) => {
+        const raw = e.target.value;
+
+        // Loại bỏ mọi ký tự không phải số
+        const cleaned = raw.replace(/[^\d]/g, '');
+
+        // Nếu không có số nào, set về 0 (hoặc '', tuỳ bạn)
+        let unformatted = cleaned ? parseInt(cleaned) : 0;
+
+        formAllowance[fieldName] = unformatted;
+
+        // Hiển thị lại với format dấu chấm
+        e.target.value = formatNumber(unformatted);
+    };
+
 </script>
 
 <style scoped>

@@ -4,6 +4,7 @@
 namespace App\Http\Controllers\Admin;
 
 
+use App\Enums\SystemPermissionEnum;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\AllowanceStoreRequest;
 use App\Http\Requests\AllowanceUpdateRequest;
@@ -11,6 +12,7 @@ use App\Repositories\Interfaces\IAllowanceRepository;
 use App\Transformers\AllowanceTransformer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use function App\Helper\check_user_permission;
 
 class AllowanceController extends Controller
 {
@@ -26,11 +28,11 @@ class AllowanceController extends Controller
         $breadcrums = [
             'text' => trans('Khai báo phụ cấp')
         ];
-//        $btnAdd = check_user_permission(SystemPermissionEnum::ADD_PRODUCT);
+        $btnAdd = check_user_permission(SystemPermissionEnum::ADD_ALLOWANCE);
         $data = [
             'breadcrums' => $breadcrums,
             'pageName' => trans('Khai báo phụ cấp'),
-            'btnAdd' => true,
+            'btnAdd' => $btnAdd,
         ];
         return view('admin.allowances.index')->with($data);
     }

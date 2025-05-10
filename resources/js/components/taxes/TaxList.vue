@@ -47,13 +47,14 @@
                             Tên thuế</th>
                         <th class="min-w-140px">Số tiền từ</th>
                         <th class="min-w-200px">Số tiền đến</th>
-                        <th class="min-w-100px">Thuế suất</th>
+                        <th class="min-w-100px">Thuế suất (%)</th>
                         <th class="min-w-100px">Giá trị tính</th>
                         <th class="min-w-100px text-center" colspan="2">Hành động</th>
                     </tr>
                     </thead>
                     <!--end::Table head-->
                     <!--begin::Table body-->
+
                     <tbody>
                     <tr v-for="(item, index) in taxes" :key="index"
                         :class="{active : item.id == currentIndex}" @click="currentIndex = item.id"
@@ -78,33 +79,33 @@
                         <td>
                                 <span
                                     class="text-dark text-hover-primary d-block mb-1 text-content"
-                                >{{ item.tax_income_from }}</span
+                                >{{ helperFunc.formatNumber(item.tax_income_from) }}</span
                                 >
                         </td>
 
                         <td>
                                 <span
                                     class="text-dark text-hover-primary d-block mb-1 text-content"
-                                >{{ item.tax_income_to }}</span
+                                >{{ helperFunc.formatNumber(item.tax_income_to) }}</span
                                 >
                         </td>
 
                         <td>
                                 <span
                                     class="text-dark text-hover-primary d-block mb-1 text-content"
-                                >{{ item.tax_rate }}</span
+                                >{{ helperFunc.formatNumber(item.tax_rate) }}%</span
                                 >
                         </td>
 
                         <td>
                                 <span
                                     class="text-dark text-hover-primary d-block mb-1 text-content"
-                                >{{ item.tax_reduction }}</span
+                                >{{ helperFunc.formatNumber(item.tax_reduction) }}</span
                                 >
                         </td>
 
                         <td class="w-50px text-center">
-                            <a
+                            <a v-if="canEditTax"
                                 href="#"
                                 @click="handleUpdate(item)"
                                 data-bs-target="#formCreateTax"
@@ -120,7 +121,7 @@
                             </a>
                         </td>
                         <td class="w-50px"  >
-                            <a
+                            <a v-if="canDeleteTax"
                                 href="#"
                                 @click.prevent="handleDelete(item.id)"
                                 class="btn btn-icon btn-delete btn-sm me-1"
@@ -219,7 +220,8 @@
                                 :class="{
                                     'input-custom-valid': errors.tax_income_from,
                                 }"
-                                v-model="formTax.tax_income_from"
+                                :value="formatNumber(formTax.tax_income_from)"
+                                @input="onInputMoney($event, 'tax_income_from')"
                                 placeholder="Nhập số tiền từ"
                                 name="target_title"
                             />
@@ -245,7 +247,8 @@
                                 :class="{
                                     'input-custom-valid': errors.tax_income_to,
                                 }"
-                                v-model="formTax.tax_income_to"
+                                :value="formatNumber(formTax.tax_income_to)"
+                                @input="onInputMoney($event, 'tax_income_to')"
                                 placeholder="Nhập số tiền đến"
                                 name="target_title"
                             />
@@ -262,7 +265,7 @@
                             <label
                                 class="d-flex align-items-center fs-6 fw-semibold mb-2"
                             >
-                                <span class="">Thuế suất</span>
+                                <span class="">Thuế suất (%)</span>
                             </label>
                             <!--end::Label-->
                             <input
@@ -271,7 +274,8 @@
                                 :class="{
                                     'input-custom-valid': errors.tax_rate,
                                 }"
-                                v-model="formTax.tax_rate"
+                                :value="formatNumber(formTax.tax_rate)"
+                                @input="onInputMoney($event, 'tax_rate')"
                                 placeholder="Nhập thuế suất"
                                 name="target_title"
                             />
@@ -297,7 +301,8 @@
                                 :class="{
                                     'input-custom-valid': errors.tax_reduction,
                                 }"
-                                v-model="formTax.tax_reduction"
+                                :value="formatNumber(formTax.tax_reduction)"
+                                @input="onInputMoney($event, 'tax_reduction')"
                                 placeholder="Nhập giá trị tính	"
                                 name="target_title"
                             />
@@ -363,6 +368,10 @@
     const handleClickItem = (numberPage) => {
         selectTotalRecord.value = numberPage;
     };
+
+    const canEditTax = ref(false);
+    const canDeleteTax = ref(false);
+
     const taxes = ref([]);
     let getMetaPaginate = ref({});
     const getAllTaxes = (params = null) => {
@@ -375,9 +384,10 @@
             .then((res) => {
                 const { data, meta } = res.data;
                 taxes.value = [];
-
                 data.forEach((item) => {
                     taxes.value.push( item.values)
+                    canEditTax.value = item.is_edit
+                    canDeleteTax.value = item.is_delete
                 })
                 getMetaPaginate.value = meta;
             })
@@ -421,6 +431,9 @@
             })
             .catch((error) => {
                 errors.value = error.response.data.errors;
+                if(error.response?.data?.code == 403) {
+                    useToast.errorToast(error.response.data?.errors?.message);
+                }
             }).finally(()=>{
             KTApp.hidePageLoading();
         });
@@ -463,6 +476,9 @@
             })
             .catch((error) => {
                 errors.value = error.response.data.errors;
+                if(error.response?.data?.code == 403) {
+                    useToast.errorToast(error.response.data?.errors?.message);
+                }
             }).finally(()=>{
             KTApp.hidePageLoading();
         });
@@ -489,6 +505,9 @@
                         })
                         .catch((error) => {
                             console.log(error);
+                            if(error.response?.data?.code == 403) {
+                                useToast.errorToast(error.response.data?.errors?.message);
+                            }
                         }).finally(()=>{
                         KTApp.hidePageLoading();
                     });
@@ -501,6 +520,26 @@
         // $(".modal-backdrop").remove();
         currentIndex.value = -1;
     };
+
+    const formatNumber = (number = 0) => {
+        return Number(number).toLocaleString('vi-VN');
+    };
+
+    const onInputMoney = (e, fieldName) => {
+        const raw = e.target.value;
+
+        // Loại bỏ mọi ký tự không phải số
+        const cleaned = raw.replace(/[^\d]/g, '');
+
+        // Nếu không có số nào, set về 0 (hoặc '', tuỳ bạn)
+        const unformatted = cleaned ? parseInt(cleaned) : 0;
+
+        formTax[fieldName] = unformatted;
+
+        // Hiển thị lại với format dấu chấm
+        e.target.value = formatNumber(unformatted);
+    };
+
 
 </script>
 

@@ -116,7 +116,7 @@
                         </td>
 
                         <td class="w-50px text-center">
-                            <a
+                            <a v-if="item.is_edit"
                                 href="#"
                                 @click="handleUpdate(item)"
                                 data-bs-target="#formCreateRequestTicket"
@@ -132,7 +132,7 @@
                             </a>
                         </td>
                         <td class="w-50px">
-                            <a
+                            <a v-if="item.is_deleted"
                                 href="#"
                                 @click.prevent="handleDelete(item.id)"
                                 class="btn btn-icon btn-delete btn-sm me-1"

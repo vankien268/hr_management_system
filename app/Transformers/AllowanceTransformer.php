@@ -2,8 +2,10 @@
 
 namespace App\Transformers;
 
+use App\Enums\SystemPermissionEnum;
 use App\Models\Allowance;
 use League\Fractal\TransformerAbstract;
+use function App\Helper\check_user_permission;
 
 class AllowanceTransformer extends TransformerAbstract
 {
@@ -43,9 +45,18 @@ class AllowanceTransformer extends TransformerAbstract
             'default' => $entry->default,
             'status' => $entry->status,
             'status_name' => $entry->status == 1 ? "Sử dụng" : "Ngừng sử dụng",
-            'is_deleted' => $entry->default != 0
-//            'is_edit' => $entry->created_by == auth()->user()->id || check_user_permission(SystemPermissionEnum::EDIT_DEPARTMENT),
+            'is_edit' =>  check_user_permission(SystemPermissionEnum::EDIT_ALLOWANCE),
         ];
+
+        $data['is_deleted'] = false;
+
+        if(check_user_permission(SystemPermissionEnum::DELETE_ALLOWANCE)) {
+            $data['is_deleted'] = true;
+
+            if($entry->default != 0) {
+                $data['is_deleted'] = false;
+            }
+        }
         return $data;
     }
 }

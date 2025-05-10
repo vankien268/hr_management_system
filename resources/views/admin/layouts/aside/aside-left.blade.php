@@ -23,6 +23,7 @@
             <!--begin::Nav-->
             <ul class="nav flex-column w-100" id="kt_aside_nav_tabs">
                 @if (App\Helper\check_menu_permission(App\Enums\MenuPermissionEnum::GROUP_MENU_MANAGEMENT) == true)
+
                     <li class="d-flex flex-wrap justify-content-center menu-li nav-item mb-4 {{ array_search(Route::current()->getName(), Config::get('project.route_uri')['management']) !== false ? 'active' : '' }}"
                         data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="right"
                         data-bs-dismiss="click" title="{{ trans('Quản lý') }}">
@@ -61,19 +62,19 @@
                         <!--end::Nav link-->
                     </li>
                 @endif
-                @if (App\Helper\check_menu_permission(App\Enums\MenuPermissionEnum::GROUP_MENU_REPORT) == true)
-                    <li class="d-flex flex-wrap justify-content-center menu-li nav-item mb-4 {{ array_search(Route::current()->getName(), Config::get('project.route_uri')['report']) !== false ? 'active' : '' }}"
-                        data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="right"
-                        data-bs-dismiss="click" title="{{ trans('Báo cáo') }}">
-                        <!--begin::Nav link-->
-                        <a class="nav-link btn btn-icon  btn-color-gray-400 btn-active-light mb-2" data-bs-toggle="tab"
-                            href="#kt_aside_nav_report">
-                            <i class="fa-sharp fa-solid fa-scroll fs-1"></i>
-                        </a>
-                        <span class="text-uppercase text-center fs-7 text-gray-400">{{ trans('Báo cáo') }}</span>
-                        <!--end::Nav link-->
-                    </li>
-                @endif
+{{--                @if (App\Helper\check_menu_permission(App\Enums\MenuPermissionEnum::GROUP_MENU_REPORT) == true)--}}
+{{--                    <li class="d-flex flex-wrap justify-content-center menu-li nav-item mb-4 {{ array_search(Route::current()->getName(), Config::get('project.route_uri')['report']) !== false ? 'active' : '' }}"--}}
+{{--                        data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="right"--}}
+{{--                        data-bs-dismiss="click" title="{{ trans('Báo cáo') }}">--}}
+{{--                        <!--begin::Nav link-->--}}
+{{--                        <a class="nav-link btn btn-icon  btn-color-gray-400 btn-active-light mb-2" data-bs-toggle="tab"--}}
+{{--                            href="#kt_aside_nav_report">--}}
+{{--                            <i class="fa-sharp fa-solid fa-scroll fs-1"></i>--}}
+{{--                        </a>--}}
+{{--                        <span class="text-uppercase text-center fs-7 text-gray-400">{{ trans('Báo cáo') }}</span>--}}
+{{--                        <!--end::Nav link-->--}}
+{{--                    </li>--}}
+{{--                @endif--}}
                 <li class="d-flex flex-wrap justify-content-center menu-li nav-item mb-4 ">
                     <!--begin::Nav link-->
                     <a class="nav-link btn btn-icon  btn-color-gray-400 btn-active-light mb-2"
@@ -89,17 +90,6 @@
         </div>
         <!--end::Nav-->
     </div>
-    @php
-        $notifications = auth()
-            ->user()
-            ->notifications()
-            ->limit(10)
-            ->get()
-            ->sortByDesc('created_at');
-        $countNotifications = auth()
-            ->user()
-            ->unreadNotifications->count();
-    @endphp
     <!--begin::Footer-->
     <div class="aside-footer d-flex flex-column align-items-center flex-column-auto" id="kt_aside_footer">
         <!--begin::Quick links-->
@@ -109,78 +99,78 @@
 
             <!--begin::Menu wrapper-->
 
-            <div data-kt-menu-trigger="click" data-kt-menu-overflow="true" data-kt-menu-placement="top-start"
-                data-bs-toggle="tooltip" data-bs-placement="right" data-bs-dismiss="click" title="Cảnh báo"
-                class="cursor-pointer symbol symbol-40px rounded-circle mb-6" data-bs-toggle="modal"
-                data-bs-target="#modalNotification">
-                <img src="https://cdn-icons-png.flaticon.com/512/3239/3239958.png" alt="image" />
-                <div id="notifications"
-                    style="position: absolute;z-index:2;top:0%; color:white; border:1px solid red;background:red; border-radius:30px; padding:2px;
-                                     right:0%; text-align:left; font-size:12px;
-                                 ">
-                    {{ $countNotifications }}
-                </div>
-            </div>
+{{--            <div data-kt-menu-trigger="click" data-kt-menu-overflow="true" data-kt-menu-placement="top-start"--}}
+{{--                data-bs-toggle="tooltip" data-bs-placement="right" data-bs-dismiss="click" title="Cảnh báo"--}}
+{{--                class="cursor-pointer symbol symbol-40px rounded-circle mb-6" data-bs-toggle="modal"--}}
+{{--                data-bs-target="#modalNotification">--}}
+{{--                <img src="https://cdn-icons-png.flaticon.com/512/3239/3239958.png" alt="image" />--}}
+{{--                <div id="notifications"--}}
+{{--                    style="position: absolute;z-index:2;top:0%; color:white; border:1px solid red;background:red; border-radius:30px; padding:2px;--}}
+{{--                                     right:0%; text-align:left; font-size:12px;--}}
+{{--                                 ">--}}
+{{--                    {{ $countNotifications }}--}}
+{{--                </div>--}}
+{{--            </div>--}}
             <!--begin::Menu-->
-            <div class="menu menu-sub menu-sub-dropdown menu-column w-500px w-lg-375px" data-kt-menu="true"
-                id="kt_menu_notifications">
-                <!--begin::Heading-->
-                <div class="d-flex flex-column bgi-no-repeat rounded-top"
-                    style="background-color: var(--bs-primary) !important;">
-                    <!--begin::Title-->
-                    <h3 class="text-white fw-semibold px-9 mt-5 mb-4" style="font-size:17px;">Danh sách cảnh báo
-                        <span class="fs-8 opacity-75 ps-3"></span>
-                    </h3>
-                </div>
-                <!--end::Heading-->
-                <!--begin::Tab content-->
-                <div class="tab-content ">
-                    <!--begin::Tab panel-->
-                    <div class="tab-pane fade active show" id="kt_topbar_notifications_1" role="tabpanel">
-                        <!--begin::Items-->
-                        <div class="scroll-y mh-425px my-5 px-8">
-                            <!--begin::Item-->
-                            {{-- ['contracts'] --}}
+{{--            <div class="menu menu-sub menu-sub-dropdown menu-column w-500px w-lg-375px" data-kt-menu="true"--}}
+{{--                id="kt_menu_notifications">--}}
+{{--                <!--begin::Heading-->--}}
+{{--                <div class="d-flex flex-column bgi-no-repeat rounded-top"--}}
+{{--                    style="background-color: var(--bs-primary) !important;">--}}
+{{--                    <!--begin::Title-->--}}
+{{--                    <h3 class="text-white fw-semibold px-9 mt-5 mb-4" style="font-size:17px;">Danh sách cảnh báo--}}
+{{--                        <span class="fs-8 opacity-75 ps-3"></span>--}}
+{{--                    </h3>--}}
+{{--                </div>--}}
+{{--                <!--end::Heading-->--}}
+{{--                <!--begin::Tab content-->--}}
+{{--                <div class="tab-content ">--}}
+{{--                    <!--begin::Tab panel-->--}}
+{{--                    <div class="tab-pane fade active show" id="kt_topbar_notifications_1" role="tabpanel">--}}
+{{--                        <!--begin::Items-->--}}
+{{--                        <div class="scroll-y mh-425px my-5 px-8">--}}
+{{--                            <!--begin::Item-->--}}
+{{--                            --}}{{-- ['contracts'] --}}
 
-                            @if (count($notifications))
-                                <notification-aside-bar></notification-aside-bar>
-                            @else
-                                <div class="mb-0 me-2 text-center py-2">
-                                    Không có dữ liệu hiển thị.
-                                </div>
-                            @endif
+{{--                            @if (count($notifications))--}}
+{{--                                <notification-aside-bar></notification-aside-bar>--}}
+{{--                            @else--}}
+{{--                                <div class="mb-0 me-2 text-center py-2">--}}
+{{--                                    Không có dữ liệu hiển thị.--}}
+{{--                                </div>--}}
+{{--                            @endif--}}
 
-                        </div>
-                        <!--end::Items-->
-                        <!--begin::View more-->
-                        {{-- $countNotifications  --}}
-                        <div class="py-2 text-center border-top d-flex">
-                            <div>
-                                <a href="#" onclick="maskAsRead()"
-                                    class="btn btn-color-gray-600 btn-active-color-primary text-content {{ $countNotifications < 1 ? 'disabled' : '' }}">
-                                    Đánh dấu đọc tất cả
-                                    <i class="ki-duotone ki-arrow-right fs-5">
-                                        <span class="path1"></span>
-                                        <span class="path2"></span>
-                                    </i></a>
-                            </div>
-                            <div>
-                                <a href="{{ route('admin.notification.index') }}"
-                                    class="btn btn-color-gray-600 btn-active-color-primary text-content">
-                                    Xem tất cả
-                                    <i class="ki-duotone ki-arrow-right fs-5">
-                                        <span class="path1"></span>
-                                        <span class="path2"></span>
-                                    </i>
-                                </a>
-                            </div>
-                        </div>
-                        <!--end::View more-->
-                    </div>
-                    <!--end::Tab panel-->
-                </div>
-                <!--end::Tab content-->
-            </div>
+{{--                        </div>--}}
+{{--                        <!--end::Items-->--}}
+{{--                        <!--begin::View more-->--}}
+{{--                        --}}{{-- $countNotifications  --}}
+{{--                        <div class="py-2 text-center border-top d-flex">--}}
+{{--                            <div>--}}
+{{--                                <a href="#" onclick="maskAsRead()"--}}
+{{--                                    class="btn btn-color-gray-600 btn-active-color-primary text-content {{ $countNotifications < 1 ? 'disabled' : '' }}">--}}
+{{--                                    Đánh dấu đọc tất cả--}}
+{{--                                    <i class="ki-duotone ki-arrow-right fs-5">--}}
+{{--                                        <span class="path1"></span>--}}
+{{--                                        <span class="path2"></span>--}}
+{{--                                    </i></a>--}}
+{{--                            </div>--}}
+{{--                            <div>--}}
+{{--                                <a href="{{ route('admin.notification.index') }}"--}}
+{{--                                    class="btn btn-color-gray-600 btn-active-color-primary text-content">--}}
+{{--                                    Xem tất cả--}}
+{{--                                    <i class="ki-duotone ki-arrow-right fs-5">--}}
+{{--                                        <span class="path1"></span>--}}
+{{--                                        <span class="path2"></span>--}}
+{{--                                    </i>--}}
+{{--                                </a>--}}
+{{--                            </div>--}}
+{{--                        </div>--}}
+{{--                        <!--end::View more-->--}}
+{{--                    </div>--}}
+{{--                    <!--end::Tab panel-->--}}
+{{--                </div>--}}
+{{--                <!--end::Tab content-->--}}
+{{--            </div>--}}
             <!--end::Menu-->
             <!--end::Menu wrapper-->
         </div>
@@ -230,14 +220,7 @@
                 </div>
                 <!--end::Menu item-->
                 <!--begin::Menu item-->
-                <div class="menu-item px-5">
-                    <a href="{{ route('admin.projects-management.index') }}" class="menu-link px-5">
-                        <span class="menu-text">{{ trans('Dự án của tôi') }}</span>
-                        <span class="menu-badge">
-                            {{-- <span class="badge badge-light-danger badge-circle fw-bold fs-7">3</span> --}}
-                        </span>
-                    </a>
-                </div>
+
                 <!--end::Menu item-->
                 {{-- <div class="menu-item px-5">
                     <a href="../../demo7/dist/account/statements.html"

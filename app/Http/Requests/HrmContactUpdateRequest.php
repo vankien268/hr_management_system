@@ -62,6 +62,10 @@ class HrmContactUpdateRequest extends FormRequest
          'contact_mobile.digits' =>'Số điện thoại không quá 15 ký tự.',
          'contact_mobile_2.digits' =>'Số điện thoại không quá 15 ký tự.',
          'relative_phone_number.digits' =>'Số điện thoại không quá 15 ký tự.',
+
+         'relative_phone_number.regex' =>'Số điện thoại phải là kiểu số.',
+         'contact_mobile.regex' =>'Số điện thoại phải là kiểu số.',
+         'contact_mobile_2.regex' =>'Số điện thoại phải là kiểu số.',
        ];
     }
 }

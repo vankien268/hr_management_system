@@ -51,7 +51,7 @@ class HrmContractTransformer extends TransformerAbstract
             'register_date' => $entry->register_date ? Carbon::parse($entry->register_date)->format('Y-m-d') : null,
             'effective_date' => $entry->effective_date ? Carbon::parse($entry->effective_date)->format('Y-m-d') : null,
             'expiration_date' => $entry->expiration_date ? Carbon::parse($entry->expiration_date)->format('Y-m-d') : null,
-            'allowances' => $entry->allowances,
+            'allowances' => $entry->allowances ? explode(',', $entry->allowances) : [],
             'note' => $entry->note,
             'department_name' => $entry->department->name ?? '',
         ];

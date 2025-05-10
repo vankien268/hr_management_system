@@ -36,7 +36,6 @@ class RoleObserver
     {
         $systemFunction = $role->roleSystemFunctions;
         if($systemFunction->count() > 0){
-            dd(2);
             RoleSystemFunction::where('role_id', $role->id)->delete();
             // $this->roleRepository->destroy($systemFunction->pluck('id')->toArray());
         }

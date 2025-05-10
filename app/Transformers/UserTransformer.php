@@ -73,17 +73,17 @@ class UserTransformer extends TransformerAbstract
             'remember_token' => $entry->remember_token,
             'idSave' =>  $entry->id,
             'roles' => fractal($entry->roles->unique('id'), new RoleTransformer()),
-            'isEdit' => $entry->created_by == auth()->user()->id || check_user_permission(SystemPermissionEnum::EDIT_USER),
-            'is_delete_permission' => $entry->created_by == auth()->user()->id || check_user_permission(SystemPermissionEnum::DELETE_USER),
-            'changePassword' => $entry->created_by == auth()->user()->id || check_user_permission(SystemPermissionEnum::CHANGE_PASSWORD_USER),
+            'isEdit' =>  check_user_permission(SystemPermissionEnum::EDIT_USER),
+            'is_delete_permission' =>  check_user_permission(SystemPermissionEnum::DELETE_USER),
+            'changePassword' =>  check_user_permission(SystemPermissionEnum::CHANGE_PASSWORD_USER),
             'avatar' => $entry->avatar
         ];
         if($this->isPivot) {
             $data['pivot'] = $entry->pivot;
         }
-        if($this->isDelete) {
-            $data['isDelete'] = $entry->resultUserHasRelated($entry);
-        }
+//        if($this->isDelete) {
+//            $data['isDelete'] = $entry->resultUserHasRelated($entry);
+//        }
         if($this->usersInProject) {
             $data['idSave'] =  $entry->id;
         }

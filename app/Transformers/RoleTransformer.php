@@ -42,14 +42,15 @@ class RoleTransformer extends TransformerAbstract
             'id' => $entry->id,
             'name' => $entry->name,
             'status' => $entry->status,
-            'isEdit' => $entry->created_by == auth()->user()->id || check_user_permission(SystemPermissionEnum::EDIT_DECLARE_ROLE)
+            'isEdit' => check_user_permission(SystemPermissionEnum::EDIT_DECLARE_ROLE)
         ];
-        $data['isDelete'] = $entry->created_by == auth()->user()->id || check_user_permission(SystemPermissionEnum::DELETE_DECLARE_ROLE);
-        if ($this->isDelete) {
-            if ($entry->roleUsers->count() > 0) {
-                $data['isDelete'] = false;
-            }
-        }
+        $data['isDelete'] = check_user_permission(SystemPermissionEnum::DELETE_DECLARE_ROLE);
+
+//        if ($this->isDelete) {
+//            if ($entry->roleUsers->count() > 0) {
+//                $data['isDelete'] = false;
+//            }
+//        }
         return $data;
     }
 }

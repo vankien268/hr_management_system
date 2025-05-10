@@ -29,7 +29,8 @@ class RoleController extends Controller
                 'text' => __('Quản lý nhóm quyền')
             ],
         ];
-        $btnAdd = check_user_permission(SystemPermissionEnum::ADD_PRODUCT_GROUP);
+        $btnAdd = check_user_permission(SystemPermissionEnum::ADD_DECLARE_ROLE);
+
         $viewRole = check_user_permission(SystemPermissionEnum::VIEW_LIST_DECLARE_ROLE);
         if(!$viewRole){
 
@@ -59,6 +60,10 @@ class RoleController extends Controller
 
     public function store(RoleStoreRequest $request)
     {
+        if(! check_user_permission(SystemPermissionEnum::ADD_DECLARE_ROLE)) {
+            return $this->errorsResponse(['message' => trans('Bạn không có quyền thêm nhóm quyền.')], 403);
+        }
+
         $data = $request->all();
         try {
             $role = $this->roleRepository->create($data);
@@ -70,6 +75,9 @@ class RoleController extends Controller
 
     public function update(RoleUpdateRequest $request, $id)
     {
+        if(! check_user_permission(SystemPermissionEnum::EDIT_DECLARE_ROLE)) {
+            return $this->errorsResponse(['message' => trans('Bạn không có quyền sửa nhóm quyền.')], 403);
+        }
         $data = $request->except('code');
         $entry = $this->roleRepository->find($id);
         if (!$entry) {
@@ -85,12 +93,17 @@ class RoleController extends Controller
 
     public function destroy(Request $request, $id)
     {
+        if(! check_user_permission(SystemPermissionEnum::DELETE_DECLARE_ROLE)) {
+            return $this->errorsResponse(['message' => trans('Bạn không xóa quyền thêm nhóm quyền.')], 403);
+        }
+
         $entry = $this->roleRepository->find($id);
+
         if(!$entry){
             return $this->errorsResponse(["id" => trans("Không tồn tại !")], 404);
         }
         try {
-            $delete = $this->roleRepository->destroy($id);
+            $this->roleRepository->destroy($id);
             return $this->successResponse(['role' => $entry,'message' => trans('Xóa dữ liệu thành công!')], 200);
         } catch (\Exception $e) {
             return $this->errorResponse(['id' => $e->getMessage()]);
