@@ -62,6 +62,21 @@
                         <!--end::Nav link-->
                     </li>
                 @endif
+
+{{--                @if (App\Helper\check_menu_permission(App\Enums\MenuPermissionEnum::GROUP_MENU_REPORT) == true)--}}
+                    <li class="d-flex flex-wrap justify-content-center menu-li nav-item mb-4 {{ array_search(Route::current()->getName(), Config::get('project.route_uri')['user']) !== false ? 'active' : '' }}"
+                        data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="right"
+                        data-bs-dismiss="click" title="{{ trans('Cấu hình') }}">
+                        <!--begin::Nav link-->
+                        <a class="nav-link btn btn-icon  btn-color-gray-400 btn-active-light mb-2" data-bs-toggle="tab"
+                            href="#kt_aside_nav_setting">
+                            <i class="fa-sharp fa-solid fa-scroll fs-1"></i>
+                        </a>
+                        <span class="text-uppercase text-center fs-7 text-gray-400">{{ trans('Cấu hình') }}</span>
+                        <!--end::Nav link-->
+                    </li>
+{{--                @endif--}}
+
 {{--                @if (App\Helper\check_menu_permission(App\Enums\MenuPermissionEnum::GROUP_MENU_REPORT) == true)--}}
 {{--                    <li class="d-flex flex-wrap justify-content-center menu-li nav-item mb-4 {{ array_search(Route::current()->getName(), Config::get('project.route_uri')['report']) !== false ? 'active' : '' }}"--}}
 {{--                        data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="right"--}}

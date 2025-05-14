@@ -10,7 +10,7 @@ var KTAppCalendar = function() {
         allDay: !1
     };
     const x = () => {
-            v.innerText = "Add a New Eventssssssssssssssssssss", u.show();
+            v.innerText = "Add a New Event", u.show();
             const o = f.querySelectorAll('[data-kt-calendar="datepicker"]'),
                 i = f.querySelector("#kt_calendar_datepicker_allday");
             i.addEventListener("click", (e => {
@@ -148,7 +148,7 @@ var KTAppCalendar = function() {
     return {
         init: function() {
             const C = document.getElementById("kt_modal_add_event");
-            f = C.querySelector("#kt_modal_add_event_form"), n = f.querySelector('[name="calendar_event_description"]'), a = f.querySelector('[name="calendar_event_location"]'), o = f.querySelector("#kt_calendar_datepicker_start_date"), i = f.querySelector("#kt_calendar_datepicker_end_date"), d = f.querySelector("#kt_calendar_datepicker_start_time"), s = f.querySelector("#kt_calendar_datepicker_end_time"), y = document.querySelector('[data-kt-calendar="add"]'), D = f.querySelector("#kt_modal_add_event_submit"), k = f.querySelector("#kt_modal_add_event_cancel"), _ = C.querySelector("#kt_modal_add_event_close"), v = f.querySelector('[data-kt-calendar="title"]'), u = new bootstrap.Modal(C);
+            f = C.querySelector("#kt_modal_add_event_form"), t = f.querySelector('[name="calendar_event_name"]'), n = f.querySelector('[name="calendar_event_description"]'), a = f.querySelector('[name="calendar_event_location"]'), o = f.querySelector("#kt_calendar_datepicker_start_date"), i = f.querySelector("#kt_calendar_datepicker_end_date"), d = f.querySelector("#kt_calendar_datepicker_start_time"), s = f.querySelector("#kt_calendar_datepicker_end_time"), y = document.querySelector('[data-kt-calendar="add"]'), D = f.querySelector("#kt_modal_add_event_submit"), k = f.querySelector("#kt_modal_add_event_cancel"), _ = C.querySelector("#kt_modal_add_event_close"), v = f.querySelector('[data-kt-calendar="title"]'), u = new bootstrap.Modal(C);
             const H = document.getElementById("kt_modal_view_event");
             var F, O, I, R, V, P;
             w = new bootstrap.Modal(H), g = H.querySelector('[data-kt-calendar="event_name"]'), b = H.querySelector('[data-kt-calendar="all_day"]'), S = H.querySelector('[data-kt-calendar="event_description"]'), h = H.querySelector('[data-kt-calendar="event_location"]'), T = H.querySelector('[data-kt-calendar="event_start_date"]'), Y = H.querySelector('[data-kt-calendar="event_end_date"]'), L = H.querySelector("#kt_modal_view_event_edit"), E = H.querySelector("#kt_modal_view_event_delete"), F = document.getElementById("kt_calendar_app"), O = moment().startOf("day"), I = O.format("YYYY-MM"), R = O.clone().subtract(1, "day").format("YYYY-MM-DD"), V = O.format("YYYY-MM-DD"), P = O.clone().add(1, "day").format("YYYY-MM-DD"), (e = new FullCalendar.Calendar(F, {
@@ -431,3 +431,5 @@ var KTAppCalendar = function() {
 KTUtil.onDOMContentLoaded((function() {
     KTAppCalendar.init()
 }));
+
+export { KTAppCalendar };

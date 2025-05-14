@@ -196,6 +196,19 @@
     <script src="{{ asset('assets/js/custom/utilities/modals/users-search.js') }}"></script>
     <script src="{{ asset('assets/plugins/global/plugins.bundle.js') }}"></script>
 
+
+    <script src="{{ asset('assets/plugins/custom/fullcalendar/fullcalendar.bundle.js') }}"></script>
+    <script src="{{ asset('assets/plugins/custom/datatables/datatables.bundle.js') }}"></script>
+    <!--end::Vendors Javascript-->
+    <!--begin::Custom Javascript(used for this page only)-->
+{{--    <script src="{{ asset('assets/js/custom/apps/calendar/calendar.js') }}"></script>--}}
+{{--    <script src="{{ asset('js/calendar.js') }}"></script>--}}
+    <script src="{{ asset('assets/js/widgets.bundle.js') }}"></script>
+
+    <script src="{{ asset('assets/js/custom/utilities/modals/upgrade-plan.js') }}"></script>
+    <script src="{{ asset('assets/js/custom/utilities/modals/create-app.js') }}"></script>
+    <script src="{{ asset('assets/js/custom/utilities/modals/users-search.js') }}"></script>
+
     <script>
         var hostUrl = "assets/";
     </script>

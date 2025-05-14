@@ -20,6 +20,23 @@
                                 <!--begin::Item-->
                                 <!--begin:Menu item-->
 
+{{--                                @if (App\Helper\check_sub_menu_permission('admin.hrm-contacts.index') == true)--}}
+                                    <div data-kt-menu-trigger="click" class="menu-item here show menu-accordion">
+                                        <!--begin:Menu link-->
+                                        <a class="menu-link p-0 {{ Route::current()->getName() == 'admin.timekeepings.index' ? 'active' : '' }}"
+                                           href="{{ route('admin.timekeepings.index') }}">
+                                            <span class="menu-link">
+                                                <span class="menu-icon">
+                                                    <i class="fa-solid fa-microchip fs-4"></i>
+                                                </span>
+                                                <span
+                                                    class="menu-title fw-medium fs-7">{{ trans('Chấm công') }}</span>
+                                            </span>
+                                        </a>
+
+                                    </div>
+{{--                                @endif--}}
+
                                 @if (App\Helper\check_sub_menu_permission('admin.hrm-contacts.index') == true)
                                     <div data-kt-menu-trigger="click" class="menu-item here show menu-accordion">
                                         <!--begin:Menu link-->
@@ -270,31 +287,91 @@
                         <!--end::Tasks-->
                     </div>
 
-                    <div class="tab-pane fade" id="kt_aside_nav_report" role="tabpanel">
+{{--                    <div class="tab-pane fade" id="kt_aside_nav_setting" role="tabpanel">--}}
+{{--                        <!--begin::Tasks-->--}}
+{{--                        <div class="mx-5 text-uppercase">--}}
+{{--                            <!--begin::Header-->--}}
+{{--                            <h3 class="fw-bold text-primary fs-4 mb-8 mx-0">Cấu hình</h3>--}}
+{{--                            <!--end::Header-->--}}
+{{--                            <!--begin::Body-->--}}
+{{--                            <div class="mb-12 ps-4">--}}
+                                <!--begin::Item-->
+                                <!--begin:Menu item-->
+                                {{--                                @if (App\Helper\check_sub_menu_permission('admin.reports.projects.index') == true)--}}
+                                {{--                                    <div data-kt-menu-trigger="click" class="menu-item here show menu-accordion">--}}
+                                {{--                                        <!--begin:Menu link-->--}}
+                                {{--                                        <!--begin:Menu link-->--}}
+                                {{--                                        <a class="menu-link p-0 fs-5 {{ Route::current()->getName() == 'admin.reports.projects.index' ? 'active' : '' }}"--}}
+                                {{--                                            href="{{ route('admin.reports.projects.index') }}">--}}
+                                {{--                                            <span class="menu-link">--}}
+                                {{--                                                <span class="menu-icon">--}}
+                                {{--                                                    <i class="fa-solid fa-file-contract fs-4"></i>--}}
+                                {{--                                                </span>--}}
+                                {{--                                                <span class="menu-title fw-medium fs-7">Báo cáo dự án</span>--}}
+                                {{--                                            </span>--}}
+                                {{--                                        </a>--}}
+
+                                {{--                                    </div>--}}
+                                {{--                                @endif--}}
+                                {{--                                @if (App\Helper\check_sub_menu_permission('admin.reports.contracts.index') == true)--}}
+                                {{--                                    <div data-kt-menu-trigger="click" class="menu-item here show menu-accordion">--}}
+                                {{--                                        <!--begin:Menu link-->--}}
+                                {{--                                        <!--begin:Menu link-->--}}
+                                {{--                                        <a class="menu-link p-0 fs-5 {{ Route::current()->getName() == 'admin.reports.contracts.index' ? 'active' : '' }}"--}}
+                                {{--                                            href="{{ route('admin.reports.contracts.index') }}">--}}
+                                {{--                                            <span class="menu-link">--}}
+                                {{--                                                <span class="menu-icon">--}}
+                                {{--                                                    <i class="fa-solid fa-file-contract fs-4"></i>--}}
+                                {{--                                                </span>--}}
+                                {{--                                                <span class="menu-title fw-medium fs-7">Báo cáo hợp đồng</span>--}}
+                                {{--                                            </span>--}}
+                                {{--                                        </a>--}}
+                                {{--                                    </div>--}}
+                                {{--                                @endif--}}
+                                {{--                                @if (App\Helper\check_sub_menu_permission('admin.reports.dispatches.index') == true)--}}
+                                {{--                                    <div data-kt-menu-trigger="click" class="menu-item here show menu-accordion">--}}
+                                {{--                                        <!--begin:Menu link-->--}}
+                                {{--                                        <!--begin:Menu link-->--}}
+                                {{--                                        <a class="menu-link p-0 fs-5 {{ Route::current()->getName() == 'admin.reports.dispatches.index' ? 'active' : '' }}"--}}
+                                {{--                                            href="{{ route('admin.reports.dispatches.index') }}">--}}
+                                {{--                                            <span class="menu-link">--}}
+                                {{--                                                <span class="menu-icon">--}}
+                                {{--                                                    <i class="fa-solid fa-file-contract fs-4"></i>--}}
+                                {{--                                                </span>--}}
+                                {{--                                                <span class="menu-title fw-medium fs-7">Báo cáo công văn, thông--}}
+                                {{--                                                    báo</span>--}}
+                                {{--                                            </span>--}}
+                                {{--                                        </a>--}}
+                                {{--                                    </div>--}}
+                                {{--                                @endif--}}
+
+{{--                            </div>--}}
+
+                    <div class="tab-pane fade" id="kt_aside_nav_setting" role="tabpanel">
                         <!--begin::Tasks-->
                         <div class="mx-5 text-uppercase">
                             <!--begin::Header-->
-                            <h3 class="fw-bold text-primary fs-4 mb-8 mx-0">Báo cáo</h3>
+                            <h3 class="fw-bold text-primary fs-4 mb-8 mx-0">Cấu hình</h3>
                             <!--end::Header-->
                             <!--begin::Body-->
                             <div class="mb-12 ps-4">
                                 <!--begin::Item-->
                                 <!--begin:Menu item-->
 {{--                                @if (App\Helper\check_sub_menu_permission('admin.reports.projects.index') == true)--}}
-{{--                                    <div data-kt-menu-trigger="click" class="menu-item here show menu-accordion">--}}
-{{--                                        <!--begin:Menu link-->--}}
-{{--                                        <!--begin:Menu link-->--}}
-{{--                                        <a class="menu-link p-0 fs-5 {{ Route::current()->getName() == 'admin.reports.projects.index' ? 'active' : '' }}"--}}
-{{--                                            href="{{ route('admin.reports.projects.index') }}">--}}
-{{--                                            <span class="menu-link">--}}
-{{--                                                <span class="menu-icon">--}}
-{{--                                                    <i class="fa-solid fa-file-contract fs-4"></i>--}}
-{{--                                                </span>--}}
-{{--                                                <span class="menu-title fw-medium fs-7">Báo cáo dự án</span>--}}
-{{--                                            </span>--}}
-{{--                                        </a>--}}
+                                    <div data-kt-menu-trigger="click" class="menu-item here show menu-accordion">
+                                        <!--begin:Menu link-->
+                                        <!--begin:Menu link-->
+                                        <a class="menu-link p-0 fs-5 {{ Route::current()->getName() == 'admin.salary-grades.index' ? 'active' : '' }}"
+                                            href="{{ route('admin.salary-grades.index') }}">
+                                            <span class="menu-link">
+                                                <span class="menu-icon">
+                                                    <i class="fa-solid fa-file-contract fs-4"></i>
+                                                </span>
+                                                <span class="menu-title fw-medium fs-7">Thang bảng lương</span>
+                                            </span>
+                                        </a>
 
-{{--                                    </div>--}}
+                                    </div>
 {{--                                @endif--}}
 {{--                                @if (App\Helper\check_sub_menu_permission('admin.reports.contracts.index') == true)--}}
 {{--                                    <div data-kt-menu-trigger="click" class="menu-item here show menu-accordion">--}}

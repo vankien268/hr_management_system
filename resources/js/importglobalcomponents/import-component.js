@@ -42,6 +42,8 @@ import RequestTicketList from '../components/request-tickets/RequestTicketList.v
 import WorkflowList from '../components/workflow/WorkflowList.vue';
 import HrmContactList from '../components/hrm-contacts/HrmContactList.vue';
 import HrmContractList from '../components/hrm-contracts/HrmContractList.vue';
+import SalaryGradeList from '../components/salary-grades/SalaryGradeList.vue';
+import TimekeepingList from '../components/timekeepings/TimekeepingList.vue';
 
 // import Select2 from 'vue3-select2-component';
 
@@ -89,5 +91,7 @@ const globalComponent = {
     WorkflowList,
     HrmContactList,
     HrmContractList,
+    SalaryGradeList,
+    TimekeepingList,
 }
 export default globalComponent

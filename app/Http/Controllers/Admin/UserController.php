@@ -294,6 +294,8 @@ class UserController extends Controller
                 $user->projectFunctionUsers()->detach();
                 $user->roles()->detach();
                $user->delete();
+
+                 DB::table('contacts')->where('user_id', $id)->delete();
                 DB::commit();
                 return $this->successResponse(['message' => trans('Xóa người dùng thành công !')]);
                 return $this->errorsResponse(["message" => trans("Không thể xóa người dùng vì đã phát sinh dữ liệu liên quan.")], 422);

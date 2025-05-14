@@ -5,7 +5,9 @@ use App\Http\Controllers\Admin\HrmContactController;
 use App\Http\Controllers\Admin\HrmContractController;
 use App\Http\Controllers\Admin\InternalFundController;
 use App\Http\Controllers\Admin\RequestTicketController;
+use App\Http\Controllers\Admin\SalaryGradeController;
 use App\Http\Controllers\Admin\TaxesController;
+use App\Http\Controllers\Admin\TimekeepingController;
 use App\Http\Controllers\Admin\UserLeaveDayController;
 use App\Http\Controllers\Admin\WorkflowController;
 use App\Http\Controllers\InitValueController;
@@ -348,6 +350,18 @@ Route::name('admin.')->prefix('/')->middleware(['auth', 'permission'])->group(fu
         Route::get('/', [InternalFundController::class, 'index'])->name('internal-fund.index');
         Route::put('/update', [InternalFundController::class, 'update'])->name('internal-fund.update');
         Route::get('/info', [InternalFundController::class, 'getInfoInternalFund'])->name('internal-fund.getInfoInternalFund');
+    });
+
+    Route::prefix('salary-grades')->group(function () {
+        Route::get('/', [SalaryGradeController::class, 'index'])->name('salary-grades.index');
+        Route::put('/update', [SalaryGradeController::class, 'update'])->name('salary-grades.update');
+        Route::get('/get-info', [SalaryGradeController::class, 'getInfoSalaryGrades'])->name('salary-grades.getInfoSalaryGrades');
+    });
+
+    Route::prefix('timekeepings')->group(function () {
+        Route::get('/', [TimekeepingController::class, 'index'])->name('timekeepings.index');
+        Route::put('/update', [TimekeepingController::class, 'update'])->name('timekeepings.update');
+        Route::get('/get-info', [TimekeepingController::class, 'getInfoTimekeepings'])->name('timekeepings.getInfoTimekeepings');
     });
 
     // # Khai báo nhân sự
