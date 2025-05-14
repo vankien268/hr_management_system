@@ -372,6 +372,21 @@
                                         </a>
 
                                     </div>
+
+                                <div data-kt-menu-trigger="click" class="menu-item here show menu-accordion">
+                                        <!--begin:Menu link-->
+                                        <!--begin:Menu link-->
+                                        <a class="menu-link p-0 fs-5 {{ Route::current()->getName() == 'admin.working-shift-settings.index' ? 'active' : '' }}"
+                                            href="{{ route('admin.working-shift-settings.index') }}">
+                                            <span class="menu-link">
+                                                <span class="menu-icon">
+                                                    <i class="fa-solid fa-file-contract fs-4"></i>
+                                                </span>
+                                                <span class="menu-title fw-medium fs-7">THIẾT LẬP CA LÀM VIỆC</span>
+                                            </span>
+                                        </a>
+
+                                    </div>
 {{--                                @endif--}}
 {{--                                @if (App\Helper\check_sub_menu_permission('admin.reports.contracts.index') == true)--}}
 {{--                                    <div data-kt-menu-trigger="click" class="menu-item here show menu-accordion">--}}

@@ -10,6 +10,24 @@
                             <!--begin::Card header-->
                             <div class="card-header">
                                 <h2 class="card-title fw-bold">Lịch chấm công</h2>
+
+                                <div class="d-flex align-items-center w-auto me-5">
+                                    <div class="w-100px">
+                                        <label for="customerCode" class="col-form-label"
+                                        >Ca chấm công</label>
+                                    </div>
+                                    <div class="w-325px" style="margin-top: -10px;">
+                                        <select class="form-select" style="height:29px;" v-model="shift_id" data-placeholder="Chọn ca chấm công" aria-label="Default select example">
+                                            <option :value="null">Vui lòng chọn</option>
+                                            <option :value="item.id" v-for="(item,index) in workingShiftSettings" :key="index">{{ item.shift_title }}</option>
+                                        </select>
+                                        <div class="w-100"></div>
+                                        <span v-if="errors.shift_id" class="text-danger">{{
+                                errors.shift_id[0]
+                            }}</span>
+                                    </div>
+                                </div>
+
                                 <div class="card-toolbar">
                                     <button v-if="! isComplete" class="btn btn-flex btn-primary" @click="updateTimekeeping()" data-kt-calendar="add">
                                        {{! isCheckIn ? 'Chấm công vào' : 'Chấm công ra' }}</button>
@@ -61,6 +79,8 @@
 
     ];
 
+    const shift_id = ref(0);
+
     const formTimekeeping = reactive({
         start_time: null,
         end_time: null,
@@ -80,7 +100,7 @@
         return axios({
             url: "/timekeepings/get-info",
             method: "GET",
-            params: params,
+            params: {...params, shift_id:shift_id.value},
         })
             .then((res) => {
                 isCheckIn.value = res?.data?.isCheckIn;
@@ -109,7 +129,7 @@
     const updateTimekeeping = () => {
         KTApp.showPageLoading();
         axios
-            .put("/timekeepings/update", {is_checkin: isCheckIn.value})
+            .put("/timekeepings/update", {is_checkin: isCheckIn.value, shift_id:shift_id.value})
             .then((res) => {
                 errors.value = [];
                 useToast.successToast(res.data.message);
@@ -212,9 +232,37 @@
 
     };
 
-    onMounted(() => {
-        const calendar = KTAppCalendar();
+    const workingShiftSettings = ref([]);
 
+    const getWorkingShiftSettings = (params = null) => {
+        KTApp.showPageLoading();
+        axios({
+            url: "/working-shift-settings/get-all",
+            method: "GET",
+            params: {...params,
+            is_timekeeping: true
+        },
+        })
+            .then((res) => {
+                const { data, meta } = res.data;
+                // console.log(meta);
+                workingShiftSettings.value = data;
+                // formWorkflow.users = [...data.users]
+                if( workingShiftSettings.value.length <= 1) {
+                    workingShiftSettings.value.forEach((item) => shift_id.value = item.id)
+                }
+                getMetaPaginate.value = meta;
+            })
+            .catch((error) => {
+                console.log(error);
+            }).finally(()=>{
+            KTApp.hidePageLoading();
+        });
+    };
+
+    onMounted(() => {
+        getWorkingShiftSettings();
+        const calendar = KTAppCalendar();
         getInfoTimekeeping().then(() => {
             calendar.init();
         });

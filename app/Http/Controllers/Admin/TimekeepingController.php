@@ -43,8 +43,15 @@ class TimekeepingController extends Controller
 
     public function getInfoTimekeepings(Request $request)
     {
+        if(! $request->shift_id) {
+            $working_shift_setting_id = DB::table('working_shift_users')
+                ->select('working_shift_setting_id')
+                ->where('user_id', auth()->user()->id)->first()->working_shift_setting_id;
+        }
+
         $timeKeepings = $this->timekeepingRepository->model()
             ->where('valid', 1)
+            ->where('shift_id', $working_shift_setting_id ?? $request->shift_id)
             ->get()->map(function ($item) {
                 $item->check_in_time =  $item->check_in ?  Carbon::parse($item->check_in)->format('H:i:s'): "";
                 $item->check_out_time =  $item->check_out ?  Carbon::parse($item->check_out)->format('H:i:s'): "";
@@ -53,8 +60,8 @@ class TimekeepingController extends Controller
 
         $data = [
             'timeKeepings' => $timeKeepings,
-            'isCheckIn' => $this->timekeepingRepository->model()->where('valid', 1)->whereDate('checkin_date', now()->format('Y-m-d'))->exists(),
-            'isComplete' => $this->timekeepingRepository->model()->where('valid', 1)->whereDate('checkin_date', now()->format('Y-m-d'))
+            'isCheckIn' => $this->timekeepingRepository->model()->where('shift_id',$working_shift_setting_id ?? $request->shift_id)->where('valid', 1)->whereDate('checkin_date', now()->format('Y-m-d'))->exists(),
+            'isComplete' => $this->timekeepingRepository->model()->where('shift_id',$working_shift_setting_id ?? $request->shift_id)->where('valid', 1)->whereDate('checkin_date', now()->format('Y-m-d'))
                 ->whereNotNull('check_in')
                 ->whereNotNull('check_out')
                 ->exists(),
@@ -69,6 +76,10 @@ class TimekeepingController extends Controller
     {
         $data = $request->all();
 
+        if(! $request->shift_id) {
+            return $this->errorsResponse(['shift_id' => ["Vui lòng chọn ca chấm công."]], 422);
+        }
+
         $isCheckin = $request->is_checkin;
 
         DB::beginTransaction();
@@ -80,6 +91,7 @@ class TimekeepingController extends Controller
                   'check_in'  => date('Y-m-d H:i:s'),
                   'check_out'  => null,
                   'checkin_date'  => date('Y-m-d'),
+                  'shift_id'  => $request->shift_id,
                 ];
 
                 $this->timekeepingRepository->create($attributes);

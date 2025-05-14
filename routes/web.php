@@ -10,6 +10,7 @@ use App\Http\Controllers\Admin\TaxesController;
 use App\Http\Controllers\Admin\TimekeepingController;
 use App\Http\Controllers\Admin\UserLeaveDayController;
 use App\Http\Controllers\Admin\WorkflowController;
+use App\Http\Controllers\Admin\WorkingShiftSettingController;
 use App\Http\Controllers\InitValueController;
 use App\Http\Controllers\SettingController;
 use App\Models\Notification;
@@ -385,6 +386,14 @@ Route::name('admin.')->prefix('/')->middleware(['auth', 'permission'])->group(fu
         Route::post('/update/{id}', [TaxesController::class, 'update'])->name('taxes.update');
         Route::delete('/destroy/{id}', [TaxesController::class, 'destroy'])->name('taxes.destroy');
         Route::get('/get-all', [TaxesController::class, 'getAllTaxes'])->name('taxes.getAllTaxes');
+    });
+
+    Route::prefix('working-shift-settings')->group(function () {
+        Route::get('/', [WorkingShiftSettingController::class, 'index'])->name('working-shift-settings.index');
+        Route::post('/store', [WorkingShiftSettingController::class, 'store'])->name('working-shift-settings.store');
+        Route::put('/update/{id}', [WorkingShiftSettingController::class, 'update'])->name('working-shift-settings.update');
+        Route::delete('/destroy/{id}', [WorkingShiftSettingController::class, 'destroy'])->name('working-shift-settings.destroy');
+        Route::get('/get-all', [WorkingShiftSettingController::class, 'getAllWorkingShiftSettings'])->name('working-shift-settings.getAllWorkingShiftSettings');
     });
 
     // # Khai báo hợp đồng
