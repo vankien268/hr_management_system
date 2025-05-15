@@ -30,7 +30,24 @@
                                                     <i class="fa-solid fa-microchip fs-4"></i>
                                                 </span>
                                                 <span
-                                                    class="menu-title fw-medium fs-7">{{ trans('Chấm công') }}</span>
+                                                    class="menu-title fw-medium fs-7">{{ trans('Chấm công theo ca') }}</span>
+                                            </span>
+                                        </a>
+
+                                    </div>
+{{--                                @endif--}}
+
+{{--                                @if (App\Helper\check_sub_menu_permission('admin.hrm-contacts.index') == true)--}}
+                                    <div data-kt-menu-trigger="click" class="menu-item here show menu-accordion">
+                                        <!--begin:Menu link-->
+                                        <a class="menu-link p-0 {{ Route::current()->getName() == 'admin.timekeeping-users.index' ? 'active' : '' }}"
+                                           href="{{ route('admin.timekeeping-users.index') }}">
+                                            <span class="menu-link">
+                                                <span class="menu-icon">
+                                                    <i class="fa-solid fa-microchip fs-4"></i>
+                                                </span>
+                                                <span
+                                                    class="menu-title fw-medium fs-7">{{ trans('Quản lý chấm công theo ca') }}</span>
                                             </span>
                                         </a>
 

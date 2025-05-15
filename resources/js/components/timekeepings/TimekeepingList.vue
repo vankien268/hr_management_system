@@ -16,8 +16,8 @@
                                         <label for="customerCode" class="col-form-label"
                                         >Ca chấm công</label>
                                     </div>
-                                    <div class="w-325px" style="margin-top: -10px;">
-                                        <select class="form-select" style="height:29px;" v-model="shift_id" data-placeholder="Chọn ca chấm công" aria-label="Default select example">
+                                    <div class="w-325px" >
+                                        <select @change="selectWorkingShiftSetting($event.target.value)" class="form-select" style="height:29px;" v-model="shift_id" data-placeholder="Chọn ca chấm công" aria-label="Default select example">
                                             <option :value="null">Vui lòng chọn</option>
                                             <option :value="item.id" v-for="(item,index) in workingShiftSettings" :key="index">{{ item.shift_title }}</option>
                                         </select>
@@ -123,6 +123,14 @@
                 KTApp.hidePageLoading();
             });
     };
+
+    const selectWorkingShiftSetting = (value) => {
+        const calendar = KTAppCalendar();
+
+        getInfoTimekeeping().then(() => {
+            calendar.init();
+        });
+    }
 
     const errors = ref([]);
 

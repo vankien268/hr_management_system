@@ -483,7 +483,7 @@
                 changePage(getMetaPaginate.value.pagination);
             })
             .catch((error) => {
-                errors.value = error.response.data.errors;
+                errors.value = error.response?.data?.errors;
             }).finally(()=>{
             KTApp.hidePageLoading();
         });

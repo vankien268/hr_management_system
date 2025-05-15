@@ -356,8 +356,6 @@
 <script setup>
     import SelectSearch from "../input/SelectSearch.vue";
     import InputSearch from "../input/InputSearch.vue";
-    import VueDatePicker from '@vuepic/vue-datepicker';
-    import '@vuepic/vue-datepicker/dist/main.css'
     import Multiselect from 'vue-multiselect'
     import TimePicker from './TimePicker.vue';
 

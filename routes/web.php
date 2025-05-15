@@ -8,6 +8,7 @@ use App\Http\Controllers\Admin\RequestTicketController;
 use App\Http\Controllers\Admin\SalaryGradeController;
 use App\Http\Controllers\Admin\TaxesController;
 use App\Http\Controllers\Admin\TimekeepingController;
+use App\Http\Controllers\Admin\TimeKeepingUserController;
 use App\Http\Controllers\Admin\UserLeaveDayController;
 use App\Http\Controllers\Admin\WorkflowController;
 use App\Http\Controllers\Admin\WorkingShiftSettingController;
@@ -363,6 +364,12 @@ Route::name('admin.')->prefix('/')->middleware(['auth', 'permission'])->group(fu
         Route::get('/', [TimekeepingController::class, 'index'])->name('timekeepings.index');
         Route::put('/update', [TimekeepingController::class, 'update'])->name('timekeepings.update');
         Route::get('/get-info', [TimekeepingController::class, 'getInfoTimekeepings'])->name('timekeepings.getInfoTimekeepings');
+    });
+
+    Route::prefix('timekeeping-users')->group(function () {
+        Route::get('/', [TimeKeepingUserController::class, 'index'])->name('timekeeping-users.index');
+        Route::put('/update', [TimeKeepingUserController::class, 'update'])->name('timekeeping-users.update');
+        Route::get('/get-all', [TimeKeepingUserController::class, 'getInfoTimekeepingUsers'])->name('timekeeping-users.getInfoTimekeepingUsers');
     });
 
     // # Khai báo nhân sự
