@@ -640,7 +640,7 @@
 
                                 <div class="row g-3 align-items-center col-lg-12"  style="margin-top: 1px;">
                                     <div class="col-lg-3">
-                                        <label for="taxCode" class="required col-form-label">Bậc lương
+                                        <label for="taxCode" class="required col-form-label">Bậc lương {{dataUpdate.pay_range_id}}
                                         </label>
                                         <base-validation />
                                     </div>
@@ -824,9 +824,6 @@
 
     const editAction = ref(false);
 
-    const setAction = (action) => {
-        modalAction.value = action;
-    };
 
     const dataUpdate = ref({
         id: null,
@@ -885,6 +882,7 @@
 
     const setDataUpdate = (data, action = "view") => {
         dataUpdate.value = {...data};
+        console.log(dataUpdate.value, 'data click update')
         modalAction.value = action;
         editAction.value = true;
         if(dataUpdate.value.department_id) {
@@ -1091,6 +1089,7 @@
         errors.value = [];
         detailView.value = false;
         dataUpdate.value = {};
+        isClickContractUpdate.value = false;
     };
 
     const filteredUsers = ref([]);
@@ -1224,7 +1223,6 @@
     const handlePayRange = (value) => {
         let payRoll = payRollList.value.find(item => item.id === dataUpdate.value.pay_roll_id)
         let payRange =   payRoll.pay_ranges.find((item) => item.id == value)
-        dataUpdate.value.pay_range_id  = value;
         infoPayRoll.position_based_pay = payRange.position_based_pay;
         infoPayRoll.person_based_pay = payRange.person_based_pay;
         infoPayRoll.performance_based_pay = payRange.performance_based_pay;
@@ -1301,6 +1299,82 @@
             infoSalaryGrade.performance = 0
         }
     }
+
+    const setAction = (action) => {
+        modalAction.value = action;
+        isClickContractUpdate.value = true;
+
+        let payRoll = payRollList.value.find(item => item.id === dataUpdate.value.pay_roll_id)
+        let payRange =   payRoll.pay_ranges.find((item) => item.id == dataUpdate.value.pay_range_id)
+
+
+        if(dataUpdate.value.pay_roll_id) {
+            payRanges.value = payRoll.pay_ranges
+            infoPayRoll.position_based_pay = payRange.position_based_pay;
+            infoPayRoll.person_based_pay = payRange.person_based_pay;
+            infoPayRoll.performance_based_pay = payRange.performance_based_pay;
+        }else {
+            payRanges.value = [];
+            dataUpdate.value.pay_range_id = null;
+            infoPayRoll.position_based_pay = null;
+            infoPayRoll.person_based_pay = null;
+            infoPayRoll.performance_based_pay = null;
+        }
+
+
+        const salaryGrade = salaryGradeList.value.find(item => item.id === dataUpdate.value.salary_grade_id)
+
+        if(salaryGrade) {
+            levelSalaryGrade.value = [
+                {
+                    level : 1,
+                    column : "coefficient_one",
+                    value : "one",
+                },
+                {
+                    level : 2,
+                    column : "coefficient_two",
+                    value : "two",
+                },
+                {
+                    level : 3,
+                    column : "coefficient_three",
+                    value : "three",
+                },
+                {
+                    level : 4,
+                    column : "coefficient_four",
+                    value : "four",
+                },
+                {
+                    level : 5,
+                    column : "coefficient_five",
+                    value : "five",
+                },
+                {
+                    level : 6,
+                    column : "coefficient_six",
+                    value : "six",
+                },
+                {
+                    level : 7,
+                    column : "coefficient_seven",
+                    value : "seven",
+                },
+                {
+                    level : 8,
+                    column : "coefficient_eight",
+                    value : "eight",
+                }
+            ]
+            infoSalaryGrade.salary_value = salaryGrade["value_" + dataUpdate.value.salary_grade_value]
+            infoSalaryGrade.performance = salaryGrade.attributes["performance_" + dataUpdate.value.salary_grade_value]
+        }else {
+            levelSalaryGrade.value = [];
+            infoSalaryGrade.salary_value = 0
+            infoSalaryGrade.performance = 0
+        }
+    };
 
     onBeforeMount(() => {
         getData();
