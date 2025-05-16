@@ -13,6 +13,7 @@ use App\Http\Controllers\Admin\UserLeaveDayController;
 use App\Http\Controllers\Admin\WorkflowController;
 use App\Http\Controllers\Admin\WorkingShiftSettingController;
 use App\Http\Controllers\InitValueController;
+use App\Http\Controllers\Admin\PayRollController;
 use App\Http\Controllers\SettingController;
 use App\Models\Notification;
 use Illuminate\Support\Facades\Route;
@@ -410,6 +411,14 @@ Route::name('admin.')->prefix('/')->middleware(['auth', 'permission'])->group(fu
         Route::put('/update/{id}', [HrmContractController::class, 'update'])->name('hrm-contracts.update');
         Route::delete('/destroy/{id}', [HrmContractController::class, 'destroy'])->name('hrm-contracts.destroy');
         Route::get('/get-all', [HrmContractController::class, 'getAllHrmContracts'])->name('hrm-contracts.getAllHrmContracts');
+    });
+
+    Route::prefix('pay-rolls')->group(function () {
+        Route::get('/', [PayRollController::class, 'index'])->name('pay-rolls.index');
+        Route::post('/store', [PayRollController::class, 'store'])->name('pay-rolls.store');
+        Route::put('/update/{id}', [PayRollController::class, 'update'])->name('pay-rolls.update');
+        Route::delete('/destroy/{id}', [PayRollController::class, 'destroy'])->name('pay-rolls.destroy');
+        Route::get('/get-all', [PayRollController::class, 'getAllPayRolls'])->name('pay-rolls.getAllPayRolls');
     });
 
 //    // # Khai báo bảo hiểm

@@ -259,7 +259,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h4 class="modal-title">
-                        {{detaiView ? 'Thông tin hợp đồng' : 'Sửa hợp đồng'}}
+                        {{isClickContractUpdate ? 'Sửa thông tin hợp đồng' : 'Thêm mới hợp đồng'}}
                     </h4>
 
                     <div class="btn btn-icon btn-sm btn-active-light-primary btn-color-white ms-2" data-bs-dismiss="modal" @click="closeModal()">
@@ -384,6 +384,20 @@
                                 </div>
                             </div>
 
+                            <div class="row g-3 align-items-center col-lg-12 mt-1"  >
+                                <div class="col-lg-3">
+                                    <label for="taxCode" class=" col-form-label">Hình thức làm việc
+                                    </label>
+                                    <base-validation />
+                                </div>
+                                <div class="col-lg-9">
+                                    <input   placeholder="Hình thức làm việc" :disabled="detailView" type="text" v-model="dataUpdate.work_type"
+                                             class="form-control mb-lg-0 p-2"
+                                    />
+                                    <base-validation :message="errors?.work_type" />
+                                </div>
+                            </div>
+
                             <div class="row g-3 align-items-center col-lg-12">
                                 <div class="col-lg-6">
                                     <label for="customerCode" class=" col-form-label"><b style="font-size: 16px;">THÔNG TIN NGƯỜI LAO ĐỘNG</b></label>
@@ -485,37 +499,167 @@
 
                             </div>
 
-                            <div class="row g-3 align-items-center col-lg-12" >
+                            <div class="row g-3 align-items-center col-lg-12"  style="margin-top: 1px;">
                                 <div class="col-lg-3">
-                                    <label for="taxCode" class=" col-form-label">Hình thức làm việc
+                                    <label for="taxCode" class="required col-form-label">Loại tính lương
                                     </label>
                                     <base-validation />
                                 </div>
                                 <div class="col-lg-9">
-                                    <input   placeholder="Hình thức làm việc" :disabled="detailView" type="text" v-model="dataUpdate.work_type"
-                                            class="form-control mb-lg-0 p-2"
-                                    />
-                                    <base-validation :message="errors?.work_type" />
+                                    <select class="form-select"
+                                            :class="{'input-custom-valid': errors.salary_type}"
+                                            style="height:29px;" v-model="dataUpdate.salary_type" data-placeholder="Chọn loại tính lương" aria-label="Default select example">
+                                        <option :value="null">Vui lòng chọn</option>
+                                        <option :value="1">Tính lương theo thang bậc lương</option>
+                                        <option :value="2">Tính lương theo bậc vị trí</option>
+                                    </select>
+                                    <base-validation :message="errors?.salary_type" />
                                 </div>
                             </div>
 
-                            <div class="row g-3 align-items-center col-lg-12"  style="margin-top: 1px;">
-                                <div class="col-lg-3">
-                                    <label for="taxCode" class="required col-form-label">Lương cơ bản
-                                    </label>
-                                    <base-validation />
+                           <div v-if="dataUpdate.salary_type == 1 || dataUpdate.salary_type == 2"
+                                class="mb-5"
+                                style="background:#e5e7eb;border:1px solid #e5e7eb;border-radius: 5px;">
+                               <div class="row g-3 align-items-center col-lg-12"  style="margin-top: 1px;">
+                                   <div class="col-lg-3">
+                                       <label for="taxCode" class="required col-form-label">Thang bậc lương
+                                       </label>
+                                       <base-validation />
+                                   </div>
+                                   <div class="col-lg-9">
+                                       <select class="form-select"
+                                               @change="handleSalaryGrade()"
+                                               :class="{'input-custom-valid': errors.salary_grade_id}"
+                                               style="height:29px;" v-model="dataUpdate.salary_grade_id" data-placeholder="Chọn thang bậc lương" aria-label="Default select example">
+                                           <option :value="null">Vui lòng chọn</option>
+                                           <option
+                                               v-for="(item, index) in salaryGradeList"
+                                               :key="index"
+                                               :value="item.id"
+                                           >
+                                               {{ item.name }}
+                                           </option>
+                                       </select>
+                                       <base-validation :message="errors?.salary_grade_id" />
+                                   </div>
+                               </div>
+
+                               <div class="row g-3 align-items-center col-lg-12"  style="margin-top: 1px;">
+                                   <div class="col-lg-3">
+                                       <label for="taxCode" class=" col-form-label">
+                                       </label>
+                                       <base-validation />
+                                   </div>
+                                   <div class="col-lg-9" style="margin-top:-2px;">
+                                       <div>
+                                           <div class="mb-2">
+                                               Lương cơ bản: <b>{{ formatNumber(infoSalaryGrade.salary_value) }}</b>
+                                           </div>
+                                           <div class="mb-2">
+                                               Lương theo năng lực: <b>{{ formatNumber(infoSalaryGrade.performance) }}</b>
+                                           </div>
+                                           <div>
+                                               <b>Tổng: {{formatNumber(infoSalaryGrade.salary_value + infoSalaryGrade.performance)}}</b>
+                                           </div>
+                                       </div>
+                                   </div>
+                               </div>
+
+                               <div class="row g-3 align-items-center col-lg-12"  style="margin-top: 1px;">
+                                   <div class="col-lg-3">
+                                       <label for="taxCode" class="required col-form-label">Bậc lương
+                                       </label>
+                                       <base-validation />
+                                   </div>
+                                   <div class="col-lg-9">
+                                       <select class="form-select"
+                                               @change="handleLevelSalaryGrade($event.target.value)"
+                                               :class="{'input-custom-valid': errors.salary_grade_value}"
+                                               style="height:29px;" v-model="dataUpdate.salary_grade_value" data-placeholder="Chọn bậc lương" aria-label="Default select example">
+                                           <option :value="null">Vui lòng chọn</option>
+                                           <option
+                                               v-for="(item, index) in levelSalaryGrade"
+                                               :key="index"
+                                               :value="item.value"
+                                           >
+                                               Bậc {{ item.level }}
+                                           </option>
+                                       </select>
+                                       <base-validation :message="errors?.salary_grade_value" />
+                                   </div>
+                               </div>
+                           </div>
+
+                            <div v-if="dataUpdate.salary_type == 2" style="background:#e5e7eb;border:1px solid #e5e7eb;border-radius: 5px;">
+                                <div class="row g-3 align-items-center col-lg-12"  style="margin-top: 1px;">
+                                    <div class="col-lg-3">
+                                        <label for="taxCode" class="required col-form-label">Bậc lương vị trí
+                                        </label>
+                                        <base-validation />
+                                    </div>
+                                    <div class="col-lg-9">
+                                        <select class="form-select"
+                                              @change="handlePayRoll()"  :class="{'input-custom-valid': errors.pay_roll_id}"
+                                                style="height:29px;" v-model="dataUpdate.pay_roll_id" data-placeholder="Chọn bậc lương vị trí" aria-label="Default select example">
+                                            <option :value="null">Vui lòng chọn</option>
+                                            <option
+                                                v-for="(item, index) in payRollList"
+                                                :key="index"
+                                                :value="item.id"
+                                            >
+                                                {{ item.pay_roll_name }}
+                                            </option>
+                                        </select>
+                                        <base-validation :message="errors?.pay_roll_id" />
+                                    </div>
                                 </div>
-                                <div class="col-lg-9">
-                                    <input   placeholder="Lương cơ bản"
 
-                                             :value="formatNumber(dataUpdate.basic_salary)"
-                                             @input="onInputMoney($event, 'basic_salary')"
+                                <div class="row g-3 align-items-center col-lg-12"  style="margin-top: 1px;">
+                                    <div class="col-lg-3">
+                                        <label for="taxCode" class=" col-form-label">
+                                        </label>
+                                        <base-validation />
+                                    </div>
+                                    <div class="col-lg-9" style="margin-top:-2px;">
+                                        <div>
+                                            <div class="mb-2">
+                                                Lương P1: <b>{{infoPayRoll.position_based_pay ? formatNumber(infoPayRoll.position_based_pay) : null}}</b>
+                                            </div>
+                                            <div class="mb-2">
+                                                Lương P2: <b>{{infoPayRoll.person_based_pay ? formatNumber(infoPayRoll.person_based_pay): null}}</b>
+                                            </div>
+                                            <div class="mb-2">
+                                                Lương hiệu suất công việc P3: <b>{{infoPayRoll.performance_based_pay ? formatNumber(infoPayRoll.performance_based_pay) : null}}</b>
+                                            </div>
+                                            <div>
+                                                <b>Tổng: {{formatNumber(infoPayRoll.position_based_pay + infoPayRoll.person_based_pay + infoPayRoll.performance_based_pay)}}</b>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
 
-                                        :class="{'input-custom-valid': errors.basic_salary}"
-                                        :disabled="detailView" type="text"
-                                            class="form-control mb-lg-0 p-2"
-                                    />
-                                    <base-validation :message="errors?.basic_salary" />
+                                <div class="row g-3 align-items-center col-lg-12"  style="margin-top: 1px;">
+                                    <div class="col-lg-3">
+                                        <label for="taxCode" class="required col-form-label">Bậc lương
+                                        </label>
+                                        <base-validation />
+                                    </div>
+                                    <div class="col-lg-9">
+                                        <select class="form-select"
+                                                @change="handlePayRange($event.target.value)"
+                                                :class="{'input-custom-valid': errors.pay_range_id}"
+                                                style="height:29px;" v-model="dataUpdate.pay_range_id" data-placeholder="Chọn bậc lương" aria-label="Default select example">
+                                            <option :value="null">Vui lòng chọn</option>
+                                            <option
+                                                v-for="(item, index) in payRanges"
+                                                :key="index"
+                                                :value="item.id"
+                                            >
+                                                Bậc {{ item.level }}
+                                            </option>
+                                        </select>
+                                        <base-validation :message="errors?.pay_range_id" />
+                                    </div>
                                 </div>
                             </div>
 
@@ -567,11 +711,11 @@
 
                 </div>
 
-                <div class="modal-footer" v-if = "! detailView"  >
+                <div class="modal-footer" >
 
                     <button type="button" class="btn btn-function me-4"
                             @click.prevent="
-                                    editAction
+                                    isClickContractUpdate
                                         ? updateHrmContract()
                                         : storeContract()
                                 ">
@@ -696,11 +840,16 @@
         register_date: null,
         time_limited: null,
         work_type: null,
-        basic_salary: null,
+        salary_type: null,
         effective_date: null,
         expiration_date: null,
         allowances: [],
         note: null,
+        pay_roll_id: null,
+        pay_range_id: null,
+
+        salary_grade_id: null,
+        salary_grade_value: null,
     });
 
     const isClickContractUpdate = ref(false);
@@ -1017,6 +1166,141 @@
             KTApp.hidePageLoading();
         });
     };
+    const payRollList = ref([]);
+
+    const getPayRolls = () => {
+        axios.get('/pay-rolls/get-all')
+            .then((res) => {
+                const { data, meta } = res.data;
+                payRollList.value = data;
+            })
+            .catch((error) => {
+                console.log(error);
+            }).finally(()=>{
+            KTApp.hidePageLoading();
+        });
+    };
+
+    const salaryGradeList = ref([]);
+
+    const getSalaryGrades = () => {
+        axios.get('/salary-grades/get-info')
+            .then((res) => {
+                const { data, meta } = res.data;
+                salaryGradeList.value = data;
+            })
+            .catch((error) => {
+                console.log(error);
+            }).finally(()=>{
+            KTApp.hidePageLoading();
+        });
+    };
+
+    const infoPayRoll = reactive({
+        position_based_pay: null,
+        person_based_pay: null,
+        performance_based_pay: null,
+    });
+
+    const payRanges = ref([]);
+
+    const handlePayRoll = () => {
+        const payRoll = payRollList.value.find(item => item.id === dataUpdate.value.pay_roll_id)
+        if(dataUpdate.value.pay_roll_id) {
+            payRanges.value = payRoll.pay_ranges
+            dataUpdate.value.pay_range_id = null;
+            infoPayRoll.position_based_pay = null;
+            infoPayRoll.person_based_pay = null;
+            infoPayRoll.performance_based_pay = null;
+        }else {
+            payRanges.value = [];
+            dataUpdate.value.pay_range_id = null;
+            infoPayRoll.position_based_pay = null;
+            infoPayRoll.person_based_pay = null;
+            infoPayRoll.performance_based_pay = null;
+        }
+    }
+
+    const handlePayRange = (value) => {
+        let payRoll = payRollList.value.find(item => item.id === dataUpdate.value.pay_roll_id)
+        let payRange =   payRoll.pay_ranges.find((item) => item.id == value)
+        dataUpdate.value.pay_range_id  = value;
+        infoPayRoll.position_based_pay = payRange.position_based_pay;
+        infoPayRoll.person_based_pay = payRange.person_based_pay;
+        infoPayRoll.performance_based_pay = payRange.performance_based_pay;
+    }
+
+    const infoSalaryGrade = reactive({
+        salary_value: 0,
+        performance: 0
+    });
+
+    const levelSalaryGrade = ref([]);
+
+    const handleLevelSalaryGrade = (column) => {
+        const salaryGrade = salaryGradeList.value.find(item => item.id === dataUpdate.value.salary_grade_id)
+        if(salaryGrade) {
+            infoSalaryGrade.salary_value = salaryGrade["value_" + column]
+            infoSalaryGrade.performance = salaryGrade.attributes["performance_" + column]
+            dataUpdate.value.salary_grade_value = column;
+        }
+    }
+
+    const handleSalaryGrade = () => {
+        const salaryGrade = salaryGradeList.value.find(item => item.id === dataUpdate.value.salary_grade_id)
+        if(dataUpdate.value.salary_grade_id) {
+            levelSalaryGrade.value = [
+                {
+                    level : 1,
+                    column : "coefficient_one",
+                    value : "one",
+                },
+                {
+                    level : 2,
+                    column : "coefficient_two",
+                    value : "two",
+                },
+                {
+                    level : 3,
+                    column : "coefficient_three",
+                    value : "three",
+                },
+                {
+                    level : 4,
+                    column : "coefficient_four",
+                    value : "four",
+                },
+                {
+                    level : 5,
+                    column : "coefficient_five",
+                    value : "five",
+                },
+                {
+                    level : 6,
+                    column : "coefficient_six",
+                    value : "six",
+                },
+                {
+                    level : 7,
+                    column : "coefficient_seven",
+                    value : "seven",
+                },
+                {
+                    level : 8,
+                    column : "coefficient_eight",
+                    value : "eight",
+                }
+            ]
+            dataUpdate.value.salary_grade_value = null;
+            infoSalaryGrade.salary_value = 0
+            infoSalaryGrade.performance = 0
+        }else {
+            levelSalaryGrade.value = [];
+            dataUpdate.value.salary_grade_value = null;
+            infoSalaryGrade.salary_value = 0
+            infoSalaryGrade.performance = 0
+        }
+    }
 
     onBeforeMount(() => {
         getData();
@@ -1024,6 +1308,8 @@
         getContractTypes();
         getUsers();
         getAllowances();
+        getPayRolls();
+        getSalaryGrades();
     });
 
 </script>

@@ -312,16 +312,13 @@
     };
 
     const onInputMoney = (e, fieldName, index) => {
-        let raw = e.target.value;
+        const raw = e.target.value;
 
-        // Thay dấu phẩy thành dấu chấm để đảm bảo chuẩn số thập phân
-        raw = raw.replace(',', '.');
+        // Loại bỏ mọi ký tự không phải số
+        const cleaned = raw.replace(/[^\d]/g, '');
 
-        // Loại bỏ các ký tự không hợp lệ (chỉ cho phép số và dấu chấm)
-        raw = raw.replace(/[^\d.]/g, '');
-
-        // Parse số thực
-        const unformatted = raw ? parseFloat(raw) : 0;
+        // Nếu không có số nào, set về 0 (hoặc '', tuỳ bạn)
+        let unformatted = cleaned ? parseFloat(cleaned) : 0;
 
         // Gán lại hệ số vào object
         formSalaryGrade.salary_grades[index][fieldName] = unformatted;

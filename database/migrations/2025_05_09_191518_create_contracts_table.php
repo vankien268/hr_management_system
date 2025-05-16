@@ -27,14 +27,19 @@ return new class extends Migration
             $table->dateTime('register_date')->nullable();
             $table->string('time_limited')->nullable()->comment('Thời hạn hợp đồng');
             $table->string('work_type')->nullable()->comment('Hình thức thử việc');
-            $table->float('basic_salary')->nullable()->comment('Mức lương cơ bản');
             $table->dateTime('effective_date')->nullable()->comment('Ngày bắt đầu hiệu lực');
             $table->dateTime('expiration_date')->nullable()->comment('Ngày kết thúc hiệu lực');
             $table->string('allowances')->nullable();
             $table->tinyInteger('valid')->default(1)->nullable();
+            $table->tinyInteger('salary_type')->nullable()->comment('Loại lương');
+            $table->unsignedBigInteger('pay_roll_id')->nullable();
+            $table->unsignedBigInteger('pay_range_id')->nullable();
+
+            $table->unsignedBigInteger('salary_grade_id')->nullable();
+            $table->string('salary_grade_value')->nullable();
+
 
             $table->text('note')->nullable();
-            $table->softDeletes();
             $table->unsignedBigInteger('created_by')->nullable();
             $table->unsignedBigInteger('updated_by')->nullable();
             $table->unsignedBigInteger('deleted_by')->nullable();

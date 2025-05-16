@@ -46,6 +46,7 @@ import SalaryGradeList from '../components/salary-grades/SalaryGradeList.vue';
 import TimekeepingList from '../components/timekeepings/TimekeepingList.vue';
 import WorkingShiftSettingList from '../components/working-shift-settings/WorkingShiftSettingList.vue';
 import TimekeepingUserList from '../components/timekeeping-users/TimekeepingUserList.vue';
+import PayRollList from '../components/pay-rolls/PayRollList.vue';
 
 // import Select2 from 'vue3-select2-component';
 
@@ -97,5 +98,6 @@ const globalComponent = {
     TimekeepingList,
     WorkingShiftSettingList,
     TimekeepingUserList,
+    PayRollList,
 }
 export default globalComponent

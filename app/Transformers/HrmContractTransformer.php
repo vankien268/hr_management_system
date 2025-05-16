@@ -37,6 +37,7 @@ class HrmContractTransformer extends TransformerAbstract
             'id' => $entry->id,
             'contract_code' => $entry->contract_code,
             'contract_name' => $entry->contract_name,
+            'salary_type' => $entry->salary_type,
             'contract_number' => $entry->contract_number,
             'contract_type_id' => $entry->contract_type_id,
             'department_id' => $entry->department_id,
@@ -53,6 +54,10 @@ class HrmContractTransformer extends TransformerAbstract
             'expiration_date' => $entry->expiration_date ? Carbon::parse($entry->expiration_date)->format('Y-m-d') : null,
             'allowances' => $entry->allowances ? explode(',', $entry->allowances) : [],
             'note' => $entry->note,
+            'pay_roll_id' => $entry->pay_roll_id,
+            'pay_range_id' => $entry->pay_range_id,
+            'salary_grade_id' => $entry->salary_grade_id,
+            'salary_grade_value' => $entry->salary_grade_value,
             'department_name' => $entry->department->name ?? '',
         ];
     }

@@ -29,6 +29,11 @@ class HrmContract extends Model
         'allowances',
         'note',
         'valid',
+        'salary_type',
+        'pay_roll_id',
+        'pay_range_id',
+        'salary_grade_id',
+        'salary_grade_value',
     ];
 
     public function department()

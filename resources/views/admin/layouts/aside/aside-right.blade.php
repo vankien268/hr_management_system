@@ -391,6 +391,21 @@
                                     </div>
 
                                 <div data-kt-menu-trigger="click" class="menu-item here show menu-accordion">
+                                    <!--begin:Menu link-->
+                                    <!--begin:Menu link-->
+                                    <a class="menu-link p-0 fs-5 {{ Route::current()->getName() == 'admin.pay-rolls.index' ? 'active' : '' }}"
+                                       href="{{ route('admin.pay-rolls.index') }}">
+                                            <span class="menu-link">
+                                                <span class="menu-icon">
+                                                    <i class="fa-solid fa-file-contract fs-4"></i>
+                                                </span>
+                                                <span class="menu-title fw-medium fs-7">BẬC LƯƠNG VỊ TRÍ</span>
+                                            </span>
+                                    </a>
+
+                                </div>
+
+                                <div data-kt-menu-trigger="click" class="menu-item here show menu-accordion">
                                         <!--begin:Menu link-->
                                         <!--begin:Menu link-->
                                         <a class="menu-link p-0 fs-5 {{ Route::current()->getName() == 'admin.working-shift-settings.index' ? 'active' : '' }}"
