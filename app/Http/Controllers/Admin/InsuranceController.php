@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\InsuranceUpdateRequest;
 use App\Http\Requests\TaxRequestStore;
 use App\Http\Requests\TaxRequestUpdate;
 use App\Models\Setting;
@@ -31,78 +32,68 @@ class InsuranceController extends Controller
             'pageName' => trans('Khai báo bảo hiểm'),
             'btnAdd' => true,
         ];
-        return view('admin.taxes.index')->with($data);
+        return view('admin.insurances.index')->with($data);
     }
 
-    public function getAllTaxes(Request $request)
+    public function getAllInsurances(Request $request)
     {
-        $taxes = $this->settingRepository->model()
-            ->where('type', Setting::TYPE_TAX_CALCUL)
+        $type = $request->type;
+
+        $insurances = $this->settingRepository->model()
+            ->where('type', $type)
             ->where('valid', 1)
             ->orderByDesc('id')->get();
 
         $this->setTransformer(new SettingTransformer());
 
         return $this->responseCollection(
-            $taxes,
+            $insurances,
             200
         );
     }
 
-    public function store(TaxRequestStore $request)
+    public function update(InsuranceUpdateRequest $request)
     {
-        $data = $request->all();
+        $type = $request->type;
+        $insurances = $request->insurances;
+
+        $remove_insurance_ids = $request->remove_insurance_ids;
+
         DB::beginTransaction();
         try {
-            $this->settingRepository->create([
-                'value' => $data,
-                'type' => Setting::TYPE_TAX_CALCUL
-            ]);
+            if($insurances) {
+                foreach ($insurances as $item) {
+                    $salaryGrade = $this->settingRepository->model()
+                        ->where('valid', 1)
+                        ->where('type', $type)
+                        ->where('id', $item['id'] ?? 0)
+                        ->first();
+
+                    unset($item['id'], $item['idSave']);
+
+                    if($salaryGrade) {
+                        $salaryGrade->update(['value' => json_encode($item)]);
+                        continue;
+                    }
+
+                    $this->settingRepository->create([
+                        'type' => $type,
+                        'valid' => 1,
+                        'value' => json_encode($item)
+                    ]);
+                }
+            }
+
+            if($remove_insurance_ids) {
+                $this->settingRepository->model()
+                    ->whereIn('id', $remove_insurance_ids)->delete();
+            }
+
             DB::commit();
-            return $this->successResponse(['message' => trans('Thêm thuế thành công!')]);
+            return $this->successResponse(['message' => trans('Cập nhật bảo hiểm thành công!')]);
         } catch (\Throwable $th) {
             DB::rollBack();
             return $this->errorResponse($th->getMessage());
-        }
-    }
-
-    public function update($id, TaxRequestUpdate $request)
-    {
-        $tax = $this->settingRepository->find($id);
-
-        if (! $tax) {
-            return $this->errorsResponse(['message' => trans('Thuế không tồn tại.')], 422);
-        }
-
-        DB::beginTransaction();
-        try {
-            $data = $request->all();
-
-            $tax->update(['value' => $data]);
-            DB::commit();
-            return $this->successResponse(['tax' => $tax->refresh(), 'message' => trans('Sửa thuế thành công!')]);
-        } catch (\Throwable $th) {
-            DB::rollBack();
-            return $this->errorResponse($th->getMessage());
-        }
-    }
-
-    public function destroy($id)
-    {
-        $tax = $this->settingRepository->find($id);
-
-        if (! $tax) {
-            return $this->errorsResponse(['message' => trans('Thuế không tồn tại.')], 422);
-        }
-
-        DB::beginTransaction();
-        try {
-            $tax->update(['valid' => 0]);
-            DB::commit();
-            return $this->successResponse(['message' => trans('Xóa thuế thành công!')]);
-        } catch (\Throwable $throwable) {
-            DB::rollBack();
-            return $this->errorResponse($throwable->getMessage());
         }
     }
 }

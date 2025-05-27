@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\AllowanceController;
 use App\Http\Controllers\Admin\HrmContactController;
 use App\Http\Controllers\Admin\HrmContractController;
+use App\Http\Controllers\Admin\InsuranceController;
 use App\Http\Controllers\Admin\InternalFundController;
 use App\Http\Controllers\Admin\RequestTicketController;
 use App\Http\Controllers\Admin\SalaryGradeController;
@@ -12,6 +13,7 @@ use App\Http\Controllers\Admin\TimeKeepingUserController;
 use App\Http\Controllers\Admin\UserLeaveDayController;
 use App\Http\Controllers\Admin\WorkflowController;
 use App\Http\Controllers\Admin\WorkingShiftSettingController;
+use App\Http\Controllers\Controller;
 use App\Http\Controllers\InitValueController;
 use App\Http\Controllers\Admin\PayRollController;
 use App\Http\Controllers\SettingController;
@@ -85,6 +87,8 @@ Route::name('admin.')->prefix('/')->middleware(['auth', 'permission'])->group(fu
         Route::resource('/api', SystemStatusController::class);
     });
 
+    Route::get('/user-statistics', [Controller::class, 'getUserStatistics']);
+    Route::get('/user-by-department-statistics', [Controller::class, 'getUserByDepartmentStatistics']);
 
 
     Route::prefix('contracts')->group(function () {
@@ -378,6 +382,12 @@ Route::name('admin.')->prefix('/')->middleware(['auth', 'permission'])->group(fu
         Route::get('/', [HrmContactController::class, 'index'])->name('hrm-contacts.index');
         Route::put('/update/{id}', [HrmContactController::class, 'update'])->name('hrm-contacts.update');
         Route::get('/get-all', [HrmContactController::class, 'getAllHrmContact'])->name('hrm-contacts.getAllHrmContact');
+    });
+
+    Route::prefix('insurances')->group(function () {
+        Route::get('/', [InsuranceController::class, 'index'])->name('insurances.index');
+        Route::put('/update', [InsuranceController::class, 'update'])->name('insurances.update');
+        Route::get('/get-all', [InsuranceController::class, 'getAllInsurances'])->name('insurances.getAllInsurances');
     });
 
     // # Cấu hình nghỉ phép

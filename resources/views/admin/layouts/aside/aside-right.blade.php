@@ -218,39 +218,21 @@
                                 </div>
                                 @endif
 
-
-                                @if (App\Helper\check_sub_menu_permission('admin.internal-fund.index') == true)
-                                <div data-kt-menu-trigger="click" class="menu-item here show menu-accordion">
-                                    <!--begin:Menu link-->
-                                    <a class="menu-link p-0 {{ Route::current()->getName() == 'admin.internal-fund.index' ? 'active' : '' }}"
-                                       href="{{ route('admin.internal-fund.index') }}">
+{{--                                @if (App\Helper\check_sub_menu_permission('admin.taxes.index') == true)--}}
+                                    <div data-kt-menu-trigger="click" class="menu-item here show menu-accordion">
+                                        <!--begin:Menu link-->
+                                        <a class="menu-link p-0 {{ Route::current()->getName() == 'admin.insurances.index' ? 'active' : '' }}"
+                                           href="{{ route('admin.insurances.index') }}">
                                             <span class="menu-link">
                                                 <span class="menu-icon">
                                                     <i class="fab fa-product-hunt fs-4"></i>
                                                 </span>
                                                 <span
-                                                    class="menu-title fw-medium fs-7">{{ trans('Qũy nội bộ') }}</span>
+                                                    class="menu-title fw-medium fs-7">{{ trans('Khai báo bảo hiểm') }}</span>
                                             </span>
-                                    </a>
-                                </div>
-                                @endif
-
-                                @if (App\Helper\check_sub_menu_permission('admin.user-leave-days.index') == true)
-                                <div data-kt-menu-trigger="click" class="menu-item here show menu-accordion">
-                                    <!--begin:Menu link-->
-                                    <a class="menu-link p-0 {{ Route::current()->getName() == 'admin.user-leave-days.index' ? 'active' : '' }}"
-                                       href="{{ route('admin.user-leave-days.index') }}">
-                                            <span class="menu-link">
-                                                <span class="menu-icon">
-                                                    <i class="fab fa-product-hunt fs-4"></i>
-                                                </span>
-                                                <span
-                                                    class="menu-title fw-medium fs-7">{{ trans('Cấu hình nghỉ phép') }}</span>
-                                            </span>
-                                    </a>
-                                </div>
-                                @endif
-
+                                        </a>
+                                    </div>
+{{--                                @endif--}}
 
                             </div>
                             <!--end::Body-->
@@ -419,6 +401,38 @@
                                         </a>
 
                                     </div>
+
+                                @if (App\Helper\check_sub_menu_permission('admin.internal-fund.index') == true)
+                                    <div data-kt-menu-trigger="click" class="menu-item here show menu-accordion">
+                                        <!--begin:Menu link-->
+                                        <a class="menu-link p-0 {{ Route::current()->getName() == 'admin.internal-fund.index' ? 'active' : '' }}"
+                                           href="{{ route('admin.internal-fund.index') }}">
+                                            <span class="menu-link">
+                                                <span class="menu-icon">
+                                                    <i class="fab fa-product-hunt fs-4"></i>
+                                                </span>
+                                                <span
+                                                    class="menu-title fw-medium fs-7">{{ trans('Qũy nội bộ') }}</span>
+                                            </span>
+                                        </a>
+                                    </div>
+                                @endif
+
+                                @if (App\Helper\check_sub_menu_permission('admin.user-leave-days.index') == true)
+                                    <div data-kt-menu-trigger="click" class="menu-item here show menu-accordion">
+                                        <!--begin:Menu link-->
+                                        <a class="menu-link p-0 {{ Route::current()->getName() == 'admin.user-leave-days.index' ? 'active' : '' }}"
+                                           href="{{ route('admin.user-leave-days.index') }}">
+                                            <span class="menu-link">
+                                                <span class="menu-icon">
+                                                    <i class="fab fa-product-hunt fs-4"></i>
+                                                </span>
+                                                <span
+                                                    class="menu-title fw-medium fs-7">{{ trans('Cấu hình nghỉ phép') }}</span>
+                                            </span>
+                                        </a>
+                                    </div>
+                                @endif
 {{--                                @endif--}}
 {{--                                @if (App\Helper\check_sub_menu_permission('admin.reports.contracts.index') == true)--}}
 {{--                                    <div data-kt-menu-trigger="click" class="menu-item here show menu-accordion">--}}

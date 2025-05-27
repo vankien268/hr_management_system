@@ -9,9 +9,9 @@ class Setting extends Model
 {
     use HasFactory;
 
-    const TYPE_ENTERPRISE_INSURANCE_PAID = "ENTERPRISE_INSURANCE_PAID"; # Bảo hiểm
-
     const TYPE_TAX_CALCUL = "TAX_CALCUL"; # Thuế
+    const TYPE_WORKER_INSURANCE_PAID = "WORKER_INSURANCE_PAID"; # BH ng lao động trả
+    const TYPE_ENTERPRISE_INSURANCE_PAID = "ENTERPRISE_INSURANCE_PAID"; # BH ng doanh nghiệp trả
 
     protected $fillable= [
         'type',

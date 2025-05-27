@@ -47,6 +47,7 @@ import TimekeepingList from '../components/timekeepings/TimekeepingList.vue';
 import WorkingShiftSettingList from '../components/working-shift-settings/WorkingShiftSettingList.vue';
 import TimekeepingUserList from '../components/timekeeping-users/TimekeepingUserList.vue';
 import PayRollList from '../components/pay-rolls/PayRollList.vue';
+import InsuranceList from '../components/insurances/InsuranceList.vue';
 
 // import Select2 from 'vue3-select2-component';
 
@@ -99,5 +100,6 @@ const globalComponent = {
     WorkingShiftSettingList,
     TimekeepingUserList,
     PayRollList,
+    InsuranceList,
 }
 export default globalComponent
