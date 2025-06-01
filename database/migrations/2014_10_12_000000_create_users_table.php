@@ -23,8 +23,9 @@ return new class extends Migration
             $table->tinyInteger('gender')->default(0)->comment('giới tính: 0 - Nam/Nữ, 1 : Nam, 2: Nữ');
             $table->date('birthday')->nullable()->comment('số điện thoại người dùng');
             $table->string('status')->default(1)->comment('1 là active, 0 là block');
-            $table->integer('login_number')->nullable()->default(0)->comment('số lần login');
-            $table->string('skype')->nullable()->comment('Link skype người dùng nếu có');
+//            $table->integer('login_number')->nullable()->default(0)->comment('số lần login');
+//            $table->string('skype')->nullable()->comment('Link skype người dùng nếu có');
+            $table->foreignId('department_id')->constrained('departments');
             $table->timestamp('email_verified_at')->nullable();
             $table->rememberToken();
             $table->unsignedBigInteger('created_by')->nullable();
