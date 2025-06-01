@@ -121,6 +121,22 @@
 
                                 </div>
                                 @endif
+
+                                <div data-kt-menu-trigger="click" class="menu-item here show menu-accordion">
+                                    <!--begin:Menu link-->
+                                    <a class="menu-link p-0 {{ Route::current()->getName() == 'admin.salaries.index' ? 'active' : '' }}"
+                                       href="{{ route('admin.salaries.index') }}">
+                                            <span class="menu-link">
+                                                <span class="menu-icon">
+                                                    <i class="fa-solid fa-microchip fs-4"></i>
+                                                </span>
+                                                <span
+                                                    class="menu-title fw-medium fs-7">{{ trans('Quản lý tiền lương') }}</span>
+                                            </span>
+                                    </a>
+
+                                </div>
+
                             </div>
                             <!--end::Body-->
                         </div>

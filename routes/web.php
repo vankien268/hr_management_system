@@ -8,6 +8,7 @@ use App\Http\Controllers\Admin\HrmContractController;
 use App\Http\Controllers\Admin\InsuranceController;
 use App\Http\Controllers\Admin\InternalFundController;
 use App\Http\Controllers\Admin\RequestTicketController;
+use App\Http\Controllers\Admin\SalariesController;
 use App\Http\Controllers\Admin\SalaryGradeController;
 use App\Http\Controllers\Admin\TaxesController;
 use App\Http\Controllers\Admin\TimekeepingController;
@@ -207,6 +208,15 @@ Route::name('admin.')->prefix('/')->middleware(['auth', 'permission'])->group(fu
         Route::put('/update/{id}', [HrmContractController::class, 'update'])->name('hrm-contracts.update');
         Route::delete('/destroy/{id}', [HrmContractController::class, 'destroy'])->name('hrm-contracts.destroy');
         Route::get('/get-all', [HrmContractController::class, 'getAllHrmContracts'])->name('hrm-contracts.getAllHrmContracts');
+    });
+
+    Route::prefix('salaries')->group(function () {
+        Route::get('/', [SalariesController::class, 'index'])->name('salaries.index');
+        Route::post('/store', [SalariesController::class, 'store'])->name('salaries.store');
+        Route::put('/update/{id}', [SalariesController::class, 'update'])->name('salaries.update');
+        Route::delete('/destroy/{id}', [SalariesController::class, 'destroy'])->name('salaries.destroy');
+        Route::get('/get-all', [SalariesController::class, 'getAllSalaries'])->name('salaries.getAllSalaries');
+        Route::get('/salary-contacts', [SalariesController::class, 'salaryContacts'])->name('salaries.salaryContacts');
     });
 
     Route::prefix('pay-rolls')->group(function () {
