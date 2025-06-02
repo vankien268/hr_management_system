@@ -5,5 +5,6 @@
         :btn-add="{{ @json_encode($btnAdd)}}"
     >
     </working-shift-setting-list>
+
 @endsection
 

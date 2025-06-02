@@ -102,6 +102,10 @@ class RoleController extends Controller
         if(!$entry){
             return $this->errorsResponse(["id" => trans("Không tồn tại !")], 404);
         }
+
+        if($entry->id == 1) {
+            return $this->errorsResponse(["message" => trans("Không thể xóa nhóm quyền quản trị !")], 403);
+        }
         try {
             $this->roleRepository->destroy($id);
             return $this->successResponse(['role' => $entry,'message' => trans('Xóa dữ liệu thành công!')], 200);

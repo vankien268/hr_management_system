@@ -33,13 +33,13 @@
                         <thead>
                         <tr class="fw-bold fs-6 text-gray-800">
                             <th class="w-20px max-w-50px">STT</th>
-                            <th class="w-200px max-w-200px">Tên ngạch lương</th>
-                            <th class="w-100px max-w-150px">Bậc 1</th>
-                            <th class="w-100px max-w-150px">Bậc 2</th>
-                            <th class="w-100px max-w-200px">Bậc 3</th>
-                            <th class="min-w-100px max-w-100px">Bậc 4</th>
-                            <th class="min-w-125px max-w-250px">Bậc 5</th>
-                            <th class="min-w-125px max-w-250px">Bậc 6</th>
+                            <th class="w-200px max-200px">Tên ngạch lương</th>
+                            <th class="w-200px ">Bậc 1</th>
+                            <th class="w-200px ">Bậc 2</th>
+                            <th class="w-100px">Bậc 3</th>
+                            <th class="min-w-100px ">Bậc 4</th>
+                            <th class="min-w-125px ">Bậc 5</th>
+                            <th class="min-w-125px ">Bậc 6</th>
                             <th class="min-w-125px max-w-250px">Bậc 7</th>
                             <th class="min-w-125px max-w-250px">Bậc 8</th>
                             <th class="w-auto" colspan="2">Hành động</th>
@@ -64,9 +64,12 @@
                                 >{{ errors['salary_grades.' + index + '.name'][0] }}</span
                                 >
                             </td>
-                            <td><input type="text" :value="formatNumber(item.coefficient_one)" @input="onInputMoney($event, 'coefficient_one', index)"
+                            <td>
+                                <input type="text" :value="formatNumber(item.coefficient_one)" @input="onInputMoney($event, 'coefficient_one', index)"
                                       :key="`name-1-${index}`" style="width: 100%;border:1px solid #9ca3af;
-                                      border-radius: 5px;font-size: 12px;" /></td>
+                                      border-radius: 5px;font-size: 12px;" />
+
+                            </td>
                             <td><input type="text"
                                        :value="formatNumber(item.coefficient_two)" @input="onInputMoney($event, 'coefficient_two', index)"
                                        :key="`name-2-${index}`" style="width: 100%;border:1px solid #9ca3af;
@@ -213,6 +216,7 @@
             default: false,
         }
     });
+
     const formSalaryGrade = reactive({
         salary_grades: [],
         remove_salary_grade_ids: [],
@@ -312,30 +316,34 @@
     };
 
     const onInputMoney = (e, fieldName, index) => {
-        const raw = e.target.value;
+        let raw = e.target.value;
 
-        // Loại bỏ mọi ký tự không phải số
-        const cleaned = raw.replace(/[^\d]/g, '');
+        // Cho phép số và dấu phẩy (,) - giữ nguyên để người dùng nhập số thực
+        const cleaned = raw.replace(/[^0-9,]/g, '');
+        console.log(cleaned);
+        // Chuyển dấu phẩy sang dấu chấm để parseFloat xử lý đúng
+        const numberWithDot = cleaned.replace(',', '.');
 
-        // Nếu không có số nào, set về 0 (hoặc '', tuỳ bạn)
-        let unformatted = cleaned ? parseFloat(cleaned) : 0;
+        // Parse thành số thực
+        let value = parseFloat(numberWithDot);
 
-        // Gán lại hệ số vào object
-        formSalaryGrade.salary_grades[index][fieldName] = unformatted;
+        // Nếu không hợp lệ thì gán về 0
+        if (isNaN(value)) value = 0;
 
-        // Tự động cập nhật value tương ứng nếu là hệ số
-        const salaryBasic = parseFloat(formSalaryGrade.salary_grades[index].attributes.salary_basic || 0);
+        // Gán vào object
+        formSalaryGrade.salary_grades[index][fieldName] = value;
 
-        // Nếu trường đang thay đổi là coefficient_x, cập nhật value_x
+        // Nếu là hệ số thì tính lại value_
         if (fieldName.startsWith('coefficient_')) {
-            const suffix = fieldName.replace('coefficient_', ''); // vd: 'one'
+            const suffix = fieldName.replace('coefficient_', '');
             const valueField = `value_${suffix}`;
-            formSalaryGrade.salary_grades[index][valueField] = parseFloat((unformatted * salaryBasic).toFixed(2));
+            formSalaryGrade.salary_grades[index][valueField] = parseFloat((value * salaryBasic).toFixed(2));
         }
 
-        // Hiển thị lại với định dạng dấu chấm ngăn cách hàng nghìn
-        e.target.value = formatNumber(unformatted);
+        // Gán lại value format vào input
+        e.target.value = formatNumber(value);
     };
+
 
     const onInputSalaryBasic = (e, fieldName, index) => {
         const raw = e.target.value;

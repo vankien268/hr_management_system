@@ -48,6 +48,7 @@ class HrmContractController extends Controller
         $contract_name = $request->contract_name;
         $contract_code = $request->contract_code;
 
+        $stt = 1;
         $contacts = $this->contractRepository->model(['department', 'contact', 'contractType'])
             ->where(function ($query) use (
                 $contract_code,
@@ -74,7 +75,11 @@ class HrmContractController extends Controller
                     });
                 }
             })->where('valid', 1)
-            ->orderByDesc('id')->get();
+            ->orderByDesc('id')->get()->map(function ($item) use(&$stt) {
+                $item->stt = $stt;
+                $stt++;
+                return $item;
+            });
 
         $this->setTransformer(new HrmContractTransformer());
 

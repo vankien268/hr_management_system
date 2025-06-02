@@ -192,17 +192,15 @@
                         </tr>
                         <tr
                             class="cursor-pointer "
-                            v-for="(item, index) in contract"
-                            :key="index"
+                            v-for="(item, index2) in contract"
+                            :key="index2"
                             :class="{ active: item.id == dataUpdate.id }"
 
                             @click="setDataUpdate(item)"
                         >
                             <td class="text-center">
                                 {{
-                                pagination.per_page *
-                                (pagination.current_page - 1) +
-                                (item.stt + 1)
+                                index2 + 1
                                 }}
                             </td>
                             <td class="break-text">
@@ -430,6 +428,7 @@
                                     <base-validation />
                                 </div>
                                 <div class="col-lg-9">
+
                                     <select :disabled="detailView || ! clickContactDepartment" class="form-select" style="height:29px;" v-model="dataUpdate.contact_id" :class="{ 'select-custom-valid' :  errors.contact_id}"  data-placeholder="Chọn ngân hàng" aria-label="Default select example">
                                         <option :value="null">Vui lòng chọn</option>
                                         <option :value="item.id" v-for="(item,index) in filteredContacts" :key="index">{{ item.full_name }}</option>
@@ -640,7 +639,7 @@
 
                                 <div class="row g-3 align-items-center col-lg-12"  style="margin-top: 1px;">
                                     <div class="col-lg-3">
-                                        <label for="taxCode" class="required col-form-label">Bậc lương {{dataUpdate.pay_range_id}}
+                                        <label for="taxCode" class="required col-form-label">Bậc lương
                                         </label>
                                         <base-validation />
                                     </div>
@@ -952,7 +951,11 @@
         editAction.value = false;
 
         KTApp.showPageLoading();
-        axios.put(`/hrm-contracts/update/` + `${dataUpdate.value.id}`, dataUpdate.value).then((res) => {
+        axios.put(`/hrm-contracts/update/` + `${dataUpdate.value.id}`,{
+                ...dataUpdate.value,
+                basic_salary: infoSalaryGrade.salary_value
+            }
+        ).then((res) => {
             useToast.successToast(res.data.message);
             errors.value = [];
             clickSignerUserDepartment.value = false;
@@ -1001,7 +1004,10 @@
     const storeContract = () => {
         KTApp.showPageLoading();
         axios
-            .post("/hrm-contracts/store", dataUpdate.value)
+            .post("/hrm-contracts/store", {
+                ...dataUpdate.value,
+                basic_salary: infoSalaryGrade.salary_value
+            })
             .then((res) => {
                 errors.value = [];
                 const btn = document.getElementById('close-modal');
@@ -1060,16 +1066,16 @@
 
     const users = ref([]);
 
-    const getUsers = (params = null) => {
+    const getUsers = () => {
         KTApp.showPageLoading();
         axios({
             url: "/hrm-contacts/get-all",
             method: "GET",
-            params: params,
         })
             .then((res) => {
                 const { data, meta } = res.data;
                 users.value = data;
+                console.log( users.value, 'aaa');
             })
             .catch((error) => {
                 console.log(error);
@@ -1122,6 +1128,7 @@
             clickContactDepartment.value = true;
         }
 
+        console.log(departmentId,users.value , users.value.filter(user => user.department_id == departmentId))
         if (! departmentId) {
             clickContactDepartment.value = false;
             filteredUsers.value = users.value;

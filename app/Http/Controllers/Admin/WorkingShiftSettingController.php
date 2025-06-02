@@ -151,6 +151,34 @@ class WorkingShiftSettingController extends Controller
 
             $working_shift_users = $data['working_shift_users'] ?? [];
 
+//            if(array_column($working_shift_users, 'id')) {
+//                $working_shift_user_update = DB::table('working_shift_users')
+//                    ->where('working_shift_setting_id', $workingShiftSetting->id)
+//                    ->whereIn('user_id', array_column($working_shift_users, 'id'))->first();
+//            }
+
+
+            $shiftIds =  $this->workingShiftSettingRepository->model()
+                ->where('id', '<>', $id)
+                ->where('shift_type', 1)->get()->pluck('id')->toArray();
+
+            $errors = [];
+
+            foreach ($working_shift_users as $user) {
+
+                $working_shift_user = DB::table('working_shift_users')
+                    ->whereIn('working_shift_setting_id', $shiftIds)
+                    ->where('user_id', $user['id'])->first();
+
+                if($working_shift_user) {
+                    $errors[] = $user['name']. "(".$user['username'].")";
+                }
+            }
+
+            if($errors) {
+                return $this->errorsResponse([ 'working_shift_users' => [implode(", ", $errors). " đã được thêm vào thiết lập chấm công khác."]], 422);
+            }
+
             unset($data['id']);
 
             $workingShiftSetting->update($data);

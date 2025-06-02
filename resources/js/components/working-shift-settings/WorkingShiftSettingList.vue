@@ -676,7 +676,6 @@
     };
 
     const updateWorkingShiftSetting = () => {
-        editAction.value = false;
 
         KTApp.showPageLoading();
         axios.put(`/working-shift-settings/update/` + `${dataUpdateWorkingShiftSetting.id}`, dataUpdateWorkingShiftSetting).then((res) => {
@@ -684,6 +683,7 @@
             errors.value = [];
             const btn = document.getElementById('close-modal');
             btn.click();
+            editAction.value = false;
             changePage(getMetaPaginate.value.pagination);
         })
             .catch((error) => {

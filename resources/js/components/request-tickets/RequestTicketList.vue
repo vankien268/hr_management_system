@@ -538,6 +538,58 @@
                                     >
                                 </div>
                             </div>
+
+<!--                            <div class="row g-3 align-items-center col-lg-12" style="padding-bottom:17px;">-->
+<!--                                <div class="col-lg-4">-->
+<!--                                    <label-->
+<!--                                        class="d-flex align-items-center fs-6 fw-semibold mb-3"-->
+<!--                                    >-->
+<!--                                        <span class="text-content">Chọn loại quy trình: </span>-->
+<!--                                    </label>-->
+<!--                                </div>-->
+
+<!--                                <div class="col-lg-7">-->
+<!--                                    <select-->
+<!--                                        style="height:29px;" class="form-select"-->
+<!--                                        v-model="workflow_type" :class="{ 'select-custom-valid' :  errors.workflow_type }" data-hide-search="true" data-placeholder="Chọn loại dự án" name="target_assign">-->
+<!--                                        <option-->
+<!--                                            :value= null >-->
+<!--                                          Chọn loại quy trình-->
+<!--                                        </option>-->
+<!--                                        <option v-for="(item, index) in workflowTypes"-->
+<!--                                                :key="index" :value="item.workflow_type">-->
+<!--                                            {{  `${item.name}` }}-->
+<!--                                        </option>-->
+<!--                                    </select>-->
+<!--                                    <div class="w-100"></div>-->
+<!--                                    <span v-if="errors.workflow_type" class="text-danger mt-3">{{-->
+<!--                                errors.workflow_type[0]-->
+<!--                            }}</span>-->
+<!--                                </div>-->
+<!--                            </div>-->
+
+                            <div class="row g-3 align-items-center col-lg-12" style="padding-bottom:17px;">
+                                <div class="col-lg-4">
+                                    <label
+                                        class="d-flex align-items-center fs-6 fw-semibold mb-3"
+                                    >
+                                        <span class="text-content">Chọn ca làm việc: </span>
+                                    </label>
+                                </div>
+
+                                <div class="col-lg-7">
+                                    <select  class="form-select" style="height:29px;" v-model="working_shift_id" data-placeholder="Chọn ca chấm công" aria-label="Default select example">
+                                        <option :value="null">Vui lòng chọn</option>
+                                        <option :value="item.id" v-for="(item,index) in workingShiftSettings" :key="index">{{ item.shift_title }}</option>
+                                    </select>
+                                    <div class="w-100"></div>
+                                    <span v-if="errors.working_shift_id" class="text-danger">{{
+                                errors.working_shift_id[0]
+                            }}</span>
+
+                                </div>
+                            </div>
+
                         </div>
                     </div>
                 </div>
@@ -602,6 +654,32 @@
                 const { data, meta } = res.data;
                 // console.log(meta);
                 requestTickets.value = data;
+                getMetaPaginate.value = meta;
+            })
+            .catch((error) => {
+                console.log(error);
+            }).finally(()=>{
+            KTApp.hidePageLoading();
+        });
+    };
+
+    const workingShiftSettings = ref([]);
+
+    const getWorkingShiftSettings = (params = null) => {
+        KTApp.showPageLoading();
+        axios({
+            url: "/working-shift-settings/get-all",
+            method: "GET",
+            params: {...params,
+                is_timekeeping: true
+            },
+        })
+            .then((res) => {
+                const { data, meta } = res.data;
+                // console.log(meta);
+                workingShiftSettings.value = data;
+                // formWorkflow.users = [...data.users]
+                workingShiftSettings.value.forEach((item) => formTimekeepingUser.shift_id = item.id)
                 getMetaPaginate.value = meta;
             })
             .catch((error) => {
@@ -736,12 +814,25 @@
         });
     };
 
+    const workflowTypes = ref([
+        { id: 1, name: 'Nghỉ phép năm', workflow_type: "annual_leave" },
+        { id: 2, name: 'Nghỉ chế độ',  workflow_type: "regime_leave" },
+        { id: 3, name: 'Đi công tác',  workflow_type: "business_travel" },
+        { id: 4, name: 'Làm việc ngoài văn phòng',  workflow_type: "working_out_of_the_office" },
+        { id: 5, name: 'Nghỉ không lương',  workflow_type: "unpaid_leave" },
+        { id: 6, name: 'Xin đi muộn',  workflow_type: "arriving_late" },
+        { id: 7, name: 'Xin về sớm',  workflow_type: "leave_early" },
+        { id: 8, name: 'Quên chấm công',  workflow_type: "forgot_timekeeping" },
+    ])
+
 
     onMounted(() => {
         getrequestTickets();
         getWorkflow({
             "check_permission_dept" : 1
         });
+
+        getWorkingShiftSettings();
     });
 
     const closeModal = () => {
@@ -777,10 +868,14 @@
         "number_leave_day" : null
     })
     const number_leave_day = ref(null);
+    const working_shift_id = ref(null);
+    const workflow_type = ref(null);
 
     const handleClickApprove = (status, id) => {
         requestApprove.request_status = status;
         requestApprove.number_leave_day = number_leave_day.value;
+        requestApprove.working_shift_id = working_shift_id.value;
+        requestApprove.workflow_type = workflow_type.value;
 
         KTApp.showPageLoading();
         axios

@@ -46,7 +46,7 @@ class TaxesController extends Controller
         $taxes = $this->settingRepository->model()
             ->where('type', Setting::TYPE_TAX_CALCUL)
             ->where('valid', 1)
-            ->orderByDesc('id')->get();
+            ->get();
 
         $this->setTransformer(new SettingTransformer());
 
@@ -95,6 +95,7 @@ class TaxesController extends Controller
         DB::beginTransaction();
         try {
             $data = $request->all();
+            unset($data['project_functions'], $data['list_permissions']);
 
             $tax->update(['value' => $data]);
             DB::commit();

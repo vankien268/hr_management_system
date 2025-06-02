@@ -6,7 +6,6 @@ import flatPickr from 'vue-flatpickr-component';
 import 'flatpickr/dist/flatpickr.css';
 import { msgOffline, msgOnline } from './helper/toastMessage';
 import print from 'vue3-print-nb';
-
 import VueFileAgentNext from '@boindil/vue-file-agent-next'
 
 import '@boindil/vue-file-agent-next/dist/vue-file-agent-next.css'

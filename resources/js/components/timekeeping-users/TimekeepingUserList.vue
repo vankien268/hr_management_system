@@ -51,6 +51,7 @@
                     </div>
                     <div class="w-325px" style="">
                         <select @change="selectWorkingShiftSetting($event.target.value)" class="form-select" style="height:29px;" v-model="formTimekeepingUser.shift_id" data-placeholder="Chọn ca chấm công" aria-label="Default select example">
+                            <option :value=null>Vui lòng chọn</option>
                             <option :value="item.id" v-for="(item,index) in workingShiftSettings" :key="index">{{ item.shift_title }}</option>
                         </select>
                         <div class="w-100"></div>
@@ -132,6 +133,13 @@
 
                          </td>
                          </tr>
+                    </tbody>
+                    <tbody v-if="Object.keys(user_timekeeping_in_month).length == 0">
+                    <tr>
+                        <td class="text-center" colspan="12">
+                            Không có dữ liệu hiển thị
+                        </td>
+                    </tr>
                     </tbody>
                 </table>
 
@@ -294,6 +302,7 @@
         });
     };
 
+
     const formTimekeepingUser = reactive({
         user_id: null,
         checkin_date: null,
@@ -305,6 +314,7 @@
     const searchTimekeepingUser = ref({
         nameAndCode: "",
         month: "",
+        shift_id: formTimekeepingUser.shift_id
     });
 
     const handleSearch = () => {
@@ -345,6 +355,11 @@
         });
     };
 
+    const selectWorkingShiftSetting = (value) => {
+        searchTimekeepingUser.value.shift_id =value
+        getTimekeepingUsers({shift_id: value});
+    }
+
     const pagination = computed(() => {
         return getMetaPaginate.value?.pagination
             ? getMetaPaginate.value.pagination
@@ -366,8 +381,7 @@
         axios({
             url: "/working-shift-settings/get-all",
             method: "GET",
-            params: {...params,
-                is_timekeeping: true
+            params: {...params
             },
         })
             .then((res) => {
@@ -375,7 +389,7 @@
                 // console.log(meta);
                 workingShiftSettings.value = data;
                 // formWorkflow.users = [...data.users]
-                workingShiftSettings.value.forEach((item) => formTimekeepingUser.shift_id = item.id)
+                // workingShiftSettings.value.forEach((item) => formTimekeepingUser.shift_id = item.id)
                 getMetaPaginate.value = meta;
             })
             .catch((error) => {

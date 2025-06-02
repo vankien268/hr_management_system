@@ -27,13 +27,18 @@ trait APIResponseHandlerTrait
         return $this->transformer;
     }
 
-    protected function successResponse($data, $code = 200)
+    protected function successResponse($data, $code = 200, $isCode = true)
     {
-        $data = array_merge([
-            'code' => $code,
-            'success' => true
-        ], $data);
-        return response()->json($data, $code);
+        if($isCode) {
+
+            $data = array_merge([
+                'code' => $code,
+                'success' => true
+            ], $data);
+            return response()->json($data, $code);
+        }
+
+        return response()->json($data);
     }
 
     protected function errorResponse($errorMessage, $code = 422)

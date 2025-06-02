@@ -18,7 +18,7 @@
                         class="btn btn-function" data-bs-toggle="modal" data-bs-target="#modal_contract_type">
                        Bảo hiểm doanh nghiệp trả</a>
 
-                    <a href="#"  @click="addInsuranceRow()" class="btn btn-function" data-bs-toggle="modal" data-bs-target="#modal_contract_type">
+                    <a href="#" v-if=" typeInsurance !== 'WORKER_INSURANCE_PAID' " @click="addInsuranceRow()" class="btn btn-function" data-bs-toggle="modal" data-bs-target="#modal_contract_type">
                         <i class="ki-duotone ki-plus fs-2"></i>Thêm</a>
 
                     <button type="button" class="btn btn-function me-4"

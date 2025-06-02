@@ -46,11 +46,9 @@ class RoleTransformer extends TransformerAbstract
         ];
         $data['isDelete'] = check_user_permission(SystemPermissionEnum::DELETE_DECLARE_ROLE);
 
-//        if ($this->isDelete) {
-//            if ($entry->roleUsers->count() > 0) {
-//                $data['isDelete'] = false;
-//            }
-//        }
+        if ( $entry->id === 1) {
+            $data['isDelete'] = false;
+        }
         return $data;
     }
 }

@@ -91,7 +91,7 @@ class HrmContactController extends Controller
                     $query->where('contact_birthday', '<=', $birthday_to);
                 }
             })
-            ->orderByDesc('id')->get();
+            ->get();
 
         $this->setTransformer(new HrmContactTransformer());
 

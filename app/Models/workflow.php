@@ -22,6 +22,22 @@ class workflow extends Model
     "forgot_timekeeping" => "Quên chấm công",
 ];
 
+    const WORKFLOW_CODE_CONTRACT = 'contract';
+    const WORKFLOW_CODE_REQUEST_TICKET = 'request_ticket';
+
+    const TYPE_TEXTAREA     = 'textarea';
+    const TYPE_TEXTINPUT    = 'textinput';
+    const TYPE_FILE         = 'file';
+
+    CONST APPROVE_TYPE_USER = 'user';
+    CONST APPROVE_TYPE_DEPT = 'dept';
+
+    CONST WORKFLOW_TYPE_LEAVE_EARLY = 'leave_early';                    # Xin về sớm
+    CONST WORKFLOW_TYPE_ARRIVING_LATE = 'arriving_late';                # Xin đi muộn
+    CONST WORKFLOW_TYPE_FORGOT_TIMEKEEPING = 'forgot_timekeeping';      # Quên chấm công
+    CONST WORKFLOW_TYPE_UNPAID_LEAVE = 'unpaid_leave';                  # Nghỉ không lương
+    CONST WORKFLOW_TYPE_ANNUAL_LEAVE = 'annual_leave';                  # Nghỉ phép năm
+
 
     protected $fillable= [
         'workflow_code',

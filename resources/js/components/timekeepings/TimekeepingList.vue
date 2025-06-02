@@ -229,7 +229,7 @@
                     eventContent: function (arg) {
                         const [checkIn, checkOut] = arg.event.title.split(' - ');
                         return {
-                            html: `<div style="color:blue"><b> ✅ Vào: ${checkIn}<br/> <br/><br/>✅ Ra: ${checkOut}</b></div>`
+                            html: `<div style="color:#0000ff"><b> ✅ Vào: ${checkIn}<br/> <br/><br/>✅ Ra: ${checkOut}</b></div>`
                         };
                     },
                     datesSet: function() {}
@@ -259,7 +259,6 @@
                 if( workingShiftSettings.value.length <= 1) {
                     workingShiftSettings.value.forEach((item) => shift_id.value = item.id)
                 }
-                getMetaPaginate.value = meta;
             })
             .catch((error) => {
                 console.log(error);

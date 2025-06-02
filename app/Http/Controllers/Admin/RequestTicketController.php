@@ -87,6 +87,7 @@ class RequestTicketController extends Controller
     public function store(RequestTicketStoreRequest $request)
     {
         $data = $request->all();
+
         DB::beginTransaction();
         try {
             $data['request_status'] = 0;
@@ -144,7 +145,7 @@ class RequestTicketController extends Controller
                     'result_type' => $workflow ?  $workflow->workflow_type : null,
                     'leave_day' => $requestTicket->start_date,
                     'number_leave_day' => $request->number_leave_day,
-                    'working_shift_id' => null
+                    'working_shift_id' => $request->working_shift_id
                 ];
 
                 DB::table('request_ticket_results')->insert($createResultRequest);

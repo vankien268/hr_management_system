@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\TimeKeepingShiftLog;
 use App\Repositories\Interfaces\ITimekeepingRepository;
 use App\Transformers\TimeKeepingTransformer;
 use Carbon\Carbon;
@@ -43,12 +44,6 @@ class TimeKeepingUserController extends Controller
 
         $month = $request->month;
 
-        if(! $request->shift_id) {
-            $working_shift_setting_id = DB::table('working_shift_users')
-                ->select('working_shift_setting_id')
-               ->first()->working_shift_setting_id;
-        }
-
         $timeKeepings = $this->timekeepingRepository->model()
             ->select(['timekeepings.*','contacts.full_name','contacts.contact_code'])
             ->join('contacts', 'contacts.user_id', '=', 'timekeepings.user_id')
@@ -58,8 +53,10 @@ class TimeKeepingUserController extends Controller
                         ->orwhere('contacts.contact_code', 'like', '%'.$nameAndCode.'%');
                 }
             })
-            ->where('timekeepings.valid', 1)
-            ->where('timekeepings.shift_id', $working_shift_setting_id ?? $request->shift_id)
+
+            ->where( function ($query) use ($request) {
+                $query->where('timekeepings.shift_id', $request->shift_id);
+            })
             ->get()->map(function ($item) {
                 $item->check_in_time =  $item->check_in ?  Carbon::parse($item->check_in)->format('H:i'): "";
                 $item->check_out_time =  $item->check_out ?  Carbon::parse($item->check_out)->format('H:i'): "";
@@ -169,6 +166,13 @@ class TimeKeepingUserController extends Controller
                 ->where('valid', 1)->whereDate('checkin_date', $request->checkin_date)
                 ->first();
 
+            $shift = DB::table('working_shift_settings')->where('id', $request->shift_id)->first();
+            $shift->shift_weekdays = $shift->shift_weekdays ? json_decode($shift->shift_weekdays): null;
+            $shift->attributes = $shift->attributes ? json_decode($shift->attributes): null;
+
+            $logs = $this->handleMakeTimeKeepingLogObject($shift, $request->checkin_date);
+
+
             if(! $record) {
 
                 $attributes = [
@@ -177,6 +181,7 @@ class TimeKeepingUserController extends Controller
                     'check_out'  => Carbon::createFromFormat('Y-m-d H:i',  $request->checkin_date.' '. $request->check_out),
                     'checkin_date'  => $request->checkin_date,
                     'shift_id'  => $request->shift_id,
+                    'logs' => json_encode($logs)
                 ];
 
                 $this->timekeepingRepository->create($attributes);
@@ -186,6 +191,7 @@ class TimeKeepingUserController extends Controller
                 $attributes = [
                     'check_in'  => Carbon::createFromFormat('Y-m-d H:i',  $request->checkin_date.' '. $request->check_in),
                     'check_out'  => Carbon::createFromFormat('Y-m-d H:i',  $request->checkin_date.' '. $request->check_out),
+                    'logs' => json_encode($logs)
                 ];
 
                 $record->update($attributes);
@@ -197,5 +203,31 @@ class TimeKeepingUserController extends Controller
             DB::rollBack();
             return $this->errorResponse($th->getMessage());
         }
+    }
+
+    private function handleMakeTimeKeepingLogObject($workingShift, $checkinDate)
+    {
+
+        $weekday = strtolower(date('l', strtotime($checkinDate)));
+
+        $timekeepingLogObjectData = [
+            'shift' => new TimeKeepingShiftLog([
+                'today' => $weekday,
+                'shift_weekday' => (object) $workingShift->shift_weekdays->{$weekday},
+                'info' => (object) [
+                    'shift_id' => $workingShift->id,
+                    'work_number' => $workingShift->attributes->work_number,
+                    'check_in_late' => $workingShift->attributes->check_in_late,
+                    'check_out_early' => $workingShift->attributes->check_out_early,
+                    'use_strict_timekeeping' => $workingShift->attributes->use_strict_timekeeping,
+                    'use_free_timekeeping' => $workingShift->attributes->use_free_timekeeping,
+                    'shift_type' => $workingShift->shift_type,
+                    'shift_title' => $workingShift->shift_title,
+                    'description' => $workingShift->description,
+                ]
+            ]),
+        ];
+
+        return $timekeepingLogObjectData;
     }
 }

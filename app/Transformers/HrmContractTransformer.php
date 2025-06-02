@@ -49,6 +49,7 @@ class HrmContractTransformer extends TransformerAbstract
             'time_limited' => $entry->time_limited,
             'work_type' => $entry->work_type,
             'basic_salary' => $entry->basic_salary,
+            'stt' => $entry->stt,
             'register_date' => $entry->register_date ? Carbon::parse($entry->register_date)->format('Y-m-d') : null,
             'effective_date' => $entry->effective_date ? Carbon::parse($entry->effective_date)->format('Y-m-d') : null,
             'expiration_date' => $entry->expiration_date ? Carbon::parse($entry->expiration_date)->format('Y-m-d') : null,

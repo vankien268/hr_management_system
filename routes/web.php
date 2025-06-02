@@ -156,6 +156,7 @@ Route::name('admin.')->prefix('/')->middleware(['auth', 'permission'])->group(fu
         Route::get('/', [TimekeepingController::class, 'index'])->name('timekeepings.index');
         Route::put('/update', [TimekeepingController::class, 'update'])->name('timekeepings.update');
         Route::get('/get-info', [TimekeepingController::class, 'getInfoTimekeepings'])->name('timekeepings.getInfoTimekeepings');
+        Route::get('/show-detail-timekeeping', [TimekeepingController::class, 'showDetailTimekeeping'])->name('timekeepings.showDetailTimekeeping');
     });
 
     Route::prefix('timekeeping-users')->group(function () {
@@ -217,6 +218,7 @@ Route::name('admin.')->prefix('/')->middleware(['auth', 'permission'])->group(fu
         Route::delete('/destroy/{id}', [SalariesController::class, 'destroy'])->name('salaries.destroy');
         Route::get('/get-all', [SalariesController::class, 'getAllSalaries'])->name('salaries.getAllSalaries');
         Route::get('/salary-contacts', [SalariesController::class, 'salaryContacts'])->name('salaries.salaryContacts');
+        Route::get('/get-salary-contacts', [SalariesController::class, 'getSalaryContacts'])->name('salaries.getSalaryContacts');
     });
 
     Route::prefix('pay-rolls')->group(function () {
